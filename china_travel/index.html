@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>China Explorer · Travel Guide 2026–2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:#f6f8fc;color:#1e293b;line-height:1.6}
+    img{max-width:100%;display:block;border-radius:12px}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1160px,calc(100% - 2.5rem));margin:0 auto}
+    .eyebrow{font-size:.75rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#f59e0b;margin-bottom:.4rem}
+    .section{padding:5rem 0}
+    .section-heading{margin-bottom:2.5rem}
+    .section-heading h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:800;color:#0f172a}
+    .section-heading p{color:#64748b;margin-top:.4rem;max-width:560px}
+
+    /* ===== HERO ===== */
+    .hero{
+      background:linear-gradient(135deg,#0b1e33 0%,#1a3a5c 50%,#2d5a87 100%);
+      color:#fff;padding-bottom:5rem;position:relative;overflow:hidden
+    }
+    .hero::after{
+      content:'';position:absolute;top:-40%;right:-20%;width:600px;height:600px;
+      background:radial-gradient(circle,rgba(245,158,11,.08) 0%,transparent 70%);
+      pointer-events:none
+    }
+    nav{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:1.25rem 0;border-bottom:1px solid rgba(255,255,255,.08)
+    }
+    .brand{font-weight:800;font-size:1.15rem;letter-spacing:-.02em}
+    .brand span{color:#f59e0b}
+    .nav-links{display:flex;gap:1.6rem;font-size:.9rem;font-weight:500}
+    .nav-links a{opacity:.8;transition:opacity .2s}
+    .nav-links a:hover{opacity:1}
+    .hero-grid{
+      display:grid;grid-template-columns:1.3fr .7fr;gap:3rem;
+      align-items:center;padding-top:3.5rem;position:relative;z-index:1
+    }
+    .hero h1{
+      font-size:clamp(2rem,4.5vw,3.4rem);font-weight:800;
+      line-height:1.12;letter-spacing:-.02em;margin-bottom:1rem
+    }
+    .hero h1 span{color:#f59e0b}
+    .hero p{color:rgba(255,255,255,.82);font-size:1.05rem;max-width:600px;margin-bottom:1.5rem}
+    .hero-btns{display:flex;gap:.85rem;flex-wrap:wrap}
+    .btn{
+      padding:.75rem 1.5rem;border-radius:999px;font-weight:600;
+      font-size:.95rem;transition:all .2s;display:inline-flex;align-items:center;gap:.5rem
+    }
+    .btn-primary{background:#f59e0b;color:#0f172a}
+    .btn-primary:hover{background:#d97706}
+    .btn-outline{border:1.5px solid rgba(255,255,255,.3);color:#fff}
+    .btn-outline:hover{border-color:#f59e0b;color:#f59e0b}
+    .snapshot-card{
+      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+      border-radius:1.25rem;padding:1.5rem;backdrop-filter:blur(12px)
+    }
+    .snapshot-card h3{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#f59e0b;margin-bottom:.75rem}
+    .snapshot-card .row{display:flex;gap:.6rem;margin-bottom:.5rem;font-size:.92rem}
+    .snapshot-card .label{font-weight:600;color:rgba(255,255,255,.5);min-width:80px}
+    .snapshot-card .value{color:rgba(255,255,255,.9)}
+
+    /* ===== ROUTE ===== */
+    .route-svg{width:100%;max-width:900px;margin:0 auto;display:block}
+    .route-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;
+      margin-top:2rem
+    }
+    .route-node{
+      background:#fff;border:1px solid #e2e8f0;border-radius:14px;
+      padding:1.1rem;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.04);
+      transition:transform .2s,box-shadow .2s
+    }
+    .route-node:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.08)}
+    .route-node .icon{font-size:1.6rem;margin-bottom:.3rem}
+    .route-node .city-name{font-weight:700;font-size:1rem}
+    .route-node .dates{font-size:.8rem;color:#64748b;margin-top:.15rem}
+    .route-step{display:none}
+
+    /* ===== TIMELINE ===== */
+    .timeline-section{background:#eef3fa}
+    .timeline{position:relative;padding-left:2rem}
+    .timeline::before{
+      content:'';position:absolute;left:11px;top:0;bottom:0;
+      width:3px;background:linear-gradient(to bottom,#f59e0b,#3b82f6);
+      border-radius:3px
+    }
+    .tl-item{
+      position:relative;margin-bottom:1.5rem;padding-left:1.5rem
+    }
+    .tl-dot{
+      position:absolute;left:-1.35rem;top:1.2rem;
+      width:20px;height:20px;border-radius:50%;
+      background:#f59e0b;border:4px solid #eef3fa;
+      box-shadow:0 0 0 2px #f59e0b;z-index:1
+    }
+    .tl-card{
+      background:#fff;border:1px solid #e2e8f0;border-radius:14px;
+      padding:1.2rem 1.4rem;box-shadow:0 4px 16px rgba(0,0,0,.04)
+    }
+    .tl-card h3{font-size:1.05rem;margin-bottom:.2rem}
+    .tl-card .sub{font-size:.85rem;color:#64748b;margin-bottom:.4rem}
+    .tl-card p{font-size:.92rem;color:#475569}
+
+    /* ===== CITIES ===== */
+    .city-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+    .city-card{
+      background:#fff;border:1px solid #e2e8f0;border-radius:16px;
+      overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.04);
+      transition:transform .25s,box-shadow .25s
+    }
+    .city-card:hover{transform:translateY(-5px);box-shadow:0 12px 40px rgba(0,0,0,.08)}
+    .city-card .img-wrap{
+      height:200px;overflow:hidden;background:#e2e8f0;
+      display:flex;align-items:center;justify-content:center;
+      font-size:3rem
+    }
+    .city-card .body{padding:1.1rem 1.2rem 1.3rem}
+    .city-card .body h3{font-size:1.1rem;margin-bottom:.25rem}
+    .city-card .body .dates{font-size:.8rem;color:#64748b;margin-bottom:.5rem}
+    .city-card .body .tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.6rem}
+    .city-card .body .tag{
+      font-size:.7rem;font-weight:600;padding:.2rem .6rem;
+      border-radius:999px;background:#eef2ff;color:#4f46e5
+    }
+    .city-card .body .tag.green{background:#ecfdf5;color:#059669}
+    .city-card .body .tag.amber{background:#fffbeb;color:#d97706}
+    .city-card .body ul{padding-left:1rem;font-size:.88rem;color:#475569}
+    .city-card .body ul li{margin-bottom:.15rem}
+
+    /* ===== TRAVEL INFO ===== */
+    .travel-section{background:#eef3fa}
+    .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+    .info-card{
+      background:#fff;border:1px solid #e2e8f0;border-radius:14px;
+      padding:1.4rem;box-shadow:0 4px 16px rgba(0,0,0,.04)
+    }
+    .info-card h3{font-size:1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+    .info-card ul{padding-left:1rem;font-size:.88rem;color:#475569}
+    .info-card ul li{margin-bottom:.25rem}
+
+    /* ===== WEATHER ===== */
+    .weather-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+    .weather-card{
+      background:#fff;border:1px solid #e2e8f0;border-radius:12px;
+      padding:1rem;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.04)
+    }
+    .weather-card .city{font-weight:700;font-size:.95rem}
+    .weather-card .temp{font-size:1.3rem;font-weight:800;color:#f59e0b;margin:.15rem 0}
+    .weather-card .note{font-size:.8rem;color:#64748b}
+
+    /* ===== BUDGET ===== */
+    .budget-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+    .budget-card{
+      background:#fff;border:1px solid #e2e8f0;border-radius:14px;
+      padding:1.4rem;box-shadow:0 4px 16px rgba(0,0,0,.04)
+    }
+    .budget-card h3{font-size:1rem;margin-bottom:.5rem}
+    .budget-card .amt{font-size:1.8rem;font-weight:800;color:#0f172a}
+    .budget-card .amt span{font-size:.95rem;font-weight:400;color:#64748b}
+    .budget-card p{font-size:.88rem;color:#475569;margin-top:.25rem}
+    .budget-total{
+      grid-column:1/-1;background:linear-gradient(135deg,#0b1e33,#1a3a5c);
+      color:#fff;border-color:transparent;text-align:center;padding:1.8rem
+    }
+    .budget-total .amt{color:#f59e0b}
+    .budget-total p{color:rgba(255,255,255,.8)}
+
+    /* ===== THAILAND ===== */
+    .thai-section{background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff}
+    .thai-section .section-heading h2{color:#fff}
+    .thai-section .section-heading p{color:rgba(255,255,255,.6)}
+    .thai-content{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+    .thai-card{
+      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);
+      border-radius:14px;padding:1.4rem;backdrop-filter:blur(8px)
+    }
+    .thai-card h3{color:#f59e0b;font-size:1rem;margin-bottom:.5rem}
+    .thai-card p,.thai-card ul{color:rgba(255,255,255,.8);font-size:.9rem}
+    .thai-card ul{padding-left:1rem}
+
+    /* ===== FOOTER ===== */
+    footer{
+      background:#0b1e33;color:rgba(255,255,255,.7);
+      text-align:center;padding:2rem 0;font-size:.9rem
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:900px){
+      .hero-grid{grid-template-columns:1fr;padding-top:2rem}
+      .route-grid{grid-template-columns:repeat(2,1fr)}
+      .info-grid,.budget-grid{grid-template-columns:1fr}
+      .weather-grid{grid-template-columns:repeat(2,1fr)}
+      .thai-content{grid-template-columns:1fr}
+      nav{flex-direction:column;gap:.75rem}
+    }
+    @media(max-width:500px){
+      .route-grid{grid-template-columns:1fr}
+      .weather-grid{grid-template-columns:1fr}
+      .nav-links{flex-wrap:wrap;justify-content:center;gap:.8rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="container">
+    <nav>
+      <div class="brand">China<span>Explorer</span></div>
+      <div class="nav-links">
+        <a href="#route">Route</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#cities">Cities</a>
+        <a href="#budget">Budget</a>
+      </div>
+    </nav>
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">2026–2027 · Digital Travel Guide</p>
+        <h1>Your Ultimate <span>China Journey</span><br />8 Cities · 8 Months</h1>
+        <p>
+          A carefully planned route through Beijing, Dalian, Shanghai, Suzhou, Chongqing, Chengdu, Wangxian Valley, and Shenzhen — with a Thailand escape in between.
+        </p>
+        <div class="hero-btns">
+          <a href="#route" class="btn btn-primary">Explore Route</a>
+          <a href="#cities" class="btn btn-outline">View Cities</a>
+        </div>
+      </div>
+      <div class="snapshot-card">
+        <h3>Trip Snapshot</h3>
+        <div class="row"><span class="label">Arrival</span><span class="value">12 May 2026</span></div>
+        <div class="row"><span class="label">Departure</span><span class="value">10 Jan 2027</span></div>
+        <div class="row"><span class="label">Thailand</span><span class="value">24 Dec – 2 Jan</span></div>
+        <div class="row"><span class="label">Route</span><span class="value">North → East → Southwest → South</span></div>
+        <div class="row"><span class="label">Transport</span><span class="value">Flights + High&#8209;Speed Trains</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== ROUTE OVERVIEW ===== -->
+<section id="route" class="section">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Route</p>
+      <h2>Your City Flow</h2>
+      <p>Moving from north to east to southwest, then finishing south — designed to minimize backtracking and match the best seasons.</p>
+    </div>
+    <div class="route-grid">
+      <div class="route-node">
+        <div class="icon">🏛️</div>
+        <div class="city-name">Beijing</div>
+        <div class="dates">12–16 May</div>
+      </div>
+      <div class="route-node">
+        <div class="icon">🌊</div>
+        <div class="city-name">Dalian</div>
+        <div class="dates">16–19 May</div>
+      </div>
+      <div class="route-node">
+        <div class="icon">🌃</div>
+        <div class="city-name">Shanghai</div>
+        <div class="dates">19–24 May</div>
+      </div>
+      <div class="route-node">
+        <div class="icon">🌿</div>
+        <div class="city-name">Suzhou</div>
+        <div class="dates">24–26 May</div>
+      </div>
+      <div class="route-node">
+        <div class="icon">⛰️</div>
+        <div class="city-name">Chongqing</div>
+        <div class="dates">26–30 May</div>
+      </div>
+      <div class="route-node">
+        <div class="icon">🐼</div>
+        <div class="city-name">Chengdu</div>
+        <div class="dates">30 May – 5 Jun</div>
+      </div>
+      <div class="route-node">
+        <div class="icon">🏞️</div>
+        <div class="city-name">Wangxian Valley</div>
+        <div class="dates">5–8 Jun</div>
+      </div>
+      <div class="route-node">
+        <div class="icon">🏙️</div>
+        <div class="city-name">Shenzhen</div>
+        <div class="dates">3–10 Jan</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem;padding:1rem;background:#fffbeb;border-radius:12px;border:1px solid #fde68a;font-size:.9rem;color:#92400e">
+      ✈️ <strong>Thailand break:</strong> 24 Dec 2026 – 2 Jan 2027 (between Wangxian Valley and Shenzhen)
+    </div>
+  </div>
+</section>
+
+<!-- ===== TIMELINE ===== -->
+<section id="timeline" class="section timeline-section">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Timeline</p>
+      <h2>Your Journey Step by Step</h2>
+      <p>Every stop has a purpose. Here is the recommended pacing for each destination.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <h3>Beijing · 4 nights</h3>
+          <div class="sub">12 May – 16 May  ·  Spring weather (18–28°C)</div>
+          <p>Kick off with China's imperial heart: the Forbidden City, Great Wall, Temple of Heaven, and legendary Peking duck. Great spring weather for outdoor sightseeing.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <h3>Dalian · 3 nights</h3>
+          <div class="sub">16 May – 19 May  ·  Mild coastal spring (15–22°C)</div>
+          <p>A relaxing seaside pause. Stroll Xinghai Square, drive the Binhai Road, and enjoy fresh seafood. A nice contrast after busy Beijing.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <h3>Shanghai · 5 nights</h3>
+          <div class="sub">19 May – 24 May  ·  Warm late spring (20–28°C)</div>
+          <p>Modern China at its finest. The Bund, Huangpu River cruise, Yu Garden, Nanjing Road shopping, and world-class dining. Plenty to explore.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <h3>Suzhou · 2 nights</h3>
+          <div class="sub">24 May – 26 May  ·  Warm spring (20–27°C)</div>
+          <p>Only 30 min from Shanghai by train. Famous for classical gardens and ancient canals. A calm, beautiful contrast to the big cities.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <h3>Chongqing · 4 nights</h3>
+          <div class="sub">26 May – 30 May  ·  Warm to hot (22–30°C)</div>
+          <p>A dramatic mountain city where the Yangtze meets the Jialing River. Ride the cable car, enjoy the night skyline, and eat the famous Chongqing hotpot.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <h3>Chengdu · 6 nights</h3>
+          <div class="sub">30 May – 5 Jun  ·  Warm with some rain (22–28°C)</div>
+          <p>The panda capital. Visit the Giant Panda Breeding Base, explore tea houses on Jinli Ancient Street, and feast on Sichuan hotpot and street food.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <h3>Wangxian Valley · 3 nights</h3>
+          <div class="sub">5 Jun – 8 Jun  ·  Warm & scenic (22–30°C)</div>
+          <p>A nature escape with spectacular valley views, hiking trails, and fresh mountain air. Perfect for photography and a slower pace after city energy.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot tl-dot-special" style="background:#3b82f6;box-shadow:0 0 0 2px #3b82f6"></div>
+        <div class="tl-card" style="border-color:#93c5fd">
+          <h3>✈️ Thailand · 10 nights</h3>
+          <div class="sub">24 Dec – 2 Jan  ·  Warm & tropical (25–32°C)</div>
+          <p>Escape the China winter for sun, beaches, temples, and incredible food. A perfect mid-trip recharge before your final stop.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <h3>Shenzhen · 7 nights</h3>
+          <div class="sub">3 Jan – 10 Jan  ·  Mild winter (15–22°C)</div>
+          <p>End your journey in a warm, modern city. Visit Window of the World, OCT Harbour, relax in coastal parks, and enjoy excellent seafood and shopping.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CITIES ===== -->
+<section id="cities" class="section">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Destinations</p>
+      <h2>What to Do in Each City</h2>
+      <p>Curated activities — from iconic landmarks to local experiences.</p>
+    </div>
+    <div class="city-grid">
+      <div class="city-card">
+        <div class="img-wrap">🏛️</div>
+        <div class="body">
+          <h3>Beijing</h3>
+          <div class="dates">12–16 May · 4 nights</div>
+          <div class="tags"><span class="tag">History</span><span class="tag">Landmarks</span><span class="tag green">Spring</span></div>
+          <ul>
+            <li>Forbidden City & Tiananmen Square</li>
+            <li>Great Wall (Mutianyu section)</li>
+            <li>Temple of Heaven & Summer Palace</li>
+            <li>Peking duck dinner</li>
+            <li>Hutongs rickshaw tour</li>
+          </ul>
+        </div>
+      </div>
+      <div class="city-card">
+        <div class="img-wrap">🌊</div>
+        <div class="body">
+          <h3>Dalian</h3>
+          <div class="dates">16–19 May · 3 nights</div>
+          <div class="tags"><span class="tag green">Coastal</span><span class="tag">Relax</span><span class="tag">Seafood</span></div>
+          <ul>
+            <li>Xinghai Square & seaside walk</li>
+            <li>Binhai Road scenic drive</li>
+            <li>Russian风情街 (Russian Style Street)</li>
+            <li>Fresh seafood dinner</li>
+            <li>Discoveryland theme park</li>
+          </ul>
+        </div>
+      </div>
+      <div class="city-card">
+        <div class="img-wrap">🌃</div>
+        <div class="body">
+          <h3>Shanghai</h3>
+          <div class="dates">19–24 May · 5 nights</div>
+          <div class="tags"><span class="tag">Modern</span><span class="tag amber">Nightlife</span><span class="tag">Shopping</span></div>
+          <ul>
+            <li>The Bund skyline walk</li>
+            <li>Huangpu River night cruise</li>
+            <li>Yu Garden & Old Town</li>
+            <li>Nanjing Road shopping</li>
+            <li>French Concession café stroll</li>
+          </ul>
+        </div>
+      </div>
+      <div class="city-card">
+        <div class="img-wrap">🌿</div>
+        <div class="body">
+          <h3>Suzhou</h3>
+          <div class="dates">24–26 May · 2 nights</div>
+          <div class="tags"><span class="tag green">Gardens</span><span class="tag">Canals</span><span class="tag">Peaceful</span></div>
+          <ul>
+            <li>Humble Administrator's Garden</li>
+            <li>Pingjiang Road canal walk</li>
+            <li>Silk Museum</li>
+            <li>Tea house experience</li>
+            <li>Tiger Hill pagoda</li>
+          </ul>
+        </div>
+      </div>
+      <div class="city-card">
+        <div class="img-wrap">⛰️</div>
+        <div class="body">
+          <h3>Chongqing</h3>
+          <div class="dates">26–30 May · 4 nights</div>
+          <div class="tags"><span class="tag">Mountain</span><span class="tag amber">Spicy Food</span><span class="tag">River Views</span></div>
+          <ul>
+            <li>Yangtze River cable car</li>
+            <li>Hongya Cave night view</li>
+            <li>Ci Qi Kou old town</li>
+            <li>Chongqing hotpot dinner</li>
+            <li>River cruise at night</li>
+          </ul>
+        </div>
+      </div>
+      <div class="city-card">
+        <div class="img-wrap">🐼</div>
+        <div class="body">
+          <h3>Chengdu</h3>
+          <div class="dates">30 May – 5 Jun · 6 nights</div>
+          <div class="tags"><span class="tag green">Pandas</span><span class="tag">Tea Culture</span><span class="tag amber">Food</span></div>
+          <ul>
+            <li>Giant Panda Breeding Base</li>
+            <li>Jinli Ancient Street & tea houses</li>
+            <li>Sichuan hotpot & street food</li>
+            <li>Wuhou Shrine & Jinli</li>
+            <li>People's Park & local life</li>
+          </ul>
+        </div>
+      </div>
+      <div class="city-card">
+        <div class="img-wrap">🏞️</div>
+        <div class="body">
+          <h3>Wangxian Valley</h3>
+          <div class="dates">5–8 Jun · 3 nights</div>
+          <div class="tags"><span class="tag green">Nature</span><span class="tag">Hiking</span><span class="tag">Photography</span></div>
+          <ul>
+            <li>Valley scenic hiking trails</li>
+            <li>Viewpoint photography</li>
+            <li>Local village exploration</li>
+            <li>Stargazing at night</li>
+            <li>Fresh mountain cuisine</li>
+          </ul>
+        </div>
+      </div>
+      <div class="city-card">
+        <div class="img-wrap">🏙️</div>
+        <div class="body">
+          <h3>Shenzhen</h3>
+          <div class="dates">3–10 Jan · 7 nights</div>
+          <div class="tags"><span class="tag">Modern</span><span class="tag green">Mild Winter</span><span class="tag">Tech & Shopping</span></div>
+          <ul>
+            <li>Window of the World park</li>
+            <li>OCT Harbour &创意文化园</li>
+            <li>Dapeng Fortress day trip</li>
+            <li>Seafood dinner at Shekou</li>
+            <li>Lianhua Mountain Park</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRANSPORT & WEATHER ===== -->
+<section class="section travel-section">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Travel Info</p>
+      <h2>Transport, Weather & EFT</h2>
+      <p>Everything you need to know about moving between cities and what to expect from the climate.</p>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>✈️ Recommended Transport</h3>
+        <ul>
+          <li><strong>Long distance:</strong> Flights (Beijing→Dalian, Dalian→Shanghai, Shanghai→Chongqing, Chengdu→Shenzhen)</li>
+          <li><strong>Short hops:</strong> High-speed trains (Shanghai↔Suzhou 30min, Chongqing↔Chengdu ~3h)</li>
+          <li><strong>Within cities:</strong> Metro, Didi (ride-hailing), or taxis — all affordable and reliable</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>⏱️ Estimated Travel Time (EFT)</h3>
+        <ul>
+          <li>Beijing → Dalian: 2–3h by flight</li>
+          <li>Dalian → Shanghai: 2h by flight</li>
+          <li>Shanghai → Suzhou: 30–45 min by high-speed train</li>
+          <li>Suzhou → Chongqing: 2.5h by flight</li>
+          <li>Chongqing → Chengdu: ~3h by high-speed train</li>
+          <li>Chengdu → Wangxian Valley: ~4h by car/bus</li>
+          <li>Chengdu → Shenzhen: 2.5h by flight</li>
+          <li>Shenzhen → Thailand: 3–4h by flight</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>💡 Pro Tips</h3>
+        <ul>
+          <li>Book flights 2–4 weeks ahead for best prices</li>
+          <li>Download Alipay and WeChat Pay before arrival</li>
+          <li>Get a VPN set up before arriving in China</li>
+          <li>Carry a power bank — phone battery is essential for maps</li>
+          <li>Learn basic Chinese phrases (Didi = taxi app)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:2.5rem">
+      <h3 style="font-size:1.1rem;margin-bottom:1rem">🌡️ Weather at Your Visit Time</h3>
+      <div class="weather-grid">
+        <div class="weather-card">
+          <div class="city">Beijing</div>
+          <div class="temp">18–28°C</div>
+          <div class="note">Spring · May ☀️</div>
+        </div>
+        <div class="weather-card">
+          <div class="city">Dalian</div>
+          <div class="temp">15–22°C</div>
+          <div class="note">Spring · May 🌤️</div>
+        </div>
+        <div class="weather-card">
+          <div class="city">Shanghai</div>
+          <div class="temp">20–28°C</div>
+          <div class="note">Late Spring · May 🌤️</div>
+        </div>
+        <div class="weather-card">
+          <div class="city">Suzhou</div>
+          <div class="temp">20–27°C</div>
+          <div class="note">Spring · May 🌿</div>
+        </div>
+        <div class="weather-card">
+          <div class="city">Chongqing</div>
+          <div class="temp">22–30°C</div>
+          <div class="note">Late Spring · May ⛅</div>
+        </div>
+        <div class="weather-card">
+          <div class="city">Chengdu</div>
+          <div class="temp">22–28°C</div>
+          <div class="note">Early Summer · Jun 🌦️</div>
+        </div>
+        <div class="weather-card">
+          <div class="city">Wangxian Valley</div>
+          <div class="temp">22–30°C</div>
+          <div class="note">Early Summer · Jun 🌤️</div>
+        </div>
+        <div class="weather-card">
+          <div class="city">Shenzhen</div>
+          <div class="temp">15–22°C</div>
+          <div class="note">Winter · Jan 🌤️</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BUDGET ===== -->
+<section id="budget" class="section">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Budget</p>
+      <h2>Cost Breakdown</h2>
+      <p>Estimated mid-range budget per person. Actual costs vary by season and booking time.</p>
+    </div>
+    <div class="budget-grid">
+      <div class="budget-card">
+        <h3>✈️ Transport</h3>
+        <div class="amt">$350–$700 <span>total</span></div>
+        <p>Includes all flights between cities plus high-speed trains. Booking early saves a lot.</p>
+      </div>
+      <div class="budget-card">
+        <h3>🏨 Hotels (mid-range)</h3>
+        <div class="amt">$45–$90 <span>/ night</span></div>
+        <p>Beijing, Shanghai & Shenzhen are pricier ($60–90). Smaller cities like Suzhou, Chengdu & Dalian are more affordable ($40–60).</p>
+      </div>
+      <div class="budget-card">
+        <h3>🍜 Food & Activities</h3>
+        <div class="amt">$20–$40 <span>/ day</span></div>
+        <p>Street food and local restaurants are cheap ($5–15). Nice dinners and attraction tickets add to the budget.</p>
+      </div>
+      <div class="budget-card">
+        <h3>🚕 City Transport</h3>
+        <div class="amt">$5–$15 <span>/ day</span></div>
+        <p>Metro is very affordable. Didi rides start around $3–$8 depending on distance.</p>
+      </div>
+      <div class="budget-card">
+        <h3>🎟️ Attractions</h3>
+        <div class="amt">$10–$40 <span>/ site</span></div>
+        <p>Major sites like Forbidden City (~$8), Great Wall (~$10), Window of the World (~$20). Budget ~$100–$200 for all.</p>
+      </div>
+      <div class="budget-card">
+        <h3>📱 Extras</h3>
+        <div class="amt">$50–$150 <span>total</span></div>
+        <p>VPN, SIM card / eSIM, travel insurance, laundry, souvenirs.</p>
+      </div>
+      <div class="budget-card budget-total">
+        <h3 style="color:#f59e0b">💰 Estimated Total (per person)</h3>
+        <div class="amt" style="color:#fff">$2,200 – $4,000</div>
+        <p>For the entire China portion (~44 nights). The Thailand trip is additional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== THAILAND ===== -->
+<section class="section thai-section">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Mid-Trip Escape</p>
+      <h2>🇹🇭 Thailand · 24 Dec – 2 Jan</h2>
+      <p>A well-timed winter break before your final stop in Shenzhen.</p>
+    </div>
+    <div class="thai-content">
+      <div class="thai-card">
+        <h3>✈️ Getting There & Back</h3>
+        <p><strong>From Wangxian Valley / Chengdu</strong> → Fly to Bangkok (or Chiang Mai / Phuket). A direct flight from Chengdu takes about 3 hours.</p>
+        <p style="margin-top:.5rem"><strong>Back to China</strong> → Fly from Bangkok to Shenzhen (~3h). Easy connection for your final stop.</p>
+      </div>
+      <div class="thai-card">
+        <h3>🏖️ Recommended Thailand Route</h3>
+        <ul>
+          <li><strong>Bangkok</strong> (3 nights) — Temples, street food, markets</li>
+          <li><strong>Chiang Mai</strong> (3 nights) — Mountains, night bazaar, elephant sanctuaries</li>
+          <li><strong>Phuket / Krabi</strong> (4 nights) — Beaches, islands, snorkeling</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    China Explorer · Travel Guide 2026–2027<br />
+    <span style="font-size:.8rem;opacity:.6">Curated with care for a smooth and unforgettable journey</span>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (!id || id === '#') return;
+      const el = document.querySelector(id);
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
