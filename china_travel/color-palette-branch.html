@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Palette · Branch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',sans-serif;
+      background:#f6f4f7;color:#1e293b;line-height:1.6;
+      padding:2rem 1.5rem
+    }
+    .container{width:min(1160px,calc(100% - 2.5rem));margin:0 auto}
+
+    /* ===== HEADER ===== */
+    header{margin-bottom:2.5rem;text-align:center}
+    header .badge{
+      display:inline-block;font-size:.7rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.15em;
+      background:#e0d4e8;color:#6d4c8a;padding:.3rem .8rem;
+      border-radius:999px;margin-bottom:.8rem
+    }
+    header h1{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:#1e293b}
+    header h1 span{color:#9d8189}
+    header p{color:#64748b;max-width:520px;margin:.5rem auto 0;font-size:.95rem}
+
+    /* ===== PALETTE GRID ===== */
+    .palette-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem;margin-bottom:2rem}
+
+    /* ===== PALETTE CARD ===== */
+    .palette-card{
+      background:#fff;border:2px solid #e2e8f0;border-radius:16px;
+      overflow:hidden;cursor:pointer;
+      transition:transform .25s,box-shadow .25s,border-color .25s;
+      box-shadow:0 4px 20px rgba(0,0,0,.04)
+    }
+    .palette-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,.08)}
+    .palette-card.active{border-color:#9d8189;box-shadow:0 0 0 4px rgba(157,129,137,.2),0 12px 36px rgba(0,0,0,.08)}
+    .palette-card .swatch-strip{display:flex;height:72px}
+    .palette-card .swatch-strip .s{flex:1;transition:flex .3s}
+    .palette-card.active .swatch-strip .s{flex:1.2}
+    .palette-card .body{padding:1rem 1.2rem 1.1rem}
+    .palette-card .body h3{font-size:1rem;font-weight:700;margin-bottom:.15rem}
+    .palette-card .body .desc{font-size:.82rem;color:#64748b;margin-bottom:.5rem}
+    .palette-card .body .hexes{display:flex;gap:.35rem;flex-wrap:wrap}
+    .palette-card .body .hex{
+      font-family:monospace;font-size:.7rem;font-weight:600;
+      padding:.15rem .5rem;border-radius:6px;
+      background:#f1f5f9;color:#475569;
+      border:1px solid #e2e8f0
+    }
+    .palette-card .selected-badge{
+      display:none;font-size:.7rem;font-weight:700;color:#fff;
+      background:#9d8189;padding:.15rem .6rem;border-radius:999px;
+      margin-left:auto;width:fit-content
+    }
+    .palette-card.active .selected-badge{display:inline-block}
+
+    /* ===== PREVIEW SECTION ===== */
+    .preview-section{
+      background:#fff;border:1px solid #e2e8f0;border-radius:20px;
+      overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.06);
+      margin-bottom:2rem
+    }
+    .preview-header{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:1rem 1.5rem;border-bottom:1px solid #e2e8f0;
+      background:#faf9fb
+    }
+    .preview-header h2{font-size:1rem;font-weight:700}
+    .preview-header .status{
+      font-size:.78rem;color:#64748b;
+      display:flex;align-items:center;gap:.4rem
+    }
+    .preview-header .status .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:#94a3b8;display:inline-block
+    }
+    .preview-header .status .dot.active{background:#22c55e}
+
+    /* ===== LIVE PREVIEW (uses CSS vars) ===== */
+    .preview-iframe{
+      width:100%;min-height:520px;transition:background .5s;
+      /* Default palette = Peachy Delight */
+      --color-bg: #f6f4f7;
+      --color-hero-from: #e8d5c4;
+      --color-hero-to: #d4c4b4;
+      --color-hero-text: #3d2c2c;
+      --color-accent: #F4ACB7;
+      --color-accent-hover: #e89ca7;
+      --color-card-bg: #ffffff;
+      --color-card-border: #e2e8f0;
+      --color-text: #1e293b;
+      --color-text-muted: #64748b;
+      --color-section-alt: #f3efe8;
+      --color-amber-bg: #FFE5D9;
+      --color-amber-border: #FFCAD4;
+      --color-amber-text: #7a4a4a;
+      --color-footer-bg: #D8E2DC;
+      --color-footer-text: #3d4a3d;
+      --color-tag-bg: #f3efe8;
+      --color-tag-text: #8a7a6a;
+      --color-nav-border: rgba(0,0,0,.06);
+      --color-hero-overlay: rgba(0,0,0,.04);
+      --font-body: 'Inter', sans-serif;
+      padding:0;border:none;background:var(--color-bg);
+      font-family:var(--font-body);color:var(--color-text)
+    }
+
+    /* ===== PALETTE APPLY (theme classes) ===== */
+
+    /* Palette 1: Pastel Dreamland */
+    .pal-pastel-dreamland{
+      --color-bg: #f6f0f8;
+      --color-hero-from: #CDB4DB;
+      --color-hero-to: #a28fc0;
+      --color-hero-text: #2d1b3d;
+      --color-accent: #FFAFCC;
+      --color-accent-hover: #f09bb8;
+      --color-card-bg: #ffffff;
+      --color-card-border: #e2d8f0;
+      --color-text: #2d1b3d;
+      --color-text-muted: #7a6a8a;
+      --color-section-alt: #ede4f5;
+      --color-amber-bg: #FFC8DD;
+      --color-amber-border: #FFAFCC;
+      --color-amber-text: #6a3a5a;
+      --color-footer-bg: #BDE0FE;
+      --color-footer-text: #1a3a5a;
+      --color-tag-bg: #e8ddf5;
+      --color-tag-text: #6d4c8a;
+      --color-nav-border: rgba(0,0,0,.06);
+      --color-hero-overlay: rgba(255,255,255,.1);
+    }
+
+    /* Palette 2: Peachy Delight (default) */
+    .pal-peachy-delight{
+      --color-bg: #f6f4f0;
+      --color-hero-from: #e8d5c4;
+      --color-hero-to: #d4c4b4;
+      --color-hero-text: #3d2c2c;
+      --color-accent: #F4ACB7;
+      --color-accent-hover: #e89ca7;
+      --color-card-bg: #ffffff;
+      --color-card-border: #e2d8d0;
+      --color-text: #2d1b3d;
+      --color-text-muted: #7a6a5a;
+      --color-section-alt: #f3efe8;
+      --color-amber-bg: #FFE5D9;
+      --color-amber-border: #FFCAD4;
+      --color-amber-text: #7a4a4a;
+      --color-footer-bg: #D8E2DC;
+      --color-footer-text: #3d4a3d;
+      --color-tag-bg: #f3efe8;
+      --color-tag-text: #8a7a6a;
+      --color-nav-border: rgba(0,0,0,.06);
+      --color-hero-overlay: rgba(0,0,0,.04);
+    }
+
+    /* Palette 3: Sage & Rose */
+    .pal-sage-rose{
+      --color-bg: #f4f5f2;
+      --color-hero-from: #D4E2D4;
+      --color-hero-to: #b8c9b8;
+      --color-hero-text: #2a3a2a;
+      --color-accent: #F5D5D5;
+      --color-accent-hover: #e8c4c4;
+      --color-card-bg: #ffffff;
+      --color-card-border: #d8e0d8;
+      --color-text: #2a3a2a;
+      --color-text-muted: #6a7a6a;
+      --color-section-alt: #eef3ee;
+      --color-amber-bg: #E8D5C4;
+      --color-amber-border: #d4c4b4;
+      --color-amber-text: #5a4a3a;
+      --color-footer-bg: #B8A9A9;
+      --color-footer-text: #fff;
+      --color-tag-bg: #e8eae8;
+      --color-tag-text: #5a6a5a;
+      --color-nav-border: rgba(0,0,0,.06);
+      --color-hero-overlay: rgba(255,255,255,.08);
+    }
+
+    /* Palette 4: Lavender Cloud */
+    .pal-lavender-cloud{
+      --color-bg: #f6f4fc;
+      --color-hero-from: #D5C6E0;
+      --color-hero-to: #b8a8c8;
+      --color-hero-text: #2a1a3d;
+      --color-accent: #9381FF;
+      --color-accent-hover: #7a68e8;
+      --color-card-bg: #ffffff;
+      --color-card-border: #ddd0e8;
+      --color-text: #2a1a3d;
+      --color-text-muted: #7a6a8a;
+      --color-section-alt: #f0eaf5;
+      --color-amber-bg: #FFEEDD;
+      --color-amber-border: #FFD8BE;
+      --color-amber-text: #7a5a3a;
+      --color-footer-bg: #D5C6E0;
+      --color-footer-text: #2a1a3d;
+      --color-tag-bg: #e8e0f0;
+      --color-tag-text: #6d4c8a;
+      --color-nav-border: rgba(0,0,0,.06);
+      --color-hero-overlay: rgba(147,129,255,.06);
+    }
+
+    /* Palette 5: Coastal Blush */
+    .pal-coastal-blush{
+      --color-bg: #f0f4f6;
+      --color-hero-from: #A8D5E2;
+      --color-hero-to: #8ab8c8;
+      --color-hero-text: #1a2a3d;
+      --color-accent: #F9A8A8;
+      --color-accent-hover: #e89898;
+      --color-card-bg: #ffffff;
+      --color-card-border: #d0dde5;
+      --color-text: #1a2a3d;
+      --color-text-muted: #5a7a8a;
+      --color-section-alt: #eaf2f5;
+      --color-amber-bg: #FFE5EC;
+      --color-amber-border: #F9A8A8;
+      --color-amber-text: #7a3a3a;
+      --color-footer-bg: #A8D5E2;
+      --color-footer-text: #1a2a3d;
+      --color-tag-bg: #e0ecf0;
+      --color-tag-text: #3a6a7a;
+      --color-nav-border: rgba(0,0,0,.06);
+      --color-hero-overlay: rgba(168,213,226,.1);
+    }
+
+    /* Palette 6: Muted Earthy Tones */
+    .pal-muted-earthy{
+      --color-bg: #f5f0ed;
+      --color-hero-from: #FFCDB2;
+      --color-hero-to: #e8b8a0;
+      --color-hero-text: #3d2a1a;
+      --color-accent: #E5989B;
+      --color-accent-hover: #d4888b;
+      --color-card-bg: #ffffff;
+      --color-card-border: #e0d0c8;
+      --color-text: #3d2a1a;
+      --color-text-muted: #8a7a6a;
+      --color-section-alt: #f0e8e2;
+      --color-amber-bg: #FFCDB2;
+      --color-amber-border: #FFB4A2;
+      --color-amber-text: #7a3a2a;
+      --color-footer-bg: #6D6875;
+      --color-footer-text: #fff;
+      --color-tag-bg: #e8ddd5;
+      --color-tag-text: #7a5a4a;
+      --color-nav-border: rgba(0,0,0,.06);
+      --color-hero-overlay: rgba(0,0,0,.04);
+    }
+
+    /* Palette 7: Rose Gold Dream */
+    .pal-rose-gold{
+      --color-bg: #faf4f4;
+      --color-hero-from: #E8B4B8;
+      --color-hero-to: #d4a0a5;
+      --color-hero-text: #3d2a2a;
+      --color-accent: #D4A5A5;
+      --color-accent-hover: #c49898;
+      --color-card-bg: #ffffff;
+      --color-card-border: #e8d0d0;
+      --color-text: #3d2a2a;
+      --color-text-muted: #8a6a6a;
+      --color-section-alt: #f5eaec;
+      --color-amber-bg: #FFF0F0;
+      --color-amber-border: #E8B4B8;
+      --color-amber-text: #7a4a4a;
+      --color-footer-bg: #C9B6B6;
+      --color-footer-text: #fff;
+      --color-tag-bg: #f0e0e0;
+      --color-tag-text: #7a5a5a;
+      --color-nav-border: rgba(0,0,0,.06);
+      --color-hero-overlay: rgba(232,180,184,.08);
+    }
+
+    /* ===== PREVIEW INNER STYLES ===== */
+    .preview-inner{
+      padding:1.5rem;background:var(--color-bg);
+      font-family:var(--font-body);color:var(--color-text);
+      transition:background .5s,color .5s;
+      min-height:480px
+    }
+
+    /* Mini hero */
+    .pv-hero{
+      background:linear-gradient(135deg,var(--color-hero-from),var(--color-hero-to));
+      color:var(--color-hero-text);border-radius:14px;
+      padding:1.8rem 2rem;margin-bottom:1.2rem;
+      position:relative;overflow:hidden
+    }
+    .pv-hero::after{
+      content:'';position:absolute;top:-30%;right:-10%;
+      width:300px;height:300px;
+      background:radial-gradient(circle,var(--color-hero-overlay) 0%,transparent 70%);
+      pointer-events:none
+    }
+    .pv-hero .eyebrow{
+      font-size:.65rem;font-weight:700;letter-spacing:.22em;
+      text-transform:uppercase;opacity:.6;margin-bottom:.25rem
+    }
+    .pv-hero h2{font-size:1.3rem;font-weight:800;line-height:1.2;position:relative;z-index:1}
+    .pv-hero h2 span{color:var(--color-accent)}
+    .pv-hero p{font-size:.82rem;opacity:.75;margin-top:.3rem;position:relative;z-index:1}
+
+    /* Mini cards */
+    .pv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem}
+    .pv-card{
+      background:var(--color-card-bg);border:1px solid var(--color-card-border);
+      border-radius:10px;padding:.9rem 1rem;
+      box-shadow:0 2px 10px rgba(0,0,0,.03);transition:background .5s,border-color .5s
+    }
+    .pv-card .pv-icon{font-size:1.2rem;margin-bottom:.2rem}
+    .pv-card .pv-name{font-weight:700;font-size:.85rem}
+    .pv-card .pv-date{font-size:.72rem;color:var(--color-text-muted);margin-top:.05rem}
+    .pv-card .pv-tags{display:flex;gap:.25rem;margin-top:.35rem;flex-wrap:wrap}
+    .pv-card .pv-tag{
+      font-size:.6rem;font-weight:600;padding:.12rem .45rem;
+      border-radius:999px;background:var(--color-tag-bg);color:var(--color-tag-text)
+    }
+    .pv-card .pv-tag.accent{background:var(--color-accent);color:var(--color-hero-text)}
+
+    /* Mini info bar */
+    .pv-info{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem
+    }
+    .pv-info-item{
+      background:var(--color-section-alt);border-radius:10px;
+      padding:.7rem 1rem;font-size:.78rem;transition:background .5s
+    }
+    .pv-info-item strong{font-weight:700;color:var(--color-accent)}
+
+    /* Mini budget */
+    .pv-budget{
+      background:var(--color-card-bg);border:1px solid var(--color-card-border);
+      border-radius:12px;padding:1rem 1.2rem;transition:background .5s,border-color .5s
+    }
+    .pv-budget-row{display:flex;justify-content:space-between;font-size:.82rem;padding:.2rem 0}
+    .pv-budget-row .amt{font-weight:700;color:var(--color-accent)}
+
+    /* Mini footer */
+    .pv-footer{
+      margin-top:1rem;text-align:center;font-size:.72rem;
+      color:var(--color-text-muted);padding:.5rem 0
+    }
+
+    /* ===== ACTIONS ===== */
+    .actions{
+      display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+      margin-top:1.5rem
+    }
+    .actions .btn{
+      padding:.7rem 1.6rem;border-radius:999px;font-weight:600;
+      font-size:.9rem;border:none;cursor:pointer;
+      transition:all .2s;display:inline-flex;align-items:center;gap:.5rem
+    }
+    .actions .btn-primary{
+      background:#9d8189;color:#fff
+    }
+    .actions .btn-primary:hover{background:#8a6e76}
+    .actions .btn-secondary{
+      background:#e2e8f0;color:#475569
+    }
+    .actions .btn-secondary:hover{background:#cbd5e1}
+
+    /* ===== TOAST ===== */
+    .toast{
+      position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);
+      background:#1e293b;color:#fff;padding:.75rem 1.5rem;border-radius:12px;
+      font-size:.85rem;font-weight:500;opacity:0;
+      transition:all .4s cubic-bezier(.22,1,.36,1);z-index:100;
+      box-shadow:0 8px 30px rgba(0,0,0,.2)
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    /* ===== MERGE STATUS ===== */
+    .merge-bar{
+      background:#f0ecf3;border:1px dashed #c4b5d0;
+      border-radius:12px;padding:1rem 1.2rem;margin-bottom:2rem;
+      display:flex;align-items:center;gap:.75rem;flex-wrap:wrap
+    }
+    .merge-bar .code{
+      font-family:monospace;font-size:.78rem;background:#fff;
+      padding:.25rem .6rem;border-radius:6px;border:1px solid #d0c5d8
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:700px){
+      .pv-grid,.pv-info{grid-template-columns:1fr}
+      .palette-grid{grid-template-columns:1fr}
+      body{padding:1rem}
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="badge">🌿 Branch · color-palette</div>
+    <h1>Choose Your <span>Color Palette</span></h1>
+    <p>Click any palette to preview how the China Explorer travel guide would look. Your selection will sync with the master (index.html) via localStorage.</p>
+  </header>
+
+  <!-- ===== MERGE INSTRUCTIONS ===== -->
+  <div class="merge-bar">
+    <span>🔗</span>
+    <span style="font-size:.85rem;font-weight:500">Merge-ready:</span>
+    <span class="code">localStorage.getItem('china-explorer-palette')</span>
+    <span style="font-size:.8rem;color:#6d4c8a">→ master (index.html) reads this key</span>
+  </div>
+
+  <!-- ===== PALETTE GRID ===== -->
+  <div class="palette-grid" id="paletteGrid"></div>
+
+  <!-- ===== LIVE PREVIEW ===== -->
+  <div class="preview-section">
+    <div class="preview-header">
+      <h2>👁️ Live Preview</h2>
+      <span class="status">
+        <span class="dot active" id="previewDot"></span>
+        <span id="previewLabel">Peachy Delight applied</span>
+      </span>
+    </div>
+    <div class="preview-inner" id="preview">
+      <!-- Mini hero -->
+      <div class="pv-hero">
+        <div class="eyebrow">2026–2027 · Travel Guide</div>
+        <h2>Your <span>China Journey</span><br />8 Cities · 8 Months</h2>
+        <p>Beijing → Dalian → Shanghai → Suzhou → Chongqing → Chengdu → Wangxian Valley → Shenzhen</p>
+      </div>
+
+      <!-- Mini city cards -->
+      <div class="pv-grid">
+        <div class="pv-card">
+          <div class="pv-icon">🏛️</div>
+          <div class="pv-name">Beijing</div>
+          <div class="pv-date">12–16 May · 4 nights</div>
+          <div class="pv-tags"><span class="pv-tag accent">History</span><span class="pv-tag">Spring</span></div>
+        </div>
+        <div class="pv-card">
+          <div class="pv-icon">🌃</div>
+          <div class="pv-name">Shanghai</div>
+          <div class="pv-date">19–24 May · 5 nights</div>
+          <div class="pv-tags"><span class="pv-tag accent">Modern</span><span class="pv-tag">Nightlife</span></div>
+        </div>
+        <div class="pv-card">
+          <div class="pv-icon">🐼</div>
+          <div class="pv-name">Chengdu</div>
+          <div class="pv-date">30 May – 5 Jun · 6 nights</div>
+          <div class="pv-tags"><span class="pv-tag accent">Pandas</span><span class="pv-tag">Food</span></div>
+        </div>
+      </div>
+
+      <!-- Mini info -->
+      <div class="pv-info">
+        <div class="pv-info-item"><strong>✈️</strong> Flights + High-Speed Trains</div>
+        <div class="pv-info-item"><strong>🌡️</strong> Spring to Winter · 15–32°C</div>
+        <div class="pv-info-item"><strong>💰</strong> Est. $2,200–$4,000</div>
+      </div>
+
+      <!-- Mini budget -->
+      <div class="pv-budget">
+        <div style="font-size:.78rem;font-weight:700;margin-bottom:.3rem">Budget Snapshot</div>
+        <div class="pv-budget-row"><span>✈️ Transport</span><span class="amt">$350–$700</span></div>
+        <div class="pv-budget-row"><span>🏨 Hotels / night</span><span class="amt">$45–$90</span></div>
+        <div class="pv-budget-row"><span>🍜 Food + Activities / day</span><span class="amt">$20–$40</span></div>
+      </div>
+
+      <!-- Mini footer -->
+      <div class="pv-footer">China Explorer · Curated with care</div>
+    </div>
+  </div>
+
+  <!-- ===== ACTIONS ===== -->
+  <div class="actions">
+    <button class="btn btn-primary" id="applyBtn">✅ Apply & Save to Master</button>
+    <button class="btn btn-secondary" id="resetBtn">↺ Reset to Default (Peachy Delight)</button>
+  </div>
+
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ===== PALETTE DATA =====
+  const PALETTES = [
+    {
+      id: 'pastel-dreamland',
+      name: '🌸 Pastel Dreamland',
+      desc: 'Lilac, blush pink, sky blue — dreamy & playful',
+      hexes: ['#CDB4DB','#FFC8DD','#FFAFCC','#BDE0FE','#A2D2FF'],
+      themeClass: 'pal-pastel-dreamland'
+    },
+    {
+      id: 'peachy-delight',
+      name: '🍑 Peachy Delight',
+      desc: 'Sage mist, peach, cherry blossom, dusty mauve — warm & gentle',
+      hexes: ['#D8E2DC','#FFE5D9','#FFCAD4','#F4ACB7','#9D8189'],
+      themeClass: 'pal-peachy-delight',
+      default: true
+    },
+    {
+      id: 'sage-rose',
+      name: '🌿 Sage & Rose',
+      desc: 'Sand beige, sage green, rose blush — earthy & soft',
+      hexes: ['#E8D5C4','#D4E2D4','#F5D5D5','#FFF5EE','#B8A9A9'],
+      themeClass: 'pal-sage-rose'
+    },
+    {
+      id: 'lavender-cloud',
+      name: '☁️ Lavender Cloud',
+      desc: 'Lavender, cream, peach, periwinkle — elegant & airy',
+      hexes: ['#F8F7FF','#D5C6E0','#FFEEDD','#FFD8BE','#9381FF'],
+      themeClass: 'pal-lavender-cloud'
+    },
+    {
+      id: 'coastal-blush',
+      name: '🌊 Coastal Blush',
+      desc: 'Ice white, soft teal, coral pink — light & breezy',
+      hexes: ['#F0F4F8','#FFE5EC','#A8D5E2','#F9A8A8','#E8D5C4'],
+      themeClass: 'pal-coastal-blush'
+    },
+    {
+      id: 'muted-earthy',
+      name: '🌅 Muted Earthy Tones',
+      desc: 'Warm blush, rose, dusty mauve — subdued & grounded',
+      hexes: ['#FFCDB2','#FFB4A2','#E5989B','#B5838D','#6D6875'],
+      themeClass: 'pal-muted-earthy'
+    },
+    {
+      id: 'rose-gold',
+      name: '✨ Rose Gold Dream',
+      desc: 'Soft pinks, warm neutrals — elegant & sophisticated',
+      hexes: ['#FFF0F0','#F5D5D5','#E8B4B8','#D4A5A5','#C9B6B6'],
+      themeClass: 'pal-rose-gold'
+    }
+  ];
+
+  // ===== STATE =====
+  let activePaletteId = localStorage.getItem('china-explorer-palette') || 'peachy-delight';
+
+  // ===== RENDER PALETTE CARDS =====
+  const grid = document.getElementById('paletteGrid');
+
+  PALETTES.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'palette-card' + (p.id === activePaletteId ? ' active' : '');
+    card.dataset.id = p.id;
+
+    // Swatch strip
+    const strip = document.createElement('div');
+    strip.className = 'swatch-strip';
+    p.hexes.forEach(h => {
+      const s = document.createElement('div');
+      s.className = 's';
+      s.style.background = h;
+      strip.appendChild(s);
+    });
+    card.appendChild(strip);
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'body';
+    body.innerHTML = `
+      <h3>${p.name} ${p.id === activePaletteId ? '<span class="selected-badge">✓ Selected</span>' : ''}</h3>
+      <div class="desc">${p.desc}</div>
+      <div class="hexes">${p.hexes.map(h => `<span class="hex">${h}</span>`).join('')}</div>
+    `;
+    card.appendChild(body);
+
+    card.addEventListener('click', () => selectPalette(p.id));
+    grid.appendChild(card);
+  });
+
+  // ===== SELECT PALETTE =====
+  function selectPalette(id) {
+    activePaletteId = id;
+
+    // Update cards
+    document.querySelectorAll('.palette-card').forEach(c => {
+      c.classList.toggle('active', c.dataset.id === id);
+      const badge = c.querySelector('.selected-badge');
+      if (badge) badge.style.display = c.dataset.id === id ? 'inline-block' : 'none';
+      // Add badge if missing
+      if (c.dataset.id === id && !badge) {
+        const h3 = c.querySelector('h3');
+        const b = document.createElement('span');
+        b.className = 'selected-badge';
+        b.textContent = '✓ Selected';
+        h3.appendChild(b);
+      }
+    });
+
+    // Update preview
+    applyPaletteToPreview(id);
+
+    // Update label
+    const p = PALETTES.find(p => p.id === id);
+    document.getElementById('previewLabel').textContent = p.name + ' applied';
+
+    // Save
+    localStorage.setItem('china-explorer-palette', id);
+  }
+
+  // ===== APPLY PALETTE TO PREVIEW =====
+  function applyPaletteToPreview(id) {
+    const p = PALETTES.find(p => p.id === id);
+    if (!p) return;
+    const preview = document.getElementById('preview');
+    // Remove all palette classes
+    PALETTES.forEach(pp => preview.classList.remove(pp.themeClass));
+    preview.classList.add(p.themeClass);
+  }
+
+  // ===== INIT =====
+  // Apply saved palette on load
+  applyPaletteToPreview(activePaletteId);
+  const activeP = PALETTES.find(p => p.id === activePaletteId);
+  if (activeP) document.getElementById('previewLabel').textContent = activeP.name + ' applied';
+
+  // ===== APPLY BUTTON =====
+  document.getElementById('applyBtn').addEventListener('click', () => {
+    localStorage.setItem('china-explorer-palette', activePaletteId);
+    showToast(`✅ "${activeP.name}" saved! Master (index.html) will use this palette.`);
+  });
+
+  // ===== RESET BUTTON =====
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    localStorage.removeItem('china-explorer-palette');
+    selectPalette('peachy-delight');
+    showToast('↺ Reset to default: Peachy Delight');
+  });
+
+  // ===== TOAST =====
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  // ===== KEYBOARD NAV =====
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.activeElement?.closest('.palette-card')) {
+      selectPalette(document.activeElement.closest('.palette-card').dataset.id);
+    }
+  });
+</script>
+
+</body>
+</html>
