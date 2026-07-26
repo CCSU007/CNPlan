@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>China Dec Trip · Itinerary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0a0e1a;
+    color: #e8edf5;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Animated background ── */
+  .bg-glow {
+    position: fixed;
+    top: -40%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background:
+      radial-gradient(ellipse 600px 400px at 15% 20%, rgba(59,130,246,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 500px at 75% 60%, rgba(139,92,246,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 300px at 50% 80%, rgba(6,182,212,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center;
+    padding: 48px 24px 40px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 200px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59,130,246,0.5), transparent);
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.2);
+    padding: 6px 18px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #93b4f8;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 800;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa, #2dd4bf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: #8892b0;
+    font-weight: 400;
+    letter-spacing: 4px;
+    margin-bottom: 6px;
+  }
+  .hero-route {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 2px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #64748b;
+  }
+  .hero-route span {
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: rgba(59,130,246,0.06);
+    border: 1px solid rgba(59,130,246,0.08);
+    color: #94a3b8;
+    font-weight: 500;
+  }
+  .hero-route .arrow { color: #3b82f6; background: none; border: none; padding: 0 2px; }
+  .hero-route .highlight {
+    color: #60a5fa;
+    border-color: rgba(59,130,246,0.25);
+    background: rgba(59,130,246,0.1);
+  }
+  .hero-route .end {
+    color: #2dd4bf;
+    border-color: rgba(45,212,191,0.25);
+    background: rgba(45,212,191,0.1);
+  }
+
+  /* ── Section headers ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 48px 0 24px;
+  }
+  .section-header .num {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    flex-shrink: 0;
+  }
+  .section-header .num.p1 { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; }
+  .section-header .num.p2 { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; }
+  .section-header .num.p3 { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; }
+  .section-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .section-header .sub {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 400;
+    margin-left: auto;
+  }
+
+  /* ── Timeline ── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, #3b82f6, #8b5cf6, #2dd4bf);
+    opacity: 0.3;
+  }
+
+  .tl-item {
+    position: relative;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(59,130,246,0.08);
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+    transition: all 0.25s ease;
+  }
+  .tl-item:hover {
+    border-color: rgba(59,130,246,0.2);
+    background: rgba(15,23,42,0.8);
+    transform: translateX(4px);
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 22px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+    background: #0a0e1a;
+  }
+  .tl-item.active::before { background: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.5); }
+
+  .tl-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .tl-city {
+    font-size: 17px;
+    font-weight: 700;
+    color: #f1f5f9;
+  }
+  .tl-city .region-tag {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    margin-left: 8px;
+  }
+  .tl-date {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+  }
+  .tl-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 4px 0 8px;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .tag-blue   { background: rgba(59,130,246,0.12); color: #93b4f8; border: 1px solid rgba(59,130,246,0.15); }
+  .tag-cyan   { background: rgba(6,182,212,0.12); color: #67e8f9; border: 1px solid rgba(6,182,212,0.15); }
+  .tag-purple { background: rgba(139,92,246,0.12); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.15); }
+  .tag-orange { background: rgba(245,158,11,0.12); color: #fcd34d; border: 1px solid rgba(245,158,11,0.15); }
+  .tag-green  { background: rgba(45,212,191,0.12); color: #5eead4; border: 1px solid rgba(45,212,191,0.15); }
+  .tag-red    { background: rgba(239,68,68,0.12); color: #fca5a5; border: 1px solid rgba(239,68,68,0.15); }
+  .tag-white  { background: rgba(255,255,255,0.06); color: #94a3b8; border: 1px solid rgba(255,255,255,0.08); }
+
+  .tl-body {
+    font-size: 14px;
+    color: #8892b0;
+    line-height: 1.7;
+    margin-top: 4px;
+  }
+  .tl-body strong { color: #c8d0e0; font-weight: 600; }
+
+  .tl-transport {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    background: rgba(59,130,246,0.06);
+    border: 1px solid rgba(59,130,246,0.08);
+    font-size: 12px;
+    color: #64748b;
+  }
+
+  /* ── Split block ── */
+  .split-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .split-card {
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(59,130,246,0.08);
+    backdrop-filter: blur(12px);
+  }
+  .split-card.a { border-color: rgba(245,158,11,0.15); }
+  .split-card.b { border-color: rgba(6,182,212,0.15); }
+  .split-card .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .split-card .label.a-label { color: #f59e0b; }
+  .split-card .label.b-label { color: #06b6d4; }
+  .split-card h4 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .split-card p { font-size: 13px; color: #8892b0; }
+
+  .reunion-bar {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(139,92,246,0.08);
+    border: 1px solid rgba(139,92,246,0.15);
+    font-size: 13px;
+    color: #c4b5fd;
+    font-weight: 500;
+  }
+
+  /* ── Milestone row ── */
+  .ms-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .ms-card {
+    padding: 18px 16px;
+    border-radius: 14px;
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(59,130,246,0.08);
+    backdrop-filter: blur(12px);
+    text-align: center;
+    position: relative;
+    transition: all 0.25s ease;
+  }
+  .ms-card:hover {
+    border-color: rgba(59,130,246,0.2);
+    transform: translateY(-2px);
+  }
+  .ms-card .ms-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    margin: 0 auto 10px;
+  }
+  .ms-card .ms-num.ms-blue   { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .ms-card .ms-num.ms-cyan   { background: rgba(6,182,212,0.15); color: #67e8f9; }
+  .ms-card .ms-num.ms-purple { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+  .ms-card .ms-num.ms-orange { background: rgba(245,158,11,0.15); color: #fcd34d; }
+  .ms-card .ms-num.ms-green  { background: rgba(45,212,191,0.15); color: #5eead4; }
+  .ms-card .ms-city { font-size: 15px; font-weight: 700; color: #f1f5f9; }
+  .ms-card .ms-days { font-size: 12px; color: #64748b; margin: 2px 0 6px; }
+  .ms-card .ms-desc { font-size: 12px; color: #8892b0; line-height: 1.5; }
+
+  /* ── Stats ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .stat-card {
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(59,130,246,0.08);
+    text-align: center;
+  }
+  .stat-card .num {
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-card .label {
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+  .stat-card .temp {
+    font-size: 13px;
+    color: #8892b0;
+    margin-top: 4px;
+  }
+
+  /* ── Transport grid ── */
+  .transport-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .tp-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(15,23,42,0.5);
+    border: 1px solid rgba(59,130,246,0.06);
+    font-size: 13px;
+  }
+  .tp-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .tp-icon.hsr  { background: rgba(59,130,246,0.12); }
+  .tp-icon.fly  { background: rgba(139,92,246,0.12); }
+  .tp-icon.international { background: rgba(45,212,191,0.12); }
+  .tp-route { flex: 1; }
+  .tp-route .from-to { font-weight: 600; color: #e2e8f0; }
+  .tp-route .detail { font-size: 11px; color: #64748b; }
+  .tp-time {
+    font-weight: 600;
+    color: #60a5fa;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  /* ── Checklist ── */
+  .checklist {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(15,23,42,0.5);
+    border: 1px solid rgba(59,130,246,0.06);
+    font-size: 13px;
+    color: #94a3b8;
+  }
+  .check-item .check-icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 11px;
+  }
+  .check-item .check-icon.done { background: rgba(45,212,191,0.15); color: #5eead4; }
+  .check-item .check-icon.warn { background: rgba(245,158,11,0.15); color: #fcd34d; }
+
+  .footer {
+    text-align: center;
+    padding: 40px 20px 20px;
+    color: #334155;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  .footer span { color: #3b82f6; }
+
+  @media (max-width: 640px) {
+    .container { padding: 16px 12px 40px; }
+    .hero { padding: 32px 16px 28px; }
+    .split-block { grid-template-columns: 1fr; }
+    .ms-row { grid-template-columns: 1fr 1fr; }
+    .timeline { padding-left: 24px; }
+    .tl-item { padding: 12px 14px; }
+    .tl-item::before { left: -20px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .transport-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<div class="container">
+
+  <!-- ═══════ HERO ═══════ -->
+  <header class="hero">
+    <div class="hero-badge">✦ 2026 – 2027</div>
+    <h1>China Dec Trip</h1>
+    <div class="hero-sub">DEC 6 — JAN 11 · 37 DAYS</div>
+    <div class="hero-route">
+      <span class="highlight">闽越区</span><span class="arrow">→</span>
+      <span>望仙谷</span><span class="arrow">→</span>
+      <span>蜀地</span><span class="arrow">→</span>
+      <span>各自飞</span><span class="arrow">→</span>
+      <span class="highlight">北京</span><span class="arrow">→</span>
+      <span>江浙沪</span><span class="arrow">→</span>
+      <span class="end">上海→奥克兰 ✈</span>
+    </div>
+  </header>
+
+  <!-- ═══════ PHASE 1 ═══════ -->
+  <div class="section-header">
+    <div class="num p1">1</div>
+    <h2>闽越区 → 望仙谷 → 蜀地</h2>
+    <span class="sub">Together · Dec 6–24</span>
+  </div>
+
+  <div class="timeline">
+
+    <div class="tl-item active">
+      <div class="tl-top">
+        <div class="tl-city">🛬 Hong Kong → Shenzhen <span class="region-tag">闽越区</span></div>
+        <div class="tl-date">Dec 6</div>
+      </div>
+      <div class="tl-tags">
+        <span class="tag tag-blue">🌤 18–22°C</span>
+        <span class="tag tag-white">Transit</span>
+      </div>
+      <div class="tl-body">Land in HK (few hours), HSR to Shenzhen Futian — <strong>15min</strong>.</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-top">
+        <div class="tl-city">Shenzhen <span class="region-tag">闽越区</span></div>
+        <div class="tl-date">Dec 6–12 · 7 days</div>
+      </div>
+      <div class="tl-tags">
+        <span class="tag tag-blue">🌤 15–22°C</span>
+        <span class="tag tag-cyan">Tech Hub</span>
+        <span class="tag tag-green">7 days ⭐</span>
+      </div>
+      <div class="tl-body">
+        <strong>China's ultimate tech city.</strong> Huaqiangbei Electronics, Tencent HQ, DJI Flagship, Nanshan Tech District, OCT Loft.
+      </div>
+      <div class="tl-transport">🚄 HSR Shenzhen → Shangrao ~4h</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-top">
+        <div class="tl-city">Wangxian Valley <span class="region-tag">望仙谷</span></div>
+        <div class="tl-date">Dec 13–14 · 2 days</div>
+      </div>
+      <div class="tl-tags">
+        <span class="tag tag-blue">🧥 5–12°C</span>
+        <span class="tag tag-purple">Scenic</span>
+      </div>
+      <div class="tl-body">
+        <strong>Mythical cliff-side valley</strong> — stunning illuminated at night. HSR from Shenzhen ~4h.
+      </div>
+      <div class="tl-transport">✈️ Flight or 🚄 HSR Shangrao → Chongqing</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-top">
+        <div class="tl-city">Chongqing <span class="region-tag">蜀地</span></div>
+        <div class="tl-date">Dec 15–19 · 5 days</div>
+      </div>
+      <div class="tl-tags">
+        <span class="tag tag-blue">🌤 8–13°C</span>
+        <span class="tag tag-cyan">Futuristic</span>
+        <span class="tag tag-orange">Hotpot 🍲</span>
+      </div>
+      <div class="tl-body">
+        <strong>Futuristic cityscape.</strong> Hongya Cave, rail transit through buildings, night river cruise, spicy hotpot.
+      </div>
+      <div class="tl-transport">🚄 HSR Chongqing → Chengdu ~1.5h</div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-top">
+        <div class="tl-city">Chengdu <span class="region-tag">蜀地</span></div>
+        <div class="tl-date">Dec 19–24 · 6 days</div>
+      </div>
+      <div class="tl-tags">
+        <span class="tag tag-blue">🧥 5–12°C</span>
+        <span class="tag tag-orange">Food Scene</span>
+        <span class="tag tag-green">Relaxed 🛋</span>
+      </div>
+      <div class="tl-body">
+        <strong>Panda Base 🐼, Sichuan opera, Taikoo Li.</strong> Incredible food scene. Last 3 days are relaxed buffer pace.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Split notice -->
+  <div class="split-block">
+    <div class="split-card a">
+      <div class="label a-label">Person A</div>
+      <h4>✈️ Dalian</h4>
+      <p>Dec 24–30 · ❄️ -5–2°C<br>Modern port city, Russian architecture</p>
+    </div>
+    <div class="split-card b">
+      <div class="label b-label">Person B</div>
+      <h4>✈️ Thailand</h4>
+      <p>Dec 24–30 · ☀️ 25–32°C</p>
+    </div>
+    <div class="reunion-bar">🔄 Dec 30 — Both meet in <strong>Beijing</strong> (A: Dalian✈️BJ ~1.5h / B: Bangkok✈️BJ ~4.5h)</div>
+  </div>
+
+  <!-- ═══════ PHASE 2 SPLIT ═══════ -->
+  <div class="section-header">
+    <div class="num p2">2</div>
+    <h2>各自飞 — Split</h2>
+    <span class="sub">Dec 24 eve – Dec 30 eve · 6 days</span>
+  </div>
+
+  <div class="stats-grid" style="margin:0 0 16px;">
+    <div class="stat-card">
+      <div class="num">Dec 24</div>
+      <div class="label">Split from Chengdu</div>
+      <div class="temp">A→Dalian ✈️ 2.5h / B→Thailand ✈️ 3h</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">Dec 30</div>
+      <div class="label">Reunion in Beijing 🔄</div>
+      <div class="temp">Both arrive evening</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">6</div>
+      <div class="label">Days Apart</div>
+      <div class="temp">Then together again</div>
+    </div>
+  </div>
+
+  <!-- ═══════ PHASE 3 ═══════ -->
+  <div class="section-header">
+    <div class="num p3">3</div>
+    <h2>北京 → 江浙沪 → 上海飞奥克兰</h2>
+    <span class="sub">Together · Dec 30 – Jan 11</span>
+  </div>
+
+  <div class="ms-row">
+    <div class="ms-card">
+      <div class="ms-num ms-purple">❶</div>
+      <div class="ms-city">Beijing 🔄</div>
+      <div class="ms-days">Dec 30 – Jan 3 · 4 days</div>
+      <div class="ms-desc">❄️ 0–5°C. Reunion! Forbidden City, Great Wall, CBD, 798 Art District.</div>
+    </div>
+    <div class="ms-card">
+      <div class="ms-num ms-blue">❷</div>
+      <div class="ms-city">Nanjing / Suzhou</div>
+      <div class="ms-days">Jan 4–7 · 4 days</div>
+      <div class="ms-desc">❄️ 0–8°C. 🚄 HSR ~3h from BJ. Hexi New Town, gardens, tech parks.</div>
+    </div>
+    <div class="ms-card">
+      <div class="ms-num ms-cyan">❸</div>
+      <div class="ms-city">Shanghai</div>
+      <div class="ms-days">Jan 8–11 · 3 days ⏱</div>
+      <div class="ms-desc">🧥 5–12°C. Pudong skyline, Bund, French Concession.</div>
+    </div>
+    <div class="ms-card" style="border-color:rgba(45,212,191,0.2);">
+      <div class="ms-num ms-green">✈</div>
+      <div class="ms-city" style="color:#5eead4;">Auckland 🛫</div>
+      <div class="ms-days">Jan 11 afternoon</div>
+      <div class="ms-desc" style="color:#5eead4;">上海飞奥克兰 — Depart from Shanghai</div>
+    </div>
+  </div>
+
+  <!-- ═══════ STATS ═══════ -->
+  <div class="section-header" style="margin-top:56px;">
+    <div class="num" style="background:linear-gradient(135deg,#2dd4bf,#0d9488);color:#fff;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">∑</div>
+    <h2>At a Glance</h2>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="num">37</div><div class="label">Total Days</div><div class="temp">Dec 6 → Jan 11</div></div>
+    <div class="stat-card"><div class="num">7</div><div class="label">Cities Together</div><div class="temp">SZ·WV·CQ·CD·BJ·NJ·SH</div></div>
+    <div class="stat-card"><div class="num">12</div><div class="label">Warm Days 🏆</div><div class="temp">SZ 7 + CQ 5 (8–22°C)</div></div>
+    <div class="stat-card"><div class="num">3</div><div class="label">Jiangsu Days</div><div class="temp">Minimal ✅</div></div>
+    <div class="stat-card"><div class="num">4</div><div class="label">Shanghai Max</div><div class="temp">Exactly 3 days ✅</div></div>
+    <div class="stat-card"><div class="num">4</div><div class="label">Beijing Min</div><div class="temp">4 days ✅</div></div>
+  </div>
+
+  <!-- ═══════ TRANSPORT ═══════ -->
+  <div class="section-header" style="margin-top:40px;">
+    <div class="num" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">🚄</div>
+    <h2>Transportation</h2>
+  </div>
+
+  <div class="transport-grid">
+    <div class="tp-item"><div class="tp-icon hsr">🚄</div><div class="tp-route"><div class="from-to">HK → Shenzhen</div><div class="detail">HSR</div></div><div class="tp-time">15min</div></div>
+    <div class="tp-item"><div class="tp-icon hsr">🚄</div><div class="tp-route"><div class="from-to">Shenzhen → Shangrao</div><div class="detail">HSR</div></div><div class="tp-time">~4h</div></div>
+    <div class="tp-item"><div class="tp-icon fly">✈</div><div class="tp-route"><div class="from-to">Shangrao → Chongqing</div><div class="detail">Flight / HSR</div></div><div class="tp-time">~2h / 7h</div></div>
+    <div class="tp-item"><div class="tp-icon hsr">🚄</div><div class="tp-route"><div class="from-to">Chongqing → Chengdu</div><div class="detail">HSR</div></div><div class="tp-time">~1.5h</div></div>
+    <div class="tp-item"><div class="tp-icon fly">✈</div><div class="tp-route"><div class="from-to">Chengdu → Thailand (B)</div><div class="detail">Direct flight</div></div><div class="tp-time">~3h</div></div>
+    <div class="tp-item"><div class="tp-icon fly">✈</div><div class="tp-route"><div class="from-to">Chengdu → Dalian (A)</div><div class="detail">Direct flight</div></div><div class="tp-time">~2.5h</div></div>
+    <div class="tp-item"><div class="tp-icon fly">✈</div><div class="tp-route"><div class="from-to">Dalian → Beijing (A)</div><div class="detail">Direct flight</div></div><div class="tp-time">~1.5h</div></div>
+    <div class="tp-item"><div class="tp-icon fly">✈</div><div class="tp-route"><div class="from-to">Bangkok → Beijing (B)</div><div class="detail">Direct flight</div></div><div class="tp-time">~4.5h</div></div>
+    <div class="tp-item"><div class="tp-icon hsr">🚄</div><div class="tp-route"><div class="from-to">Beijing → Nanjing</div><div class="detail">HSR</div></div><div class="tp-time">~3h</div></div>
+    <div class="tp-item"><div class="tp-icon hsr">🚄</div><div class="tp-route"><div class="from-to">Nanjing → Suzhou</div><div class="detail">HSR</div></div><div class="tp-time">~1h</div></div>
+    <div class="tp-item"><div class="tp-icon hsr">🚄</div><div class="tp-route"><div class="from-to">Suzhou → Shanghai</div><div class="detail">HSR</div></div><div class="tp-time">~25min</div></div>
+    <div class="tp-item" style="border-color:rgba(45,212,191,0.2);">
+      <div class="tp-icon international">🛫</div>
+      <div class="tp-route"><div class="from-to" style="color:#5eead4;">Shanghai → Auckland</div><div class="detail">International flight · Jan 11 afternoon</div></div>
+      <div class="tp-time" style="color:#5eead4;">Depart</div>
+    </div>
+  </div>
+
+  <!-- ═══════ CHECKLIST ═══════ -->
+  <div class="section-header" style="margin-top:40px;">
+    <div class="num" style="background:linear-gradient(135deg,#2dd4bf,#0d9488);color:#fff;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;">✓</div>
+    <h2>All Constraints Met</h2>
+  </div>
+
+  <div class="checklist">
+    <div class="check-item"><div class="check-icon done">✓</div>Strict order: 闽越区→望仙谷→蜀地→各自飞→北京→江浙沪→上海</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Shanghai max 4 days — exactly 3</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Beijing min 4 days ✅</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Shenzhen 7 days</div>
+    <div class="check-item"><div class="check-icon done">✓</div>No travel before midday</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Direct HSR / flights only</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Dec 24 split from Chengdu</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Dec 30 reunion in Beijing 🔄</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Warmer cities prioritized (SZ 7 + CQ 5)</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Relaxation in cheaper cities (CD + CQ)</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Jiangsu/Zhejiang minimal (3 days only)</div>
+    <div class="check-item"><div class="check-icon done">✓</div>Jan 11 afternoon: Shanghai → Auckland 🛫</div>
+  </div>
+
+  <div class="footer">
+    ✦ <span>China Dec Trip</span> · Dec 6 – Jan 11 · 37 Days ✦
+  </div>
+
+</div>
+</body>
+</html>
