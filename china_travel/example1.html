@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example 1 · Interactive Itinerary Timeline</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',sans-serif;
+      background:#f8f6fa;color:#1e293b;line-height:1.6;
+      padding:2rem 1.5rem
+    }
+    .container{width:min(1100px,calc(100% - 2rem));margin:0 auto}
+
+    /* ===== HEADER ===== */
+    header{
+      text-align:center;margin-bottom:2.5rem;
+      padding:2rem 1.5rem;
+      background:linear-gradient(135deg,#fff0f0,#f5d5d5,#e8b4b8);
+      border-radius:20px;
+      box-shadow:0 4px 24px rgba(0,0,0,.06)
+    }
+    header .badge{
+      display:inline-block;font-size:.7rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.12em;
+      background:rgba(255,255,255,.7);color:#8b5e5e;
+      padding:.3rem .9rem;border-radius:999px;margin-bottom:.8rem
+    }
+    header h1{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;color:#1e293b}
+    header h1 span{color:#c48989}
+    header p{color:#5a4a4a;max-width:540px;margin:.5rem auto 0;font-size:.92rem}
+
+    /* ===== MONTH TABS ===== */
+    .month-tabs{
+      display:flex;gap:.5rem;justify-content:center;
+      margin-bottom:1.5rem;flex-wrap:wrap
+    }
+    .month-tab{
+      padding:.5rem 1.2rem;border-radius:999px;border:1.5px solid #e2d8dc;
+      background:#fff;font-size:.85rem;font-weight:600;
+      cursor:pointer;transition:all .2s;color:#64748b
+    }
+    .month-tab:hover{border-color:#d4a5a5;color:#8b5e5e}
+    .month-tab.active{
+      background:#e8b4b8;border-color:#e8b4b8;color:#fff
+    }
+
+    /* ===== CALENDAR GRID ===== */
+    .calendar-wrap{
+      background:#fff;border:1px solid #ede4e8;border-radius:18px;
+      padding:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.05);
+      margin-bottom:2rem
+    }
+    .calendar-wrap .month-label{
+      font-size:1.05rem;font-weight:700;margin-bottom:1rem;
+      display:flex;align-items:center;gap:.5rem
+    }
+    .calendar-wrap .month-label .count{
+      font-size:.78rem;font-weight:500;color:#94a3b8;
+      background:#f1f5f9;padding:.15rem .6rem;border-radius:999px
+    }
+    .day-names{
+      display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
+      margin-bottom:6px
+    }
+    .day-names span{
+      text-align:center;font-size:.7rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.06em;
+      color:#94a3b8;padding:4px 0
+    }
+    .calendar-grid{
+      display:grid;grid-template-columns:repeat(7,1fr);gap:4px
+    }
+    .cal-cell{
+      aspect-ratio:1;border-radius:10px;padding:4px;
+      display:flex;flex-direction:column;align-items:center;
+      justify-content:center;font-size:.7rem;font-weight:600;
+      transition:all .15s;cursor:default;position:relative;
+      border:1.5px solid transparent;min-height:56px
+    }
+    .cal-cell .day-num{
+      font-size:.8rem;font-weight:700;line-height:1.2
+    }
+    .cal-cell .city-label{
+      font-size:.58rem;font-weight:600;line-height:1.1;
+      text-align:center;margin-top:1px;padding:0 2px
+    }
+    .cal-cell .travel-icon{
+      font-size:.7rem;margin-top:1px
+    }
+    .cal-cell.empty{background:transparent;border-color:transparent}
+    .cal-cell.other-month{opacity:.25}
+    .cal-cell.today{
+      border-color:#e8b4b8;box-shadow:0 0 0 3px rgba(232,180,184,.25)
+    }
+    .cal-cell.travel-day{
+      border-style:dashed;background:#fdf2f4
+    }
+    .cal-cell:hover{transform:scale(1.06);z-index:2}
+
+    /* City colors */
+    .city-beijing{background:#fce4ec;border-color:#f8bbd0}
+    .city-dalian{background:#e8f5e9;border-color:#c8e6c9}
+    .city-shanghai{background:#e3f2fd;border-color:#bbdefb}
+    .city-suzhou{background:#f3e5f5;border-color:#e1bee7}
+    .city-chongqing{background:#fff3e0;border-color:#ffe0b2}
+    .city-chengdu{background:#e0f2f1;border-color:#b2dfdb}
+    .city-wangxian{background:#e8eaf6;border-color:#c5cae9}
+    .city-thailand{background:#fef9e7;border-color:#f9e79f}
+    .city-shenzhen{background:#fce4ec;border-color:#f8bbd0}
+
+    .city-beijing .city-label{color:#c62828}
+    .city-dalian .city-label{color:#2e7d32}
+    .city-shanghai .city-label{color:#1565c0}
+    .city-suzhou .city-label{color:#7b1fa2}
+    .city-chongqing .city-label{color:#e65100}
+    .city-chengdu .city-label{color:#00695c}
+    .city-wangxian .city-label{color:#283593}
+    .city-thailand .city-label{color:#f9a825}
+    .city-shenzhen .city-label{color:#c62828}
+
+    /* ===== DAY-BY-DAY LIST ===== */
+    .daylist-wrap{
+      background:#fff;border:1px solid #ede4e8;border-radius:18px;
+      padding:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.05)
+    }
+    .daylist-header{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:1rem;flex-wrap:wrap;gap:.5rem
+    }
+    .daylist-header h3{font-size:1.05rem;font-weight:700}
+    .daylist-header .legend{
+      display:flex;gap:.8rem;flex-wrap:wrap;font-size:.72rem;color:#64748b
+    }
+    .daylist-header .legend span{
+      display:flex;align-items:center;gap:.3rem
+    }
+    .daylist-header .legend .swatch{
+      width:10px;height:10px;border-radius:3px;display:inline-block
+    }
+    .day-row{
+      display:grid;grid-template-columns:130px 1fr;
+      gap:.75rem;padding:.55rem 0;
+      border-bottom:1px solid #f1edf0;
+      transition:background .15s;border-radius:8px;
+      padding-left:.5rem;padding-right:.5rem
+    }
+    .day-row:last-child{border-bottom:none}
+    .day-row:hover{background:#faf8fb}
+    .day-row.travel-row{background:#fdf2f4;margin:0 -.5rem;padding:.55rem 1rem;border-radius:8px}
+    .day-row .date-col{
+      display:flex;align-items:center;gap:.6rem
+    }
+    .day-row .date-col .day-badge{
+      width:42px;height:42px;border-radius:10px;
+      display:flex;flex-direction:column;align-items:center;
+      justify-content:center;font-weight:700;
+      flex-shrink:0
+    }
+    .day-row .date-col .day-badge .dow{font-size:.55rem;font-weight:600;text-transform:uppercase;line-height:1}
+    .day-row .date-col .day-badge .dnum{font-size:.95rem;line-height:1.2}
+    .day-row .date-col .date-text{font-size:.78rem;color:#64748b;line-height:1.2}
+    .day-row .info-col{
+      display:flex;align-items:center;gap:.6rem;flex-wrap:wrap
+    }
+    .day-row .info-col .city-tag{
+      font-size:.78rem;font-weight:600;padding:.2rem .6rem;
+      border-radius:6px;white-space:nowrap
+    }
+    .day-row .info-col .activity{
+      font-size:.85rem;color:#334155;flex:1;min-width:120px
+    }
+    .day-row .info-col .time-indicator{
+      font-size:.65rem;font-weight:600;text-transform:uppercase;
+      letter-spacing:.05em;padding:.15rem .5rem;border-radius:999px;
+      background:#f1f5f9;color:#64748b;white-space:nowrap
+    }
+    .day-row .info-col .time-indicator.morning{background:#fef9c3;color:#854d0e}
+    .day-row .info-col .time-indicator.afternoon{background:#ffedd5;color:#9a3412}
+    .day-row .info-col .time-indicator.evening{background:#e0e7ff;color:#3730a3}
+    .day-row .info-col .time-indicator.travel{background:#fce7f3;color:#9d174d}
+
+    /* ===== TRAVEL TRANSITION ARROW ===== */
+    .travel-arrow{
+      display:flex;align-items:center;justify-content:center;
+      gap:.75rem;padding:.4rem 0;margin:.1rem 0;
+      font-size:.8rem;color:#64748b
+    }
+    .travel-arrow .line{
+      flex:1;height:1.5px;background:linear-gradient(to right,transparent,#d4a5a5,transparent);
+      max-width:80px
+    }
+    .travel-arrow .vehicle{
+      font-weight:700;font-size:.75rem;color:#8b5e5e;
+      background:#fdf2f4;padding:.15rem .7rem;border-radius:999px;
+      border:1px dashed #e8b4b8
+    }
+
+    /* ===== CITY COLOR MAP ===== */
+    .city-color-bar{display:flex;height:6px;border-radius:3px;overflow:hidden;margin-bottom:1.5rem}
+    .city-color-bar .seg{height:100%;transition:flex .2s}
+    .city-color-bar .seg:hover{opacity:.8}
+
+    /* ===== SUMMARY STATS ===== */
+    .summary-strip{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:.75rem;margin-bottom:1.5rem
+    }
+    .summary-card{
+      background:#fff;border:1px solid #ede4e8;border-radius:12px;
+      padding:.8rem 1rem;text-align:center
+    }
+    .summary-card .num{font-size:1.3rem;font-weight:800;color:#0f172a}
+    .summary-card .label{font-size:.72rem;color:#64748b;font-weight:500}
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:700px){
+      .day-row{grid-template-columns:1fr;gap:.3rem}
+      .day-row .date-col .date-text{display:none}
+      .calendar-grid{gap:2px}
+      .cal-cell{min-height:44px;padding:2px;font-size:.6rem}
+      .cal-cell .day-num{font-size:.7rem}
+      .cal-cell .city-label{font-size:.5rem}
+    }
+    @media(max-width:500px){
+      body{padding:1rem .75rem}
+      .calendar-wrap,.daylist-wrap{padding:1rem}
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="badge">📅 Example 1 · Interactive Timeline</div>
+    <h1>Your <span>Day-by-Day</span> Itinerary</h1>
+    <p>A calendar-grid view and a detailed day list — showing exactly where you are every single day, with travel transitions clearly marked.</p>
+  </header>
+
+  <!-- ===== SUMMARY STATS ===== -->
+  <div class="summary-strip">
+    <div class="summary-card">
+      <div class="num">8</div>
+      <div class="label">Cities</div>
+    </div>
+    <div class="summary-card">
+      <div class="num">36</div>
+      <div class="label">Total Days</div>
+    </div>
+    <div class="summary-card">
+      <div class="num">8</div>
+      <div class="label">Travel Days</div>
+    </div>
+    <div class="summary-card">
+      <div class="num">2</div>
+      <div class="label">Months</div>
+    </div>
+  </div>
+
+  <!-- ===== CITY COLOR BAR ===== -->
+  <div class="city-color-bar"></div>
+
+  <!-- ===== MONTH TABS ===== -->
+  <div class="month-tabs" id="monthTabs"></div>
+
+  <!-- ===== CALENDAR GRID ===== -->
+  <div class="calendar-wrap" id="calendarWrap"></div>
+
+  <!-- ===== DAY-BY-DAY LIST ===== -->
+  <div class="daylist-wrap">
+    <div class="daylist-header">
+      <h3>📋 Full Day Schedule</h3>
+      <div class="legend">
+        <span><span class="swatch" style="background:#fce4ec"></span> City day</span>
+        <span><span class="swatch" style="background:#fdf2f4;border:1px dashed #e8b4b8"></span> Travel day</span>
+        <span><span class="swatch" style="background:#fef9c3"></span> Morning</span>
+        <span><span class="swatch" style="background:#ffedd5"></span> Afternoon</span>
+        <span><span class="swatch" style="background:#e0e7ff"></span> Evening</span>
+      </div>
+    </div>
+    <div id="dayList"></div>
+  </div>
+
+</div>
+
+<script>
+  // ===== ITINERARY DATA =====
+  const itinerary = [
+    { id:"beijing",   city:"Beijing",        emoji:"🏛️", checkIn:"2026-05-12", checkOut:"2026-05-16", travelMode:"✈️",  travelTime:"morning", color:"#f8bbd0", textColor:"#c62828", cls:"city-beijing" },
+    { id:"dalian",    city:"Dalian",         emoji:"🌊", checkIn:"2026-05-16", checkOut:"2026-05-19", travelMode:"✈️",  travelTime:"morning", color:"#c8e6c9", textColor:"#2e7d32", cls:"city-dalian" },
+    { id:"shanghai",  city:"Shanghai",       emoji:"🌃", checkIn:"2026-05-19", checkOut:"2026-05-24", travelMode:"✈️",  travelTime:"morning", color:"#bbdefb", textColor:"#1565c0", cls:"city-shanghai" },
+    { id:"suzhou",    city:"Suzhou",         emoji:"🌿", checkIn:"2026-05-24", checkOut:"2026-05-26", travelMode:"🚄",  travelTime:"morning", color:"#e1bee7", textColor:"#7b1fa2", cls:"city-suzhou" },
+    { id:"chongqing", city:"Chongqing",      emoji:"⛰️", checkIn:"2026-05-26", checkOut:"2026-05-30", travelMode:"✈️",  travelTime:"morning", color:"#ffe0b2", textColor:"#e65100", cls:"city-chongqing" },
+    { id:"chengdu",   city:"Chengdu",        emoji:"🐼", checkIn:"2026-05-30", checkOut:"2026-06-05", travelMode:"🚄",  travelTime:"morning", color:"#b2dfdb", textColor:"#00695c", cls:"city-chengdu" },
+    { id:"wangxian",  city:"Wangxian Valley", emoji:"🏞️", checkIn:"2026-06-05", checkOut:"2026-06-08", travelMode:"🚌",  travelTime:"morning", color:"#c5cae9", textColor:"#283593", cls:"city-wangxian" },
+    { id:"thailand",  city:"Thailand",       emoji:"✈️", checkIn:"2026-12-24", checkOut:"2027-01-02", travelMode:"✈️",  travelTime:"morning", color:"#f9e79f", textColor:"#7d6608", cls:"city-thailand" },
+    { id:"shenzhen",  city:"Shenzhen",       emoji:"🏙️", checkIn:"2027-01-03", checkOut:"2027-01-10", travelMode:"✈️",  travelTime:"morning", color:"#f8bbd0", textColor:"#c62828", cls:"city-shenzhen" }
+  ];
+
+  const activities = {
+    beijing:   ["Forbidden City & Tiananmen Square","Great Wall (Mutianyu)","Temple of Heaven","Peking duck dinner","Hutongs rickshaw tour"],
+    dalian:    ["Xinghai Square seaside walk","Binhai Road scenic drive","Russian Style Street","Fresh seafood dinner"],
+    shanghai:  ["The Bund skyline walk","Huangpu River night cruise","Yu Garden & Old Town","Nanjing Road shopping","French Concession café stroll"],
+    suzhou:    ["Humble Administrator's Garden","Pingjiang Road canal walk","Silk Museum","Tea house experience"],
+    chongqing: ["Yangtze River cable car","Hongya Cave night view","Ci Qi Kou old town","Chongqing hotpot dinner"],
+    chengdu:   ["Giant Panda Breeding Base","Jinli Ancient Street tea houses","Sichuan hotpot","People's Park"],
+    wangxian:  ["Valley hiking trails","Viewpoint photography","Local village exploration","Stargazing at night"],
+    thailand:  ["🏖️ Beaches & islands","Temples & night markets","Snorkeling & diving","Thai street food"],
+    shenzhen:  ["Window of the World","OCT Harbour","Dapeng Fortress day trip","Lianhua Mountain Park"]
+  };
+
+  // ===== HELPERS =====
+  function fmt(d){return typeof d==="string"?d:d.toISOString().slice(0,10)}
+  function parseDate(s){const p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
+
+  // Colors for city bar
+  const cityColors = ["#f8bbd0","#c8e6c9","#bbdefb","#e1bee7","#ffe0b2","#b2dfdb","#c5cae9","#f9e79f","#f8bbd0"];
+
+  // ===== EXPAND TO DAY VIEW =====
+  function expandToDayView(data){
+    const days=[];
+    data.forEach((stop,i)=>{
+      const start=parseDate(stop.checkIn);
+      const end=parseDate(stop.checkOut);
+      const next=data[i+1];
+
+      for(let d=new Date(start);d<end;d.setDate(d.getDate()+1)){
+        const dateStr=fmt(d);
+        const isLastDay=(fmt(d)===fmt(new Date(end.getTime()-86400000)));
+        if(isLastDay && next){
+          // Travel day
+          const depTime=stop.travelTime||"morning";
+          days.push({
+            date:dateStr,
+            type:"travel",
+            fromCity:stop.city,
+            toCity:next.city,
+            fromEmoji:stop.emoji,
+            toEmoji:next.emoji,
+            vehicle:stop.travelMode,
+            timeOfDay:depTime,
+            note:`${depTime==="morning"?"🌅 Morning":"🌆 Evening"} — Depart ${stop.city} → arrive ${next.city}`,
+            cityId:stop.id
+          });
+        } else {
+          const dayIdx=d.getDate()-start.getDate();
+          const acts=activities[stop.id]||[];
+          const actIdx=dayIdx%acts.length;
+          days.push({
+            date:dateStr,
+            type:"city",
+            city:stop.city,
+            emoji:stop.emoji,
+            cityId:stop.id,
+            cls:stop.cls,
+            activity:acts[actIdx]||"Explore the city",
+            timeOfDay: d.getHours()<12?"morning": (d.getHours()<17?"afternoon":"evening")
+          });
+        }
+      }
+    });
+    return days;
+  }
+
+  // ===== RENDER =====
+  const dayView=expandToDayView(itinerary);
+
+  // Group by month
+  function groupByMonth(days){
+    const map={};
+    days.forEach(d=>{
+      const m=d.date.slice(0,7);
+      if(!map[m])map[m]=[];
+      map[m].push(d);
+    });
+    return map;
+  }
+  const byMonth=groupByMonth(dayView);
+  const monthKeys=Object.keys(byMonth);
+
+  // ---- Month Tabs ----
+  const tabContainer=document.getElementById("monthTabs");
+  monthKeys.forEach((mk,i)=>{
+    const [y,m]=mk.split("-");
+    const label=new Date(+y,+m-1).toLocaleDateString("en-US",{month:"long",year:"numeric"});
+    const btn=document.createElement("button");
+    btn.className="month-tab"+(i===0?" active":"");
+    btn.textContent=label;
+    btn.dataset.month=mk;
+    btn.onclick=()=>{
+      document.querySelectorAll(".month-tab").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      renderCalendar(mk);
+      renderDayList(mk);
+    };
+    tabContainer.appendChild(btn);
+  });
+
+  // ---- Calendar Grid ----
+  function renderCalendar(monthKey){
+    const wrap=document.getElementById("calendarWrap");
+    const [year,month]=monthKey.split("-").map(Number);
+    const first=new Date(year,month-1,1);
+    const last=new Date(year,month,0);
+    const startDow=first.getDay(); // 0=Sun
+    const daysInMonth=last.getDate();
+
+    // Find which days belong to which city in this month
+    const monthDays=dayView.filter(d=>d.date.startsWith(monthKey));
+
+    let html=`
+      <div class="month-label">
+        ${first.toLocaleDateString("en-US",{month:"long",year:"numeric"})}
+        <span class="count">${daysInMonth} days · ${monthDays.filter(d=>d.type==="city").length} city days · ${monthDays.filter(d=>d.type==="travel").length} travel days</span>
+      </div>
+      <div class="day-names">
+        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+      </div>
+      <div class="calendar-grid">`;
+
+    // Empty cells before first day
+    for(let i=0;i<startDow;i++){
+      html+=`<div class="cal-cell empty"></div>`;
+    }
+
+    const todayStr=new Date().toISOString().slice(0,10);
+
+    for(let d=1;d<=daysInMonth;d++){
+      const dateStr=`${monthKey}-${String(d).padStart(2,"0")}`;
+      const dayData=monthDays.find(x=>x.date===dateStr);
+      let classes="cal-cell";
+      let content="";
+
+      if(dayData){
+        if(dayData.type==="travel"){
+          classes+=` travel-day`;
+          content=`
+            <div class="day-num">${d}</div>
+            <div class="travel-icon">${dayData.fromEmoji}→${dayData.toEmoji}</div>
+            <div class="city-label" style="font-size:.52rem">${dayData.vehicle}</div>`;
+        } else {
+          classes+=` ${dayData.cls}`;
+          content=`
+            <div class="day-num">${d}</div>
+            <div class="city-label">${dayData.emoji} ${dayData.city}</div>`;
+        }
+      } else {
+        classes+=" empty";
+        content=`<div class="day-num" style="color:#cbd5e1">${d}</div>`;
+      }
+
+      if(dateStr===todayStr)classes+=" today";
+      html+=`<div class="${classes}">${content}</div>`;
+    }
+
+    html+=`</div>`;
+    wrap.innerHTML=html;
+  }
+
+  // ---- Day List ----
+  function renderDayList(monthKey){
+    const list=document.getElementById("dayList");
+    const monthDays=dayView.filter(d=>d.date.startsWith(monthKey));
+    if(monthDays.length===0){
+      list.innerHTML=`<p style="text-align:center;color:#94a3b8;padding:2rem">No days in this month.</p>`;
+      return;
+    }
+
+    let html="";
+    monthDays.forEach((d,i)=>{
+      const dt=new Date(d.date+"T12:00:00");
+      const dow=dt.toLocaleDateString("en-US",{weekday:"short"});
+      const dayNum=String(dt.getDate()).padStart(2,"0");
+      const monthShort=dt.toLocaleDateString("en-US",{month:"short"});
+      const isTravel=d.type==="travel";
+      const rowClass=isTravel?"day-row travel-row":"day-row";
+
+      let timeClass="";
+      if(isTravel) timeClass="travel";
+      else if(d.timeOfDay==="morning") timeClass="morning";
+      else if(d.timeOfDay==="afternoon") timeClass="afternoon";
+      else timeClass="evening";
+
+      const timeLabel=isTravel?"🚄 Travel": (d.timeOfDay==="morning"?"🌅 Morning":(d.timeOfDay==="afternoon"?"☀️ Afternoon":"🌆 Evening"));
+
+      let badgeStyle="";
+      if(!isTravel && d.cls){
+        const clsName=d.cls.replace("city-","");
+        const colorMap={beijing:"#fce4ec",dalian:"#e8f5e9",shanghai:"#e3f2fd",suzhou:"#f3e5f5",chongqing:"#fff3e0",chengdu:"#e0f2f1",wangxian:"#e8eaf6",thailand:"#fef9e7",shenzhen:"#fce4ec"};
+        badgeStyle=`background:${colorMap[clsName]||"#f1f5f9"}`;
+      }
+
+      if(isTravel){
+        html+=`
+          <div class="${rowClass}">
+            <div class="date-col">
+              <div class="day-badge" style="background:#fdf2f4">
+                <span class="dow">${dow}</span>
+                <span class="dnum">${dayNum}</span>
+              </div>
+              <div class="date-text">${monthShort} ${dayNum}</div>
+            </div>
+            <div class="info-col">
+              <span class="time-indicator travel">${timeLabel}</span>
+              <span class="activity" style="color:#8b5e5e">
+                ${d.fromEmoji} <strong>${d.fromCity}</strong> 
+                ${d.vehicle}→ 
+                ${d.toEmoji} <strong>${d.toCity}</strong>
+              </span>
+              <span style="font-size:.75rem;color:#94a3b8">${d.note}</span>
+            </div>
+          </div>`;
+      } else {
+        html+=`
+          <div class="${rowClass}">
+            <div class="date-col">
+              <div class="day-badge" style="${badgeStyle}">
+                <span class="dow">${dow}</span>
+                <span class="dnum">${dayNum}</span>
+              </div>
+              <div class="date-text">${monthShort} ${dayNum}</div>
+            </div>
+            <div class="info-col">
+              <span class="time-indicator ${timeClass}">${timeLabel}</span>
+              <span class="city-tag" style="background:${badgeStyle}">${d.emoji} ${d.city}</span>
+              <span class="activity">${d.activity}</span>
+            </div>
+          </div>`;
+      }
+    });
+
+    list.innerHTML=html;
+  }
+
+  // ---- City Color Bar ----
+  function renderColorBar(){
+    const bar=document.querySelector(".city-color-bar");
+    const totalDays=dayView.filter(d=>d.type==="city").length;
+    const cityDayCount={};
+    dayView.filter(d=>d.type==="city").forEach(d=>{
+      cityDayCount[d.city]=(cityDayCount[d.city]||0)+1;
+    });
+    let html="";
+    itinerary.forEach((stop,i)=>{
+      const count=cityDayCount[stop.city]||0;
+      const pct=(count/totalDays*100).toFixed(1);
+      html+=`<div class="seg" style="flex:${count};background:${cityColors[i]}" title="${stop.city}: ${count} days (${pct}%)"></div>`;
+    });
+    bar.innerHTML=html;
+  }
+
+  // ---- Init ----
+  renderColorBar();
+  renderCalendar(monthKeys[0]);
+  renderDayList(monthKeys[0]);
+</script>
+
+</body>
+</html>
