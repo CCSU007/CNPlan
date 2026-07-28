@@ -18,6 +18,10 @@ Desktop.ini
 .env.local
 *.env
 
+# --- Flight Monitor ---
+flight_ticket/prices.csv
+flight_ticket/*_debug.html
+
 # --- Temp files ---
 tmp/
 temp/

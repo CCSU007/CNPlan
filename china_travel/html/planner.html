@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>China Explorer · Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <section class="hero">
+    <div class="container">
+      <nav>
+        <div class="nav-links-wrap">
+          <div class="nav-links">
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="planner.html" class="nav-link active">Planner</a>
+            <a href="map.html" class="nav-link">Map</a>
+            <a href="cities.html" class="nav-link">Cities</a>
+            <a href="budget.html" class="nav-link">Budget</a>
+            <a href="packing.html" class="nav-link">Packing</a>
+            <a href="prices.html" class="nav-link">Prices</a>
+            <a href="journal.html" class="nav-link">Journal</a>
+            <a href="info.html" class="nav-link">Info</a>
+            <a href="thailand.html" class="nav-link">Thailand</a>
+          </div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌓</button>
+      </nav>
+      <div class="hero-grid" style="justify-content:center;">
+        <div>
+          <p class="eyebrow">Itinerary</p>
+          <h1>Your Day-by-Day Itinerary</h1>
+          <p>Click any city to expand activities, notes, and add your own personal notes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section timeline-section">
+    <div class="container">
+      <div id="planner-container"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>China Explorer &middot; A Journey Through China &middot; CC &amp; Joseph</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/planner.js"></script>
+  <script>
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+
+    document.addEventListener('DOMContentLoaded', initPlanner);
+  </script>
+</body>
+</html>
