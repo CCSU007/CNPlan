@@ -1,0 +1,11 @@
+source,origin,dest,depart_date,airline,flight_number,price_nzd,stops,duration_min,depart_time,arrive_time,url,timestamp
+tripcom,Shenzhen,Wangxian Valley,2026-12-13,Shenzhen Airlines,ZH1234,185,0,120,08:30,10:30,https://www.trip.com,2026-07-28T22:30:00
+tripcom,Wangxian Valley,Chongqing,2026-12-15,Sichuan Airlines,3U5678,95,0,180,09:00,12:00,https://www.trip.com,2026-07-28T22:30:00
+tripcom,Chongqing,Chengdu,2026-12-19,China Railway,G1234,45,0,180,14:00,17:00,https://www.trip.com,2026-07-28T22:30:00
+tripcom,Chengdu,Dalian,2026-12-24,Air China,CA8901,320,1,300,07:00,12:00,https://www.trip.com,2026-07-28T22:30:00
+tripcom,Chengdu,Bangkok,2026-12-24,Sichuan Airlines,3U3937,240,0,240,08:30,12:30,https://www.trip.com,2026-07-28T22:30:00
+tripcom,Dalian,Beijing,2026-12-30,Air China,CA1608,180,0,90,10:00,11:30,https://www.trip.com,2026-07-28T22:30:00
+tripcom,Bangkok,Beijing,2026-12-30,Thai Airways,TG674,350,0,300,09:00,14:00,https://www.trip.com,2026-07-28T22:30:00
+tripcom,Beijing,Nanjing,2027-01-04,China Railway,G123,55,0,210,08:00,11:30,https://www.trip.com,2026-07-28T22:30:00
+tripcom,Nanjing,Shanghai,2027-01-08,China Railway,G456,35,0,60,09:00,10:00,https://www.trip.com,2026-07-28T22:30:00
+tripcom,Shenzhen,Chongqing,2026-12-15,Shenzhen Airlines,ZH5678,210,0,150,07:00,09:30,https://www.trip.com,2026-07-28T22:30:00

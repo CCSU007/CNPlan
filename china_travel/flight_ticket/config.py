@@ -29,10 +29,10 @@ ROUTES = [
 # You'll get an email when a price drops BELOW these numbers.
 # Tune these after seeing real data.
 PRICE_ALERT_THRESHOLDS = {
-    ("AKL", "HKG"): 2000,   # Alert if AKL→HKG < NZ$2,000
-    ("AKL", "PVG"): 2000,   # Alert if AKL→PVG < NZ$2,000
-    ("HKG", "AKL"): 2000,   # Alert if HKG→AKL < NZ$2,000
-    ("PVG", "AKL"): 2000,   # Alert if PVG→AKL < NZ$2,000
+    ("AKL", "HKG"): 1000,   # Alert if AKL→HKG < NZ$1,000
+    ("AKL", "PVG"): 1100,   # Alert if AKL→PVG < NZ$1,100
+    ("HKG", "AKL"): 1000,   # Alert if HKG→AKL < NZ$1,000
+    ("PVG", "AKL"): 1100,   # Alert if PVG→AKL < NZ$1,100
 }
 
 # ─── Flight Preferences (for 性价比最高 scoring) ──────────
@@ -48,9 +48,9 @@ PREFER_NIGHT_DEPARTURE = True  # Departure after 18:00 gets a score bonus
 # Set False to disable a source
 SOURCES = {
     "tripcom": True,
-    "airnz": False,
-    "cathay": False,
-    "ctrip": False,
+    "airnz": True,
+    "cathay": True,
+    "ctrip": False,  # Ctrip is stretch — enable when needed
 }
 
 # ─── Scraping Settings ────────────────────────────────────
