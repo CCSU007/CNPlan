@@ -4,8 +4,8 @@ name: Refresh flight prices
 
 on:
   schedule:
-    # daily 22:00 UTC (~06:00 China time next morning)
-    - cron: '0 22 * * *'
+    # daily 15:00 China time (07:00 UTC) — afternoon
+    - cron: '0 7 * * *'
   # Manual trigger: repo → Actions → "Refresh flight prices" → Run workflow
   workflow_dispatch: {}
 
