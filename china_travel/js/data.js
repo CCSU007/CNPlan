@@ -9,8 +9,6 @@ const TRIP = {
   author: 'CC & Joseph',
   arrival: '2026-12-06',
   departure: '2027-01-11',
-  thailand: { start: '2026-12-24', end: '2026-12-30' },
-  split: 'Dec 24 eve — A→Dalian / B→Thailand, reunite Dec 30 in Beijing',
 
   cities: [
     {
@@ -43,7 +41,7 @@ const TRIP = {
       endDate: '2026-12-14',
       nights: 2,
       tags: [{ label: 'Nature', cls: 'green' }, 'Hiking', 'Photography'],
-      image: 'https://images.unsplash.com/photo-1546881963-ac8d67aee789?w=800&q=80',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Wangxiangu_Scenic_Area_-_51_%28July_19%2C_2025%29.jpg/960px-Wangxiangu_Scenic_Area_-_51_%28July_19%2C_2025%29.jpg',
       weather: { temp: '5–12°C', season: 'Winter · Dec', icon: '🌤️' },
       transport: { from: 'Shenzhen', mode: '✈️', duration: '~2h' },
       activities: [
@@ -106,9 +104,9 @@ const TRIP = {
       endDate: '2026-12-30',
       nights: 6,
       tags: [{ label: 'Coastal', cls: 'green' }, 'Seafood', 'Quiet'],
-      image: 'https://images.unsplash.com/photo-1694722050574-d483e44eaf2b?w=800&q=80',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bangchuidao_Island.JPG/960px-Bangchuidao_Island.JPG',
       weather: { temp: '-5–2°C', season: 'Winter · Dec', icon: '❄️' },
-      transport: { from: 'Chengdu (split)', mode: '✈️', duration: '~3h' },
+      transport: { from: 'Chengdu', mode: '✈️', duration: '~3h' },
       activities: [
         'Xinghai Square & seaside walk',
         'Binhai Road scenic drive',
@@ -116,28 +114,7 @@ const TRIP = {
         'Fresh seafood dinner',
         'Discoveryland theme park',
       ],
-      notes: 'Person A heads north to Dalian for a quiet week by the frozen coast.',
-    },
-    {
-      id: 'thailand-leg',
-      name: 'Thailand (B)',
-      emoji: '🇹🇭',
-      coords: [13.7563, 100.5018],
-      startDate: '2026-12-24',
-      endDate: '2026-12-30',
-      nights: 6,
-      tags: ['Beaches', 'Temples', { label: 'Tropical', cls: 'green' }],
-      weather: { temp: '25–32°C', season: 'Winter · Dec', icon: '☀️' },
-      transport: { from: 'Chengdu (split)', mode: '✈️', duration: '~3h' },
-      activities: [
-        'Grand Palace & Wat Phra Kaew',
-        'Chatuchak Weekend Market',
-        'Street food tour',
-        'Day trip to Ayutthaya',
-        'Floating market experience',
-      ],
-      notes: 'Person B escapes to Thailand for sun, temples, and incredible street food.',
-      image: 'https://images.unsplash.com/photo-1655815917186-76a5e56b58d5?w=800&q=80',
+      notes: 'Head north to Dalian for a quiet week by the frozen coast.',
     },
     {
       id: 'beijing',
@@ -147,18 +124,18 @@ const TRIP = {
       startDate: '2026-12-30',
       endDate: '2027-01-03',
       nights: 4,
-      tags: ['History', 'Landmarks', { label: 'Reunion', cls: 'amber' }],
+      tags: ['History', 'Landmarks', { label: 'Winter', cls: 'amber' }],
       image: 'https://images.unsplash.com/photo-1663859454065-0b5650775708?w=800&q=80',
       weather: { temp: '-8–2°C', season: 'Winter · Jan', icon: '❄️' },
-      transport: { from: 'Dalian / Thailand (reunite)', mode: '✈️', duration: null },
+      transport: { from: 'Dalian', mode: '✈️', duration: '~2h' },
       activities: [
         'Forbidden City & Tiananmen Square',
         'Great Wall (Mutianyu section)',
         'Temple of Heaven & Summer Palace',
-        'Peking duck reunion dinner',
+        'Peking duck dinner',
         'Hutongs rickshaw tour',
       ],
-      notes: 'Reunited! Explore Beijing\'s winter wonders together — fewer crowds, magical snow scenes.',
+      notes: 'Marvel at Beijing\'s winter wonders — fewer crowds and magical snow scenes.',
     },
     {
       id: 'nanjing-suzhou',
@@ -189,26 +166,18 @@ const TRIP = {
       startDate: '2027-01-08',
       endDate: '2027-01-11',
       nights: 3,
-      tags: ['Modern', { label: 'Nightlife', cls: 'amber' }, 'Shopping'],
+      tags: ['Culture', { label: 'Imperial Feast', cls: 'amber' }, 'Lanterns'],
       image: 'https://images.unsplash.com/photo-1506158669146-619067262a00?w=800&q=80',
       weather: { temp: '1–9°C', season: 'Winter · Jan', icon: '🌤️' },
       transport: { from: 'Nanjing/Suzhou', mode: '🚄', duration: '~1h' },
       activities: [
-        'The Bund skyline walk',
-        'Huangpu River night cruise',
+        '宫宴 imperial palace banquet',
+        'Hanfu dress-up & Yu Garden photos',
         'Yu Garden & Old Town',
-        'Nanjing Road shopping',
-        'French Concession café stroll',
+        '豫园灯会 lantern festival',
+        'Tea ceremony at Huxinting teahouse',
       ],
-      notes: 'End the journey in style — a final night on the Bund before flying home.',
-    },
-  ],
-
-  thailandCities: [
-    {
-      name: 'Bangkok',
-      nights: 6,
-      highlights: 'Grand Palace, street food, Chatuchak Market, Ayutthaya',
+      notes: 'End the journey in pure Chinese style — a palace banquet, lanterns and temple incense before flying home.',
     },
   ],
 
@@ -217,8 +186,8 @@ const TRIP = {
     { from: 'Shenzhen', to: 'Wangxian Valley', mode: '✈️', duration: '~2h' },
     { from: 'Wangxian Valley', to: 'Chongqing', mode: '🚌', duration: '~3h' },
     { from: 'Chongqing', to: 'Chengdu', mode: '🚄', duration: '~3h' },
-    { from: 'Chengdu (split)', to: 'Dalian / Thailand', mode: '✈️', duration: '~3h' },
-    { from: 'Dalian / Thailand', to: 'Beijing (reunite)', mode: '✈️', duration: '~2h / ~5h' },
+    { from: 'Chengdu', to: 'Dalian', mode: '✈️', duration: '~3h' },
+    { from: 'Dalian', to: 'Beijing', mode: '✈️', duration: '~2h' },
     { from: 'Beijing', to: 'Nanjing/Suzhou', mode: '🚄', duration: '~4h' },
     { from: 'Nanjing/Suzhou', to: 'Shanghai', mode: '🚄', duration: '~1h' },
     { from: 'Shanghai', to: 'Auckland', mode: '🛫', duration: 'Departure' },
@@ -272,7 +241,7 @@ const TRIP = {
     ],
     totalMin: 2200,
     totalMax: 4000,
-    totalNote: 'For the entire China portion (~44 nights). Thailand is additional.',
+    totalNote: 'For the entire trip across China.'
   },
 
   packing: {
@@ -306,7 +275,7 @@ const TRIP = {
 
   tips: [
     'HK→SZ is seamless — take the MTR East Rail to Futian or the high-speed rail',
-    'Split on Dec 24: book Dalian & Bangkok flights from Chengdu in advance',
+    'Book the Chengdu → Dalian flight in advance',
     'Beijing in winter is cold (-8°C) but spectacular — pack thermal layers',
     'Download Alipay and WeChat Pay before arrival',
     'Get a VPN set up before arriving in China',

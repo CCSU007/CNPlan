@@ -8,15 +8,17 @@ Then open the China Explorer page — prices will load automatically.
 import csv
 import json
 import os
+import subprocess
 import sys
 import mimetypes
+import webbrowser
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from datetime import datetime
 
 # Resolve paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CSV_PATH = os.path.join(BASE_DIR, "prices.csv")
-PORT = int(os.environ.get("PRICES_PORT", 8765))
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else int(os.environ.get("PRICES_PORT", 8765))
 
 
 def load_latest_prices() -> list[dict]:
@@ -28,14 +30,11 @@ def load_latest_prices() -> list[dict]:
         reader = csv.DictReader(f)
         rows = list(reader)
 
-    # Convert currency to NZD on the fly
-    CNY_TO_NZD = 4.7
+    # Prices are in CNY (RMB) — pass them through as-is
     for row in rows:
-        currency = row.get("currency", "NZD")
-        if currency == "CNY":
-            raw = float(row.get("price_cny", row.get("price_nzd", 0)) or 0)
-            row["price_nzd"] = str(round(raw / CNY_TO_NZD))
-            row["currency"] = "NZD"
+        row["currency"] = row.get("currency", "CNY")
+        if not row.get("price_cny"):
+            row["price_cny"] = row.get("price_nzd", "0")
 
     # Deduplicate: keep latest per (source, origin, dest, depart_date)
     latest: dict[str, dict] = {}
@@ -52,6 +51,21 @@ def load_latest_prices() -> list[dict]:
     # Sort by timestamp descending, limit to 50
     result = sorted(latest.values(), key=lambda r: r.get("timestamp", ""), reverse=True)
     return result[:50]
+
+
+def run_refresh() -> bool:
+    """Regenerate prices by running flight_ticket/refresh_prices.py."""
+    script = os.path.join(BASE_DIR, "flight_ticket", "refresh_prices.py")
+    try:
+        subprocess.run(
+            [sys.executable, script],
+            capture_output=True,
+            timeout=120,
+            cwd=BASE_DIR,
+        )
+        return True
+    except Exception:
+        return False
 
 
 class PriceHandler(BaseHTTPRequestHandler):
@@ -107,8 +121,24 @@ class PriceHandler(BaseHTTPRequestHandler):
         with open(file_path, "rb") as f:
             self.wfile.write(f.read())
 
+    def _run_refresh(self):
+        """Regenerate prices by running flight_ticket/refresh_prices.py."""
+        run_refresh()
+
     def do_GET(self):
         if self.path == "/api/prices":
+            self.send_response(200)
+            self._set_cors()
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "no-cache")
+            self.end_headers()
+
+            prices = load_latest_prices()
+            self.wfile.write(json.dumps(prices, indent=2).encode("utf-8"))
+
+        elif self.path == "/api/refresh":
+            # Regenerate prices with the flight_ticket script, then serve them
+            self._run_refresh()
             self.send_response(200)
             self._set_cors()
             self.send_header("Content-Type", "application/json")
@@ -134,14 +164,39 @@ class PriceHandler(BaseHTTPRequestHandler):
 
 
 def main():
-    server = HTTPServer(("0.0.0.0", PORT), PriceHandler)
     print(f"\n{'=' * 50}")
-    print(f"  📡 Flight Price Server")
-    print(f"  Port: {PORT}")
+    print(f"  📡 China Explorer · Price + Site Server")
     print(f"  CSV:  {CSV_PATH}")
-    print(f"  URL:  http://localhost:{PORT}/api/prices")
     print(f"{'=' * 50}")
-    print(f"  Press Ctrl+C to stop.\n")
+
+    # Regenerate prices on start so the page is fresh without extra steps
+    print("  Generating fresh prices (flight_ticket/refresh_prices.py)…")
+    if run_refresh():
+        print("  ✔ Prices updated.")
+    else:
+        print("  ⚠ Could not regenerate prices — will retry on Refresh.")
+
+    # Bind to PORT, or the next free port if it's taken
+    server = None
+    port = PORT
+    for _ in range(5):
+        try:
+            server = HTTPServer(("0.0.0.0", port), PriceHandler)
+            break
+        except OSError:
+            port += 1
+    if server is None:
+        print(f"  ✖ Could not bind any port from {PORT} to {PORT + 4} — "
+              "close the old server (Ctrl+C in its window) and retry.")
+        return
+
+    # Open the site in the default browser automatically
+    try:
+        webbrowser.open(f"http://localhost:{port}/")
+    except Exception:
+        pass
+
+    print(f"  ✔ Server running at http://localhost:{port}/  (Ctrl+C to stop)\n")
 
     try:
         server.serve_forever()

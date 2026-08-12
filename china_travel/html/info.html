@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
-<body>
+<body data-root="../">
   <section class="hero">
     <div class="container">
       <nav>
@@ -19,22 +19,35 @@
             <a href="../index.html" class="nav-link">Home</a>
             <a href="planner.html" class="nav-link">Planner</a>
             <a href="map.html" class="nav-link">Map</a>
-            <a href="cities.html" class="nav-link">Cities</a>
+            <div class="nav-item">
+              <a href="cities.html" class="nav-link">Cities ▾</a>
+              <div class="dropdown-menu">
+                <a href="cities/shenzhen.html">🏙️ Shenzhen</a>
+                <a href="cities/wangxian.html">🏞️ Wangxian Valley</a>
+                <a href="cities/chongqing.html">⛰️ Chongqing</a>
+                <a href="cities/chengdu.html">🐼 Chengdu</a>
+                <a href="cities/dalian.html">🌊 Dalian</a>
+                <a href="cities/beijing.html">🏛️ Beijing</a>
+                <a href="cities/nanjing-suzhou.html">🌿 Nanjing/Suzhou</a>
+                <a href="cities/shanghai.html">🌃 Shanghai</a>
+              </div>
+            </div>
             <a href="budget.html" class="nav-link">Budget</a>
             <a href="packing.html" class="nav-link">Packing</a>
+            <a href="todo.html" class="nav-link">Todo</a>
             <a href="prices.html" class="nav-link">Prices</a>
-            <a href="journal.html" class="nav-link">Journal</a>
+
             <a href="info.html" class="nav-link active">Info</a>
-            <a href="thailand.html" class="nav-link">Thailand</a>
+
           </div>
         </div>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌓</button>
       </nav>
       <div class="hero-grid" style="justify-content:center;">
         <div>
-          <p class="eyebrow">Travel Info</p>
-          <h1>Transport, Weather &amp; Tips</h1>
-          <p>Everything you need to know about getting around, what to pack for the weather, and pro tips for the journey.</p>
+          <p class="eyebrow">Info · Travel Guide</p>
+          <h1>实用指南 · Travel Guide</h1>
+          <p>Everything practical for the journey: transport, live weather, money, SIM/VPN, apps, useful Chinese phrases and pro tips.</p>
         </div>
       </div>
     </div>
@@ -45,8 +58,74 @@
       <div class="section-subheading">🚗 Transport Between Cities</div>
       <div id="info-grid" class="info-grid"></div>
 
-      <div class="section-subheading">🌡️ Weather at Each Stop</div>
+      <div class="section-subheading">🧳 Essentials · 出行必备</div>
+      <div class="info-grid">
+        <div class="info-card">
+          <h3>💰 Money · 货币</h3>
+          <ul>
+            <li>Almost everything is paid with Alipay 支付宝 / WeChat Pay 微信支付 — even street stalls.</li>
+            <li>Carry ~¥200–500 cash as backup; ATMs (银联) at airports &amp; banks.</li>
+            <li>No tipping expected in China.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>📱 SIM / eSIM · 上网</h3>
+          <ul>
+            <li>eSIM: Airalo / Holafly / Saily — 30-day China data ~¥150–220, install before you fly.</li>
+            <li>Or buy a local SIM (中国移动 / 联通) at the airport with your passport.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>🌐 VPN · 翻墙</h3>
+          <ul>
+            <li>Google / WhatsApp / Instagram / Facebook are blocked in China.</li>
+            <li>Install a reliable VPN (ExpressVPN, NordVPN…) <strong>before</strong> arriving and keep it running.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>🚇 Apps · 应用</h3>
+          <ul>
+            <li>Metro大都会 — subway QR tickets.</li>
+            <li>高德地图 Amap — GPS &amp; navigation.</li>
+            <li>滴滴 DiDi — rides (English UI) · 12306 — trains · Trip.com — English bookings.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>🛂 Visa &amp; Entry · 签证</h3>
+          <ul>
+            <li>NZ passport: 15-day visa-free transit — verify current rules before flying.</li>
+            <li>Carry hotel addresses + return ticket (printed helps).</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>🆘 Emergency · 紧急</h3>
+          <ul>
+            <li>Police 110 · Fire 119 · Ambulance 120 · Train booking 12306.</li>
+            <li>English help at airports and major hotels.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-subheading" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+        <span>🌡️ Weather at Each Stop · 实时天气</span>
+        <span class="weather-units">
+          <button class="weather-unit-btn active" data-u="c" onclick="setWeatherUnit('c')">°C</button>
+          <button class="weather-unit-btn" data-u="f" onclick="setWeatherUnit('f')">°F</button>
+        </span>
+      </div>
       <div id="weather-grid" class="weather-grid"></div>
+
+      <div class="section-subheading">💬 Useful Chinese Phrases · 常用中文</div>
+      <div class="phrase-grid">
+        <span class="phrase-chip"><b>你好</b> Nǐ hǎo · Hello</span>
+        <span class="phrase-chip"><b>谢谢</b> Xièxie · Thanks</span>
+        <span class="phrase-chip"><b>多少钱?</b> Duōshao qián? · How much?</span>
+        <span class="phrase-chip"><b>这个</b> Zhège · This one</span>
+        <span class="phrase-chip"><b>洗手间</b> Xǐshǒujiān · Toilet</span>
+        <span class="phrase-chip"><b>我不吃辣</b> Wǒ bù chī là · No spicy</span>
+        <span class="phrase-chip"><b>请帮我</b> Qǐng bāng wǒ · Please help</span>
+        <span class="phrase-chip"><b>买单</b> Mǎidān · The bill</span>
+      </div>
 
       <div class="pro-tip">
         <strong>💡 Pro Tips</strong>
@@ -65,6 +144,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="../js/data.js"></script>
+  <script src="../js/nav.js"></script>
+  <script src="../js/weather.js"></script>
   <script>
     function toggleTheme() {
       const isDark = document.body.classList.toggle('dark');
@@ -92,7 +173,7 @@
       // Weather grid
       const weatherGrid = document.getElementById('weather-grid');
       if (weatherGrid) {
-        weatherGrid.innerHTML = TRIP.cities.filter(c => c.id !== 'thailand-leg').map(city => `
+        weatherGrid.innerHTML = TRIP.cities.map(city => `
           <div class="weather-card">
             <div class="city">${city.emoji} ${city.name.split('·')[0].trim()}</div>
             <div class="temp">${city.weather.temp}</div>

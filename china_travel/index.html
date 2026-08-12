@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body>
+<body data-root="">
   <section class="hero">
     <div class="container">
       <nav>
@@ -19,13 +19,24 @@
             <a href="index.html" class="nav-link active">Home</a>
             <a href="html/planner.html" class="nav-link">Planner</a>
             <a href="html/map.html" class="nav-link">Map</a>
-            <a href="html/cities.html" class="nav-link">Cities</a>
+            <div class="nav-item">
+              <a href="html/cities.html" class="nav-link">Cities ▾</a>
+              <div class="dropdown-menu">
+                <a href="html/cities/shenzhen.html">🏙️ Shenzhen</a>
+                <a href="html/cities/wangxian.html">🏞️ Wangxian Valley</a>
+                <a href="html/cities/chongqing.html">⛰️ Chongqing</a>
+                <a href="html/cities/chengdu.html">🐼 Chengdu</a>
+                <a href="html/cities/dalian.html">🌊 Dalian</a>
+                <a href="html/cities/beijing.html">🏛️ Beijing</a>
+                <a href="html/cities/nanjing-suzhou.html">🌿 Nanjing/Suzhou</a>
+                <a href="html/cities/shanghai.html">🌃 Shanghai</a>
+              </div>
+            </div>
             <a href="html/budget.html" class="nav-link">Budget</a>
             <a href="html/packing.html" class="nav-link">Packing</a>
+            <a href="html/todo.html" class="nav-link">Todo</a>
             <a href="html/prices.html" class="nav-link">Prices</a>
-            <a href="html/journal.html" class="nav-link">Journal</a>
             <a href="html/info.html" class="nav-link">Info</a>
-            <a href="html/thailand.html" class="nav-link">Thailand</a>
           </div>
         </div>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌓</button>
@@ -34,19 +45,17 @@
         <div>
           <p class="eyebrow">China Explorer</p>
           <h1>A Journey Through <span>China</span></h1>
-          <p>Join CC &amp; Joseph on a 37-day winter adventure across China — from Shenzhen's warmth to Beijing's snowy wonders, with a tropical detour through Thailand.</p>
+          <p>Join CC &amp; Joseph on a 37-day winter adventure across China — from Shenzhen's warmth to Beijing's snowy wonders and Shanghai's neon finale.</p>
           <div class="hero-btns">
             <a href="html/planner.html" class="btn btn-primary">View Itinerary →</a>
             <a href="html/map.html" class="btn btn-ghost">Explore Map</a>
           </div>
         </div>
         <div class="snapshot-card">
-          <h3>Trip Snapshot</h3>
-          <div class="row"><span class="label">Dates</span><span class="value">Dec 6, 2026 – Jan 11, 2027</span></div>
-          <div class="row"><span class="label">Cities</span><span class="value">9 cities across China</span></div>
-          <div class="row"><span class="label">Nights</span><span class="value">36 nights total</span></div>
-          <div class="row"><span class="label">Thailand</span><span class="value">Dec 24–30 side trip</span></div>
-          <div class="row"><span class="label">Travelers</span><span class="value">CC &amp; Joseph</span></div>
+          <h3>🚀 Trip Dashboard</h3>
+          <div id="dash-stats"></div>
+          <div class="snapshot-progress"><div class="snapshot-progress-bar" id="dash-progress-bar"></div></div>
+          <div class="snapshot-hint" id="dash-hint"></div>
         </div>
       </div>
     </div>
@@ -71,6 +80,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/data.js"></script>
+  <script src="js/nav.js"></script>
   <script>
     function toggleTheme() {
       const isDark = document.body.classList.toggle('dark');
@@ -81,13 +91,50 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // ── Trip Dashboard (live stats) ──
+      const cities = TRIP.cities || [];
+      if (cities.length) {
+        const fmt = d => new Date(d + 'T00:00:00');
+        const first = cities[0], last = cities[cities.length - 1];
+        const totalDays = Math.round((fmt(last.endDate) - fmt(first.startDate)) / 86400000) + 1;
+        const totalNights = cities.reduce((a, c) => a + (c.nights || 0), 0);
+        const today = new Date();
+        const dep = fmt(first.startDate);
+        const daysToDep = Math.max(0, Math.ceil((dep - today) / 86400000));
+        let next = cities[0];
+        for (const c of cities) { if (fmt(c.startDate) >= today) { next = c; break; } }
+        const totalMs = fmt(last.endDate) - fmt(first.startDate);
+        const elapsed = Math.min(Math.max(today - fmt(first.startDate), 0), totalMs);
+        const pct = Math.round((elapsed / totalMs) * 100);
+        const stats = [
+          ['📅 Dates', first.startDate + ' – ' + last.endDate + ' · ' + totalDays + ' days'],
+          ['🏙️ Cities', cities.length + ' cities · ' + totalNights + ' nights'],
+          ['👥 Travelers', 'CC & Joseph'],
+          ['📍 Next stop', next.emoji + ' ' + next.name],
+        ];
+        const sEl = document.getElementById('dash-stats');
+        if (sEl) {
+          sEl.innerHTML = stats.map(([k, v]) =>
+            '<div class="row"><span class="label">' + k + '</span><span class="value">' + v + '</span></div>'
+          ).join('');
+        }
+        const bar = document.getElementById('dash-progress-bar');
+        if (bar) { bar.style.width = pct + '%'; bar.textContent = pct + '%'; }
+        const hint = document.getElementById('dash-hint');
+        if (hint) {
+          hint.textContent = daysToDep > 0
+            ? '⏳ ' + daysToDep + ' days until departure'
+            : (pct >= 100 ? '✅ Trip complete!' : '🔴 On the road now!');
+        }
+      }
+
       // Journey route stops
       const stops = document.getElementById('jr-stops');
       if (stops) {
-        stops.innerHTML = TRIP.cities.filter(c => c.id !== 'thailand-leg').map((city, i) => `
+        stops.innerHTML = TRIP.cities.map((city, i) => `
           <div class="jr-stop">
             <div class="jr-dot-wrap">
-              <div class="jr-dot ${i === 0 ? '' : i === TRIP.cities.filter(c => c.id !== 'thailand-leg').length - 1 ? 'jr-dot-end' : ''}">
+              <div class="jr-dot ${i === 0 ? '' : i === TRIP.cities.length - 1 ? 'jr-dot-end' : ''}">
                 ${city.emoji}
               </div>
             </div>
@@ -113,84 +160,6 @@
             </div>
           </div>
         `).join('');
-
-        // Add the Thailand split card
-        const splitCity = TRIP.cities.find(c => c.id === 'dalian');
-        const thaiCity = TRIP.cities.find(c => c.id === 'thailand-leg');
-        const beijingCity = TRIP.cities.find(c => c.id === 'beijing');
-        if (splitCity && thaiCity && beijingCity) {
-          const splitHtml = `
-            <div class="jr-stop">
-              <div class="jr-dot-wrap">
-                <div class="jr-dot jr-dot-split" style="display:flex;flex-direction:column;gap:2px;font-size:.7rem">
-                  <span class="jr-dot-split-a">A</span>
-                  <span class="jr-dot-split-b">B</span>
-                </div>
-              </div>
-              <div class="jr-body jr-mini">
-                <div class="jr-body-inner jr-split-card">
-                  <div class="jr-header">
-                    <span class="jr-city">Split ⛔ Dec 24</span>
-                    <span class="jr-nights">${TRIP.split}</span>
-                  </div>
-                  <div class="jr-split-legs">
-                    <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.25rem">
-                      <span class="jr-dot-split-a" style="display:inline-flex;width:22px;height:22px;border-radius:6px;align-items:center;justify-content:center;font-size:.7rem;border:2px solid #06b6d4;background:#ecfeff">A</span>
-                      <span style="font-size:.85rem">${splitCity.name.split('·')[0].trim()} — ${splitCity.nights} nights</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:.4rem">
-                      <span class="jr-dot-split-b" style="display:inline-flex;width:22px;height:22px;border-radius:6px;align-items:center;justify-content:center;font-size:.7rem;border:2px solid #a78bfa;background:#f0f4ff">B</span>
-                      <span style="font-size:.85rem">Thailand — ${thaiCity.nights} nights</span>
-                    </div>
-                  </div>
-                  <div class="jr-note">${splitCity.notes} ${thaiCity.notes}</div>
-                </div>
-              </div>
-            </div>
-          `;
-
-          // Insert split after Chengdu (before Dalian in filtered list)
-          const allStops = stops.querySelectorAll('.jr-stop');
-          // The split goes after the 4th stop (Chengdu is index 3 in filtered list)
-          const refNode = allStops[3];
-          if (refNode) {
-            refNode.insertAdjacentHTML('afterend', splitHtml);
-          }
-
-          // Also add reunion (Beijing) with special marker
-          const reunionHtml = `
-            <div class="jr-stop">
-              <div class="jr-dot-wrap">
-                <div class="jr-dot jr-dot-end" style="font-size:.8rem">🤝</div>
-              </div>
-              <div class="jr-body">
-                <div class="jr-body-inner">
-                  <div class="jr-header">
-                    <span class="jr-city">${beijingCity.name}</span>
-                    <span class="jr-nights">${beijingCity.nights} nights</span>
-                  </div>
-                  <div class="jr-meta">
-                    <span class="jr-dates">${beijingCity.startDate} – ${beijingCity.endDate}</span>
-                    <span class="jr-transport">✈️ Reunite in Beijing</span>
-                  </div>
-                  <div class="jr-note">${beijingCity.notes}</div>
-                  <div class="jr-tags">
-                    ${beijingCity.tags.map(t => {
-                      const label = typeof t === 'string' ? t : t.label;
-                      return `<span class="jr-tag">${label}</span>`;
-                    }).join('')}
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-          // Insert reunion after split (which is after what was originally stop 3)
-          const updatedStops = stops.querySelectorAll('.jr-stop');
-          const splitNode = updatedStops[4];
-          if (splitNode) {
-            splitNode.insertAdjacentHTML('afterend', reunionHtml);
-          }
-        }
       }
     });
   </script>

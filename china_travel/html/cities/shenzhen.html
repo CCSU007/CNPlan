@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>China Explorer · Shenzhen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="../../css/styles.css" />
+</head>
+<body data-root="../../">
+  <section class="hero">
+    <div class="container">
+      <nav>
+        <div class="nav-links-wrap">
+          <div class="nav-links">
+            <a href="../../index.html" class="nav-link">Home</a>
+            <a href="../planner.html" class="nav-link">Planner</a>
+            <a href="../map.html" class="nav-link">Map</a>
+            <div class="nav-item">
+              <a href="../cities.html" class="nav-link active">Cities ▾</a>
+              <div class="dropdown-menu">
+                <a href="shenzhen.html" class="active">🏙️ Shenzhen</a>
+                <a href="wangxian.html">🏞️ Wangxian Valley</a>
+                <a href="chongqing.html">⛰️ Chongqing</a>
+                <a href="chengdu.html">🐼 Chengdu</a>
+                <a href="dalian.html">🌊 Dalian</a>
+                <a href="beijing.html">🏛️ Beijing</a>
+                <a href="nanjing-suzhou.html">🌿 Nanjing/Suzhou</a>
+                <a href="shanghai.html">🌃 Shanghai</a>
+              </div>
+            </div>
+            <a href="../budget.html" class="nav-link">Budget</a>
+            <a href="../packing.html" class="nav-link">Packing</a>
+            <a href="../todo.html" class="nav-link">Todo</a>
+            <a href="../prices.html" class="nav-link">Prices</a>
+            <a href="../info.html" class="nav-link">Info</a>
+          </div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌓</button>
+      </nav>
+      <div class="hero-grid" style="justify-content:center;">
+        <div>
+          <p class="eyebrow" id="city-eyebrow">Loading…</p>
+          <h1 id="city-title">Loading…</h1>
+          <p id="city-sub">Loading…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section city-detail-section">
+    <div class="container" id="city-detail"></div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>China Explorer &middot; A Journey Through China &middot; CC &amp; Joseph</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const CITY_ID = 'shenzhen';
+  </script>
+  <script src="../../js/data.js"></script>
+  <script src="../../js/nav.js"></script>
+  <script src="../../js/city.js"></script>
+  <script>
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+  </script>
+</body>
+</html>

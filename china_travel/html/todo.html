@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>China Explorer · Journal</title>
+  <title>China Explorer · Todo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
-<body>
+<body data-root="../">
   <section class="hero">
     <div class="container">
       <nav>
@@ -19,22 +19,33 @@
             <a href="../index.html" class="nav-link">Home</a>
             <a href="planner.html" class="nav-link">Planner</a>
             <a href="map.html" class="nav-link">Map</a>
-            <a href="cities.html" class="nav-link">Cities</a>
+            <div class="nav-item">
+              <a href="cities.html" class="nav-link">Cities ▾</a>
+              <div class="dropdown-menu">
+                <a href="cities/shenzhen.html">🏙️ Shenzhen</a>
+                <a href="cities/wangxian.html">🏞️ Wangxian Valley</a>
+                <a href="cities/chongqing.html">⛰️ Chongqing</a>
+                <a href="cities/chengdu.html">🐼 Chengdu</a>
+                <a href="cities/dalian.html">🌊 Dalian</a>
+                <a href="cities/beijing.html">🏛️ Beijing</a>
+                <a href="cities/nanjing-suzhou.html">🌿 Nanjing/Suzhou</a>
+                <a href="cities/shanghai.html">🌃 Shanghai</a>
+              </div>
+            </div>
             <a href="budget.html" class="nav-link">Budget</a>
             <a href="packing.html" class="nav-link">Packing</a>
+            <a href="todo.html" class="nav-link active">Todo</a>
             <a href="prices.html" class="nav-link">Prices</a>
-            <a href="journal.html" class="nav-link active">Journal</a>
             <a href="info.html" class="nav-link">Info</a>
-            <a href="thailand.html" class="nav-link">Thailand</a>
           </div>
         </div>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌓</button>
       </nav>
       <div class="hero-grid" style="justify-content:center;">
         <div>
-          <p class="eyebrow">Journal</p>
-          <h1>Journey Journal</h1>
-          <p>Document your adventure day by day — add mood, weather, photos, and notes.</p>
+          <p class="eyebrow">Todo · 待办</p>
+          <h1>Trip To-Do List · 出行待办</h1>
+          <p>Everything to sort before and during the trip — priority, category, due date, done. Saved locally on this device. (Inspired by TREK's todo list.)</p>
         </div>
       </div>
     </div>
@@ -42,7 +53,7 @@
 
   <section class="section">
     <div class="container">
-      <div id="journal-container"></div>
+      <div id="todo-app"></div>
     </div>
   </section>
 
@@ -55,7 +66,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="../js/data.js"></script>
-  <script src="../js/journal.js"></script>
+  <script src="../js/nav.js"></script>
+  <script src="../js/todo.js"></script>
   <script>
     function toggleTheme() {
       const isDark = document.body.classList.toggle('dark');
@@ -65,7 +77,7 @@
       document.body.classList.add('dark');
     }
 
-    document.addEventListener('DOMContentLoaded', initJournal);
+    document.addEventListener('DOMContentLoaded', initTodo);
   </script>
 </body>
 </html>

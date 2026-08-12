@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
-<body>
+<body data-root="../">
   <section class="hero">
     <div class="container">
       <nav>
@@ -19,13 +19,24 @@
             <a href="../index.html" class="nav-link">Home</a>
             <a href="planner.html" class="nav-link">Planner</a>
             <a href="map.html" class="nav-link">Map</a>
-            <a href="cities.html" class="nav-link active">Cities</a>
+            <div class="nav-item">
+              <a href="cities.html" class="nav-link active">Cities ▾</a>
+              <div class="dropdown-menu">
+                <a href="cities/shenzhen.html">🏙️ Shenzhen</a>
+                <a href="cities/wangxian.html">🏞️ Wangxian Valley</a>
+                <a href="cities/chongqing.html">⛰️ Chongqing</a>
+                <a href="cities/chengdu.html">🐼 Chengdu</a>
+                <a href="cities/dalian.html">🌊 Dalian</a>
+                <a href="cities/beijing.html">🏛️ Beijing</a>
+                <a href="cities/nanjing-suzhou.html">🌿 Nanjing/Suzhou</a>
+                <a href="cities/shanghai.html">🌃 Shanghai</a>
+              </div>
+            </div>
             <a href="budget.html" class="nav-link">Budget</a>
             <a href="packing.html" class="nav-link">Packing</a>
+            <a href="todo.html" class="nav-link">Todo</a>
             <a href="prices.html" class="nav-link">Prices</a>
-            <a href="journal.html" class="nav-link">Journal</a>
             <a href="info.html" class="nav-link">Info</a>
-            <a href="thailand.html" class="nav-link">Thailand</a>
           </div>
         </div>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌓</button>
@@ -55,6 +66,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="../js/data.js"></script>
+  <script src="../js/nav.js"></script>
   <script>
     function toggleTheme() {
       const isDark = document.body.classList.toggle('dark');
@@ -68,7 +80,7 @@
       const grid = document.getElementById('city-grid');
       if (!grid) return;
 
-      grid.innerHTML = TRIP.cities.filter(c => c.id !== 'thailand-leg').map(city => {
+      grid.innerHTML = TRIP.cities.map(city => {
         const tagsHtml = city.tags.map(t => {
           const label = typeof t === 'string' ? t : t.label;
           const cls = typeof t === 'string' ? '' : t.cls || '';
@@ -76,7 +88,7 @@
         }).join('');
 
         return `
-          <div class="city-card">
+          <div class="city-card" data-city="${city.id}">
             <div class="img-wrap" style="background-image:url('${city.image}');background-size:cover;background-position:center;"></div>
             <div class="body">
               <h3>${city.name}</h3>
@@ -86,10 +98,24 @@
               <ul>
                 ${city.activities.slice(0, 4).map(a => `<li>${a}</li>`).join('')}
               </ul>
+              <a class="city-guide-link" href="cities/${city.id}.html">View guide →</a>
             </div>
           </div>
         `;
       }).join('');
+
+      // Prefer a local photo dropped into images/<city-id>.jpg (e.g. your own
+      // Wangxian Valley / Dalian pictures) over the default web image.
+      grid.querySelectorAll('.city-card').forEach(card => {
+        const id = card.dataset.city;
+        if (!id) return;
+        const local = `../images/${id}.jpg`;
+        const wrap = card.querySelector('.img-wrap');
+        const probe = new Image();
+        probe.onload = () => { if (wrap) wrap.style.backgroundImage = `url('${local}')`; };
+        probe.onerror = () => {};
+        probe.src = local;
+      });
     });
   </script>
 </body>

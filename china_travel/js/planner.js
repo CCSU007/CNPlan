@@ -36,7 +36,7 @@ function initPlanner() {
               >${savedNotes}</textarea>
             </div>
             <div style="margin-top:.6rem">
-              <button class="btn btn-ghost btn-sm" onclick="flyToCity('${city.id}')">📍 Show on Map</button>
+              <button class="btn btn-ghost btn-sm" onclick="location.href='map.html?city=${city.id}'">📍 Show on Map</button>
             </div>
           </div>
         </div>

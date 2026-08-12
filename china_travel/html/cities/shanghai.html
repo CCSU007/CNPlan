@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>China Explorer · Shanghai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="../../css/styles.css" />
+</head>
+<body data-root="../../">
+  <section class="hero">
+    <div class="container">
+      <nav>
+        <div class="nav-links-wrap">
+          <div class="nav-links">
+            <a href="../../index.html" class="nav-link">Home</a>
+            <a href="../planner.html" class="nav-link">Planner</a>
+            <a href="../map.html" class="nav-link">Map</a>
+            <div class="nav-item">
+              <a href="../cities.html" class="nav-link active">Cities ▾</a>
+              <div class="dropdown-menu">
+                <a href="shenzhen.html">🏙️ Shenzhen</a>
+                <a href="wangxian.html">🏞️ Wangxian Valley</a>
+                <a href="chongqing.html">⛰️ Chongqing</a>
+                <a href="chengdu.html">🐼 Chengdu</a>
+                <a href="dalian.html">🌊 Dalian</a>
+                <a href="beijing.html">🏛️ Beijing</a>
+                <a href="nanjing-suzhou.html">🌿 Nanjing/Suzhou</a>
+                <a href="shanghai.html" class="active">🌃 Shanghai</a>
+              </div>
+            </div>
+            <a href="../budget.html" class="nav-link">Budget</a>
+            <a href="../packing.html" class="nav-link">Packing</a>
+            <a href="../todo.html" class="nav-link">Todo</a>
+            <a href="../prices.html" class="nav-link">Prices</a>
+            <a href="../info.html" class="nav-link">Info</a>
+          </div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌓</button>
+      </nav>
+      <div class="hero-grid" style="justify-content:center;">
+        <div>
+          <p class="eyebrow">Shanghai · 上海 · Jan 8–11, 2027</p>
+          <h1>🌃 Shanghai · The Grand Finale <span class="sh-h1-cn">上海 · 收官之战</span></h1>
+          <p>Three nights in China's most dazzling city before flying home to Auckland. 1–9°C winter skies, neon skyline, soup dumplings 小笼包, and the perfect ending to the journey.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section shanghai-section">
+    <div class="container">
+
+      <div class="section-heading">
+        <h2>Shanghai, Planned Around 7 Wishes · 七大心愿</h2>
+        <p><strong>36 real picks of pure Chinese culture</strong> — every photo on this page is a real photo of Shanghai (Wikimedia Commons), not generic stock. The focus here is 华夏文明: imperial banquets, Chinese song &amp; dance, etiquette &amp; tea culture, gardens, temples and crafts — not colonial-era sights. Each card has a price hint and quick links — book tickets, watch a video preview (no login needed), or jot your own notes. Tap 📝 to open a note box per place. Research from Klook 客路, Ctrip 携程, Xiaohongshu 小红书, Wikipedia and official venue sites.</p>
+      </div>
+
+      <nav class="sh-jump" aria-label="Shanghai highlights">
+        <a href="#wish-food">1 🥟 Food · 美食</a>
+        <a href="#wish-dinner">2 🏮 Banquet &amp; Show · 宫廷歌舞</a>
+        <a href="#wish-night">3 ✨ Night · 夜景</a>
+        <a href="#wish-tech">4 🤖 Tech · 科技</a>
+        <a href="#wish-garden">5 🌿 Garden · 园林</a>
+        <a href="#wish-only">6 🎭 Only-in-SH · 魔都限定</a>
+        <a href="#wish-disney">7 🏰 Disney · 迪士尼</a>
+      </nav>
+
+      <div class="sh-facts">
+        <div class="sh-fact"><span class="sh-fact-k">🗓️ Dates</span><span class="sh-fact-v">Jan 8–11 · 3 nights · 1月8–11日 · 3晚</span></div>
+        <div class="sh-fact"><span class="sh-fact-k">🌡️ Weather</span><span class="sh-fact-v">1–9°C · Winter · 冬季</span></div>
+        <div class="sh-fact"><span class="sh-fact-k">🚄 From</span><span class="sh-fact-v">Nanjing/Suzhou · ~1h · 高铁</span></div>
+        <div class="sh-fact"><span class="sh-fact-k">✈️ Next</span><span class="sh-fact-v">Fly home to Auckland · 飞回奥克兰</span></div>
+        <div class="sh-fact"><span class="sh-fact-k">💰 Money</span><span class="sh-fact-v">RMB ¥ · Alipay 支付宝 / WeChat 微信</span></div>
+      </div>
+
+      <!-- My Saved List (collections) -->
+      <div id="sh-saved" class="sh-saved" style="display:none">
+        <div class="sh-saved-head">
+          <h3>⭐ My Saved List · 我的收藏</h3>
+          <span id="sh-saved-count" class="sh-saved-count">0</span>
+        </div>
+        <ul id="sh-saved-list" class="sh-saved-list"></ul>
+      </div>
+
+      <!-- ── 1 · LOCAL FOOD ── -->
+      <div class="sh-area" id="wish-food">
+        <div class="sh-area-head">
+          <h3>🥟 1 · Local Food · 本帮菜 &amp; 街头点心</h3>
+          <p>Benbang 本帮 cooking is sweet + soy-sauce — rich, glossy, homey. These are the places Shanghainese themselves actually queue for: century-old 老字号 around Yu Garden 豫园 and Old Town 老城厢, plus the everyday street snacks. Pick 3–4, don't try all 9!</p>
+        </div>
+        <div class="sh-cards">
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Xiaolongbao_Shanghai.jpg/960px-Xiaolongbao_Shanghai.jpg" alt="Nanxiang xiaolongbao soup dumplings" loading="lazy" />
+            <div class="sh-body">
+              <h4>Nanxiang Steamed Bun Shop <span class="sh-cn">南翔馒头店</span></h4>
+              <p>Yu Garden · 豫园, since 1900. The original soup dumpling 小笼包. How to eat: bite the top 开窗, sip the broth 喝汤, dip in vinegar 蘸醋. The locals' pick is the 蟹粉小笼 crab-roe version on the upper floor (quieter than the ground floor).</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E5%8D%97%E7%BF%94%E9%A6%92%E5%A4%B4%E5%BA%97+%E9%A2%84%E5%AE%9A" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Nanxiang+xiaolongbao+Shanghai" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E5%8D%97%E7%BF%94%E9%A6%92%E5%A4%B4%E5%BA%97" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥40–80</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('nanxiang')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-nanxiang"><textarea oninput="saveCardNote('nanxiang', this.value)" placeholder="Your notes for 南翔馒头店…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Shanghai_%28December_9%2C_2015%29_-_52.jpg/960px-Shanghai_%28December_9%2C_2015%29_-_52.jpg" alt="Lü Bo Lang refined Shanghainese snacks" loading="lazy" />
+            <div class="sh-body">
+              <h4>Lü Bo Lang <span class="sh-cn">绿波廊</span></h4>
+              <p>Yu Garden · 豫园, est. 1924. Elegant 本帮菜 + the famous ornate 点心 set — 葫芦酥 calabash pastry, 眉毛酥 eyebrow pastry. Once hosted Queen Elizabeth II and Bill Clinton. A sit-down treat after the garden.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E7%BB%BF%E6%B3%A2%E5%BB%8A+%E9%A2%84%E5%AE%9A" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=L%C3%BC+Bo+Lang+Shanghai" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E7%BB%BF%E6%B3%A2%E5%BB%8A" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥150–300</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('lubolang')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-lubolang"><textarea oninput="saveCardNote('lubolang', this.value)" placeholder="Your notes for 绿波廊…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/%E7%BA%A2%E7%83%A7%E8%82%89_Grandma%27s_Pork_with_rice_-_The_Bund_AUD9.jpg/960px-%E7%BA%A2%E7%83%A7%E8%82%89_Grandma%27s_Pork_with_rice_-_The_Bund_AUD9.jpg" alt="Shanghai Old Restaurant red braised pork" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shanghai Old Restaurant <span class="sh-cn">上海老饭店</span></h4>
+              <p>Old Town · 老城厢, est. 1875. The museum of 本帮 classics: 红烧肉 red-braised pork (pictured), 油爆虾 oil-burst shrimp, 响油鳝糊 sizzling eel in hot oil. Old-school Shanghainese banquet food.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%8A%E6%B5%B7%E8%80%81%E9%A5%AD%E5%BA%97+%E9%A2%84%E5%AE%9A" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Old+Restaurant+benbang" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E8%80%81%E9%A5%AD%E5%BA%97" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥120–200</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('oldrest')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-oldrest"><textarea oninput="saveCardNote('oldrest', this.value)" placeholder="Your notes for 上海老饭店…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Shengjian_mantou_shop_by_ToastyKen_in_Shanghai.jpg/960px-Shengjian_mantou_shop_by_ToastyKen_in_Shanghai.jpg" alt="Wang Jia Sha shengjian shop in Shanghai" loading="lazy" />
+            <div class="sh-body">
+              <h4>Wang Jia Sha <span class="sh-cn">王家沙</span></h4>
+              <p>Nanjing West Rd · 南京西路, est. 1945. The everyday local canteen: 生煎 pan-fried buns (pictured), 八宝饭 eight-treasure rice, 蟹壳黄 sesame puff, 春卷 spring rolls. Grab-and-go, cash-style local vibe.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E7%8E%8B%E5%AE%B6%E6%B2%99+%E4%B8%8A%E6%B5%B7" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+shengjian+pan+fried+buns" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E7%8E%8B%E5%AE%B6%E6%B2%99+%E7%94%9F%E7%85%8E" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥20–50</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('wangjiasha')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-wangjiasha"><textarea oninput="saveCardNote('wangjiasha', this.value)" placeholder="Your notes for 王家沙…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Shengjian_Mantou_on_a_Pan.jpg/960px-Shengjian_Mantou_on_a_Pan.jpg" alt="Da Hu Chun shengjian buns on the pan" loading="lazy" />
+            <div class="sh-body">
+              <h4>Da Hu Chun <span class="sh-cn">大壶春</span></h4>
+              <p>Sichuan Middle Rd · 四川中路, est. 1932. The ORIGINAL 生煎 — half-leavened thick-skinned buns topped with sesame 芝麻. Shanghainese say this is the "true" 生煎, unlike the touristy thin-skinned chains.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E5%A4%A7%E5%A3%B6%E6%98%A5+%E7%94%9F%E7%85%8E" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Da+Hu+Chun+shengjian+Shanghai" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E5%A4%A7%E5%A3%B6%E6%98%A5+%E7%94%9F%E7%85%8E" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥20–40</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('dachun')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-dachun"><textarea oninput="saveCardNote('dachun', this.value)" placeholder="Your notes for 大壶春…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/A_Traditional_Nian_Gao_in_Shan_Chi_Kee.jpg/960px-A_Traditional_Nian_Gao_in_Shan_Chi_Kee.jpg" alt="Shen Da Cheng nian gao rice cakes" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shen Da Cheng <span class="sh-cn">沈大成</span></h4>
+              <p>Nanjing East Rd · 南京东路, est. 1875. Old-fashioned 糕团 rice cakes: 条头糕 red-bean rice roll, 双酿团 double-filled mochi, 青团 in spring. Sweet, soft, very Shanghainese — perfect cheap snack to carry.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E6%B2%88%E5%A4%A7%E6%88%90+%E7%B3%95%E5%9B%A2" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+rice+cake+gaotuan+snack" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E6%B2%88%E5%A4%A7%E6%88%90+%E6%9D%A1%E5%A4%B4%E7%B3%95" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥5–20</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('shendacheng')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-shendacheng"><textarea oninput="saveCardNote('shendacheng', this.value)" placeholder="Your notes for 沈大成…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Mooncake.jpg/960px-Mooncake.jpg" alt="Guangming Cun pork mooncake" loading="lazy" />
+            <div class="sh-body">
+              <h4>Guangming Cun <span class="sh-cn">光明邨大酒家</span></h4>
+              <p>Huaihai Middle Rd · 淮海中路, est. 1936. Famous for 鲜肉月饼 — flaky pastry with savoury pork, baked to order; the queue wraps around the block in autumn. Also 酱鸭 soy duck and 熏鱼 smoked fish. A real local institution.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E5%85%89%E6%98%8E%E9%82%A8+%E9%B2%9C%E8%82%89%E6%9C%88%E9%A5%BC" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+pork+mooncake+guangmingcun" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E5%85%89%E6%98%8E%E9%82%A8+%E9%B2%9C%E8%82%89%E6%9C%88%E9%A5%BC" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥5–15</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('guangmingcun')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-guangmingcun"><textarea oninput="saveCardNote('guangmingcun', this.value)" placeholder="Your notes for 光明邨…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Scallion_pancakes.jpg/960px-Scallion_pancakes.jpg" alt="A Da scallion pancake" loading="lazy" />
+            <div class="sh-body">
+              <h4>A Da Scallion Pancake <span class="sh-cn">阿大葱油饼</span></h4>
+              <p>Maoming South Rd · 茂名南路. Shanghai's most famous 葱油饼 — flaky, scallion-filled, pan-fried then baked crisp. The story of "A Da" (the one-armed owner) went viral; expect a queue. Closest thing to street-food legend in the city.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E9%98%BF%E5%A4%A7%E8%91%B1%E6%B2%B9%E9%A5%BC" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+scallion+pancake+congyoubing+Ada" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E9%98%BF%E5%A4%A7%E8%91%B1%E6%B2%B9%E9%A5%BC" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥10</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('ada')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-ada"><textarea oninput="saveCardNote('ada', this.value)" placeholder="Your notes for 阿大葱油饼…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Pan-Fried_Shanghai_Noodles.jpg/960px-Pan-Fried_Shanghai_Noodles.jpg" alt="De Xing Guan Shanghai noodles" loading="lazy" />
+            <div class="sh-body">
+              <h4>De Xing Guan <span class="sh-cn">德兴馆</span></h4>
+              <p>Guangdong Rd · 广东路, est. 1878. A century-old 本帮 noodle house. Signature 焖蹄面 — braised pork hock over noodles in a rich broth — plus 爆鱼面 fried fish noodles. Cheap, filling, completely local.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E5%BE%B7%E5%85%B4%E9%A6%86+%E7%84%96%E8%B9%84%E9%9D%A2" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+menTi+braised+noodles+benbang" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E5%BE%B7%E5%85%B4%E9%A6%86+%E4%B8%8A%E6%B5%B7" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥30–60</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('dexingguan')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-dexingguan"><textarea oninput="saveCardNote('dexingguan', this.value)" placeholder="Your notes for 德兴馆…"></textarea></div>
+            </div>
+          </article>
+        </div>
+        <p class="sh-area-tip">💡 Tip 贴士: Pair food with Old Town walking — 豫园 小笼包, then 九曲桥, then 老饭店 dinner. Also try 罗宋汤 (Shanghai borscht), 炸猪排 (crispy pork cutlet) and 阳春面 (plain noodle soup).</p>
+      </div>
+
+      <!-- ── 2 · IMPERIAL BANQUET & CHINESE SONG & DANCE ── -->
+      <div class="sh-area" id="wish-dinner">
+        <div class="sh-area-head">
+          <h3>🏮 2 · Imperial Banquet &amp; Song &amp; Dance · 宫廷宴席 · 中华歌舞</h3>
+          <p>Pure Chinese civilisation at its most impressive — the kind that leaves foreigners speechless: palace banquets with ancient etiquette, Hanfu dress-up, and performances of 歌舞 that tell China's stories. Book the ones you love, ahead of time.</p>
+        </div>
+        <div class="sh-cards">
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Manchu_Han_Imperial_Feast_Tao_Heung_Museum_of_Food_Culture.jpg/960px-Manchu_Han_Imperial_Feast_Tao_Heung_Museum_of_Food_Culture.jpg" alt="Gong Yan imperial Han dynasty feast" loading="lazy" />
+            <div class="sh-body">
+              <h4>Gong Yan · Palace Banquet <span class="sh-cn">宫宴</span></h4>
+              <p>Beijing West Rd · 北京西路1485号. The immersive Han-dynasty palace feast you remembered 沉浸式汉朝宫廷盛宴: change into Hanfu 换装, then dine by ancient etiquette while dancers and musicians perform to a 160-projector light show — each dish "told" by a scene. Klook 4.8★ · 4,000+ joined. The ultimate "wow the foreigners" night.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.klook.cn/zh-CN/activity/163125-" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=%E4%B8%8A%E6%B5%B7%E5%AE%AB%E5%AE%B4+%E6%B1%89%E6%9C%9D%E5%AE%AB%E5%BB%B7%E7%9B%9B%E5%AE%B4" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E5%AE%AB%E5%AE%B4+%E6%B1%89%E6%9C%8D" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥133+ (换装套餐)</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('gongyan')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-gongyan"><textarea oninput="saveCardNote('gongyan', this.value)" placeholder="Your notes for 宫宴…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Chinese_banquet_in_a_banquet_hall.JPG/960px-Chinese_banquet_in_a_banquet_hall.JPG" alt="Liangshe immersive Chinese banquet" loading="lazy" />
+            <div class="sh-body">
+              <h4>Liangshe Night Banquet <span class="sh-cn">良设夜宴</span></h4>
+              <p>Immersive Tang-dynasty 盛唐 banquet (pictured: a Chinese banquet spread): a tasting menu served with projections, calligraphy and music telling one story. Rare, unforgettable, expensive. Book well ahead.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E8%89%AF%E8%AE%BE%E5%A4%9C%E5%AE%B4+%E9%A2%84%E5%AE%9A" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Liangshe+night+banquet+Shanghai" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E8%89%AF%E8%AE%BE%E5%A4%9C%E5%AE%B4" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥800+</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('liangshe')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-liangshe"><textarea oninput="saveCardNote('liangshe', this.value)" placeholder="Your notes for 良设夜宴…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Lu_Bu_Kunqu_1.jpg/960px-Lu_Bu_Kunqu_1.jpg" alt="Hai Shang Li Yuan Kunqu opera" loading="lazy" />
+            <div class="sh-body">
+              <h4>Hai Shang Li Yuan <span class="sh-cn">海上梨园</span></h4>
+              <p>Inside Yu Garden · 豫园. Watch Kunqu 昆曲 / Peking opera 京剧 over tea, high above the garden rooftops. The most atmospheric traditional show in Old Town — small venue, few seats, very special.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E6%B5%B7%E4%B8%8A%E6%A2%A8%E5%9B%AD+%E9%A2%84%E5%AE%9A" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Kunqu+opera+Yu+Garden+Shanghai" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E6%B5%B7%E4%B8%8A%E6%A2%A8%E5%9B%AD" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥100–200</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('liyuan')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-liyuan"><textarea oninput="saveCardNote('liyuan', this.value)" placeholder="Your notes for 海上梨园…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Wang_Zhaojun_Peking_Opera_8.jpg/960px-Wang_Zhaojun_Peking_Opera_8.jpg" alt="Shanghai Peking Opera performance" loading="lazy" />
+            <div class="sh-body">
+              <h4>Peking Opera · Yifu Theatre <span class="sh-cn">京剧 · 天蟾逸夫舞台</span></h4>
+              <p>Fuzhou Rd · 福州路. Shanghai's home of 京剧 — a real Peking-opera performer pictured. Face-painting, acrobatic singing and costumes that fascinate everyone. Check the 上海京剧院 schedule and book a good seat.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E5%A4%A9%E8%9F%BE%E9%80%B8%E5%A4%AB%E8%88%9E%E5%8F%B0+%E4%BA%AC%E5%89%A7+%E9%97%A8%E7%A5%A8" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Peking+Opera+Jingju" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%BA%AC%E5%89%A7+%E8%84%B8%E8%B0%B1" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥80–380</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('jingju')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-jingju"><textarea oninput="saveCardNote('jingju', this.value)" placeholder="Your notes for 京剧…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/ChineseVarietyart_BalancingAct_4_bowls.jpg/960px-ChineseVarietyart_BalancingAct_4_bowls.jpg" alt="Chinese acrobatics balancing act" loading="lazy" />
+            <div class="sh-body">
+              <h4>ERA · Intersection of Time <span class="sh-cn">ERA 时空之旅 · 上海马戏城</span></h4>
+              <p>Circus City · 上海马戏城. The legendary Chinese acrobatics show (real balancing-act photo) — 杂技, bicycles, bowls and silk work that draws gasps. Fast-paced, family-friendly, very Chinese.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=ERA%E6%97%B6%E7%A9%BA%E4%B9%8B%E6%97%85+%E9%97%A8%E7%A5%A8" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=ERA+Intersection+of+Time+Shanghai+acrobatics" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=ERA%E6%97%B6%E7%A9%BA%E4%B9%8B%E6%97%85+%E6%9D%82%E6%8A%80" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥120–480</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('acrobatics')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-acrobatics"><textarea oninput="saveCardNote('acrobatics', this.value)" placeholder="Your notes for ERA时空之旅…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Suzhou_Pingtan_performers_at_Suzhou_Rail_Transit%2C_Hall_5%2C_MetroTrans_2024_%2820240614140205%29.jpg/960px-Suzhou_Pingtan_performers_at_Suzhou_Rail_Transit%2C_Hall_5%2C_MetroTrans_2024_%2820240614140205%29.jpg" alt="Pingtan storytelling and ballad performers" loading="lazy" />
+            <div class="sh-body">
+              <h4>Pingtan Storytelling <span class="sh-cn">评弹</span></h4>
+              <p>The Shanghai-region art of 评弹 — storytelling and ballad-singing in the local Wu dialect (real performers pictured). Intimate, tea-in-hand, very much a local living culture. Catch it at 上海评弹团 venues or teahouses.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%8A%E6%B5%B7%E8%AF%84%E5%BC%B9%E5%9B%A2+%E6%BC%94%E5%87%BA" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Pingtan+pinghua+ballad" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E8%AF%84%E5%BC%B9+%E4%B8%8A%E6%B5%B7" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥50–150</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('pingtan')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-pingtan"><textarea oninput="saveCardNote('pingtan', this.value)" placeholder="Your notes for 评弹…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Huxinting_Teahouse_2016.jpg/960px-Huxinting_Teahouse_2016.jpg" alt="Huxinting Teahouse in Yu Garden" loading="lazy" />
+            <div class="sh-body">
+              <h4>Huxinting Teahouse <span class="sh-cn">湖心亭茶楼</span></h4>
+              <p>Yu Garden pond · 豫园荷花池. Shanghai's most famous teahouse, the 1784 mid-lake pavilion (real photo). Sip 龙井/碧螺春 with the old-town view and hear locals chat — a true Chinese tea ritual 茶道 in the heart of the old city.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E6%B9%96%E5%BF%83%E4%BA%AD%E8%8C%B6%E6%A5%BC+%E9%A2%84%E5%9B%AD" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Huxinting+Teahouse+Yu+Garden+Shanghai" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E6%B9%96%E5%BF%83%E4%BA%AD%E8%8C%B6%E6%A5%BC" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥50–100/壶</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('huxinting')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-huxinting"><textarea oninput="saveCardNote('huxinting', this.value)" placeholder="Your notes for 湖心亭茶楼…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/5/58/Hanfu_yueyao.jpg" alt="Hanfu traditional dress" loading="lazy" />
+            <div class="sh-body">
+              <h4>Hanfu Experience <span class="sh-cn">汉服体验</span></h4>
+              <p>Rent a Hanfu 汉服 and step into ancient China — most fun in Yu Garden 豫园 or at 宫宴 (they style your hair and makeup 妆造 too). A real hanfu photo pictured. Photos in the gardens make unforgettable mementos.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%8A%E6%B5%B7+%E6%B1%89%E6%9C%8D%E4%BD%93%E9%AA%8C+%E7%A7%9F%E8%B5%81" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Hanfu+experience+Shanghai+Yu+Garden" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E6%B1%89%E6%9C%8D+%E9%A2%84%E5%9B%AD" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥100–300</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('hanfu')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-hanfu"><textarea oninput="saveCardNote('hanfu', this.value)" placeholder="Your notes for 汉服体验…"></textarea></div>
+            </div>
+          </article>
+        </div>
+        <p class="sh-area-tip">💡 Tip 贴士: 宫宴 is the full package — Hanfu + banquet + show in one night; book it early on Klook. 良设 and 海上梨园 are tiny venues, reserve in advance. Great combo: 汉服 photos in 豫园 in the morning, 宫宴 in the evening.</p>
+      </div>
+
+      <!-- ── 3 · NEW YEAR NIGHT ── -->
+      <div class="sh-area" id="wish-night">
+        <div class="sh-area-head">
+          <h3>✨ 3 · New Year Night · 新年夜景</h3>
+          <p>Lanterns, temple bazaars and Chinese song &amp; dance are the soul of a Shanghai New Year night — plus a warm modern tower view as a fun contrast (no colonial-era sights here). Chinese New Year 2027 is Feb 6, just after our stay, so check dates.</p>
+        </div>
+        <div class="sh-cards">
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/%E8%B1%AB%E5%9B%AD%E7%81%AF%E4%BC%9A04039.jpg/960px-%E8%B1%AB%E5%9B%AD%E7%81%AF%E4%BC%9A04039.jpg" alt="Yuyuan lantern festival real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Yuyuan Lantern Festival <span class="sh-cn">豫园灯会</span></h4>
+              <p>A real photo of the lanterns over Yu Garden. The winter lantern spectacular lights up the old town and 九曲桥 usually Jan → Feb. Verify dates — it may run before CNY (Feb 6, 2027). The most 中国年 night of all.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://you.ctrip.com/sight/shanghai2/740.html" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Yuyuan+Lantern+Festival+Shanghai" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E8%B1%AB%E5%9B%AD%E7%81%AF%E4%BC%9A" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥40 · check dates</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('lantern')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-lantern"><textarea oninput="saveCardNote('lantern', this.value)" placeholder="Your notes for 豫园灯会…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Great_Performance_%286073468825%29.jpg/960px-Great_Performance_%286073468825%29.jpg" alt="Shanghai big budget night show" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shanghai Song &amp; Dance <span class="sh-cn">上海千古情</span></h4>
+              <p>World Expo area · 世博园区. A big-budget night performance (real stage-show photo) — music, dance, acrobatics and the story of China &amp; Shanghai in one evening. A crowd-pleasing "New Year" show option.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%8A%E6%B5%B7%E5%8D%83%E5%8F%A4%E6%83%85+%E9%97%A8%E7%A5%A8" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=%E4%B8%8A%E6%B5%B7%E5%8D%83%E5%8F%A4%E6%83%85" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E5%8D%83%E5%8F%A4%E6%83%85" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥280+</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('era')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-era"><textarea oninput="saveCardNote('era', this.value)" placeholder="Your notes for 上海千古情…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Shanghai_-_Shanghai_Tower_-_0001.jpg/960px-Shanghai_-_Shanghai_Tower_-_0001.jpg" alt="Shanghai Tower building" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shanghai Tower · 118F <span class="sh-cn">上海中心 · 上海之巅</span></h4>
+              <p>The real 632m tower (pictured). The 118F observation deck is warm and indoor — a great escape on a cold January night, with the whole city below. A modern contrast to the old-town lanterns.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.shanghaitower.com.cn/en/" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Tower+observation+deck+118" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E4%B8%AD%E5%BF%83+118%E5%B1%82" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥180</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('tower')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-tower"><textarea oninput="saveCardNote('tower', this.value)" placeholder="Your notes for 上海中心…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Oriental_Pearl_Tower_in_Shanghai.jpg/960px-Oriental_Pearl_Tower_in_Shanghai.jpg" alt="Oriental Pearl Tower real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Oriental Pearl Tower · 悬空廊 <span class="sh-cn">东方明珠</span></h4>
+              <p>The real icon of Pudong (pictured). The 259m 悬空廊 glass skywalk and 263m observation deck give a different angle than Shanghai Tower. Good combo if you love the modern skyline.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%9C%E6%96%B9%E6%98%8E%E7%8F%A0+%E9%97%A8%E7%A5%A8" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Oriental+Pearl+Tower+Shanghai+skywalk" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%9C%E6%96%B9%E6%98%8E%E7%8F%A0+%E6%82%AC%E7%A9%BA%E5%BB%8A" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥180–220</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('pearl')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-pearl"><textarea oninput="saveCardNote('pearl', this.value)" placeholder="Your notes for 东方明珠…"></textarea></div>
+            </div>
+          </article>
+        </div>
+        <p class="sh-area-tip">💡 Tip 贴士: A perfect 中国年 evening: 豫园灯会 lanterns → 城隍庙 night bazaar → 上海千古情 show. For the modern view, add Shanghai Tower or the Pearl.</p>
+      </div>
+
+      <!-- ── 4 · HIGH-TECH ── -->
+      <div class="sh-area" id="wish-tech">
+        <div class="sh-area-head">
+          <h3>🤖 4 · High-Tech Museum / Gallery · 科技展馆</h3>
+          <p>Shanghai does futuristic better than almost anywhere — a world-class planetarium, striking museums and riverfront galleries. All are real photos of the actual venues.</p>
+        </div>
+        <div class="sh-cards">
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Shanghai_Astronomy_Museum_10.jpg/960px-Shanghai_Astronomy_Museum_10.jpg" alt="Shanghai Astronomy Museum real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shanghai Astronomy Museum <span class="sh-cn">上海天文馆</span></h4>
+              <p>Lingang · 临港. The world's largest planetarium (real photo) — stunning architecture, immersive space shows. It's ~1h out; reserve tickets on the app days ahead, then combine with the coast.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%96%87%E9%A6%86+%E9%A2%84%E7%BA%A6" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Astronomy+Museum" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E5%A4%A9%E6%96%87%E9%A6%86" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥30</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('astronomy')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-astronomy"><textarea oninput="saveCardNote('astronomy', this.value)" placeholder="Your notes for 上海天文馆…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Shanghai_Natural_History_Museum_%28New%29_01.JPG/960px-Shanghai_Natural_History_Museum_%28New%29_01.JPG" alt="Shanghai Natural History Museum real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shanghai Natural History Museum <span class="sh-cn">上海自然博物馆</span></h4>
+              <p>Jing'an · 静安. A striking modern building (real photo) full of dinosaur skeletons and wildlife dioramas — hugely popular with locals and kids. Reserve online; great if you love museums.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%8A%E6%B5%B7%E8%87%AA%E7%84%B6%E5%8D%9A%E7%89%A9%E9%A6%86+%E9%A2%84%E7%BA%A6" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Natural+History+Museum" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E8%87%AA%E7%84%B6%E5%8D%9A%E7%89%A9%E9%A6%86" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥30</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('nathist')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-nathist"><textarea oninput="saveCardNote('nathist', this.value)" placeholder="Your notes for 自然博物馆…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/West_Bund_Museum%2C_Shanghai%2C_Jun_2020.jpg/960px-West_Bund_Museum%2C_Shanghai%2C_Jun_2020.jpg" alt="West Bund Museum real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>West Bund Museum <span class="sh-cn">西岸美术馆</span></h4>
+              <p>West Bund · 西岸. Centre Pompidou partnership (real photo of the venue) — world-class modern art on the riverfront, next to a great riverside walk. A refined, less-crowded option.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.westbund.com/en/" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=West+Bund+Museum+Shanghai+Pompidou" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E8%A5%BF%E5%B2%B8%E7%BE%8E%E6%9C%AF%E9%A6%86" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥40–60</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('westbund')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-westbund"><textarea oninput="saveCardNote('westbund', this.value)" placeholder="Your notes for 西岸美术馆…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Shanghai_Museum_of_Glass_%28Unsplash%29.jpg/960px-Shanghai_Museum_of_Glass_%28Unsplash%29.jpg" alt="Shanghai Museum of Glass real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shanghai Museum of Glass <span class="sh-cn">上海玻璃博物馆</span></h4>
+              <p>Baoshan · 宝山. Immersive glass art, neon installations and live hot-shop 热玻璃 demo shows (real venue photo). A fun, unusual, very Instagrammable museum.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%8A%E6%B5%B7%E7%8E%BB%E7%92%83%E5%8D%9A%E7%89%A9%E9%A6%86+%E9%97%A8%E7%A5%A8" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Museum+of+Glass" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E7%8E%BB%E7%92%83%E5%8D%9A%E7%89%A9%E9%A6%86" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥60</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('glass')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-glass"><textarea oninput="saveCardNote('glass', this.value)" placeholder="Your notes for 上海玻璃博物馆…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/%E4%B8%8A%E6%B5%B7%E5%8D%9A%E7%89%A9%E9%A6%86%E4%B8%9C%E9%A6%86_161003.jpg/960px-%E4%B8%8A%E6%B5%B7%E5%8D%9A%E7%89%A9%E9%A6%86%E4%B8%9C%E9%A6%86_161003.jpg" alt="Shanghai Museum East real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shanghai Museum East <span class="sh-cn">上海博物馆东馆</span></h4>
+              <p>Pudong · 浦东. The brand-new flagship (real photo) — a huge, high-tech treasury of bronze 青铜器, ceramics 陶瓷 and painting. Free but reserve online 免费需预约.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.shanghaimuseum.net/en/" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Museum+East" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E5%8D%9A%E7%89%A9%E9%A6%86%E4%B8%9C%E9%A6%86" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 Free · 免费</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('shmuseum')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-shmuseum"><textarea oninput="saveCardNote('shmuseum', this.value)" placeholder="Your notes for 上海博物馆东馆…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Tank_Shanghai%2CJul_2020.jpg/960px-Tank_Shanghai%2CJul_2020.jpg" alt="Tank Shanghai art centre real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Tank Shanghai <span class="sh-cn">油罐艺术中心</span></h4>
+              <p>Xuhui riverfront · 徐汇滨江. Contemporary art inside converted oil tanks (real photo) — a very Shanghai concept, with a great riverside promenade. A cooler, more local alternative to the big museums.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E6%B2%B9%E7%BD%90%E8%89%BA%E6%9C%AF%E4%B8%AD%E5%BF%83+%E5%B1%95%E8%A7%88" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Tank+Shanghai+art+centre" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E6%B2%B9%E7%BD%90%E8%89%BA%E6%9C%AF%E4%B8%AD%E5%BF%83" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥50–100</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('tank')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-tank"><textarea oninput="saveCardNote('tank', this.value)" placeholder="Your notes for 油罐艺术中心…"></textarea></div>
+            </div>
+          </article>
+        </div>
+        <p class="sh-area-tip">💡 Tip 贴士: West Bund area pairs 西岸美术馆 + Tank Shanghai + riverside walk in one afternoon. Reserve 天文馆 and 自然博物馆 online in advance.</p>
+      </div>
+
+      <!-- ── 5 · TRADITIONAL GARDEN ── -->
+      <div class="sh-area" id="wish-garden">
+        <div class="sh-area-head">
+          <h3>🌿 5 · Traditional Garden · 江南园林</h3>
+          <p>Yu Garden is the unmissable one — a 450-year-old Ming-dynasty Jiangnan garden right in Old Town. Add Guyi Garden if you want a quieter, more local one. All real photos.</p>
+        </div>
+        <div class="sh-cards">
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/2024-Apr_Shanghai_Yu_Yuan_Garden_%E8%B1%AB%E5%9B%AD_-_img_20.jpg/960px-2024-Apr_Shanghai_Yu_Yuan_Garden_%E8%B1%AB%E5%9B%AD_-_img_20.jpg" alt="Yu Garden real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Yu Garden <span class="sh-cn">豫园</span></h4>
+              <p>Old Town · 老城厢. A real photo of the 1559 Ming garden: 玉玲珑 jade rock, 点春堂 hall, ponds and zigzag pavilions. Closed Mondays 周一闭园; winter evening openings Fri–Sun. Go early to beat tour groups.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://you.ctrip.com/sight/shanghai2/740.html" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Yu+Garden+Shanghai+tour" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E8%B1%AB%E5%9B%AD+%E4%B8%8A%E6%B5%B7" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥40</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('yugarden')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-yugarden"><textarea oninput="saveCardNote('yugarden', this.value)" placeholder="Your notes for 豫园…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/2024-Apr_Shanghai_City_God_Temple_%E4%B8%8A%E6%B5%B7%E5%9F%8E%E9%9A%8D%E5%BB%9F_-_img_01.jpg/960px-2024-Apr_Shanghai_City_God_Temple_%E4%B8%8A%E6%B5%B7%E5%9F%8E%E9%9A%8D%E5%BB%9F_-_img_01.jpg" alt="City God Temple real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Nine Zigzag Bridge &amp; City God Temple <span class="sh-cn">九曲桥 · 城隍庙</span></h4>
+              <p>Right next to Yu Garden · 紧邻豫园. A real photo of the temple roof line — free to wander, 南翔馒头店 on the bridge, and the 城隍庙 night bazaar 夜市 glows after dark.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%8A%E6%B5%B7%E5%9F%8E%E9%9A%8D%E5%BA%99" target="_blank" rel="noopener">🎟️ Guide</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+City+God+Temple+Yu+Garden+walk" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B9%9D%E6%9B%B2%E6%A1%A5+%E5%9F%8E%E9%9A%8D%E5%BA%99" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 Free · 免费</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('citygod')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-citygod"><textarea oninput="saveCardNote('citygod', this.value)" placeholder="Your notes for 城隍庙…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Guyi_Garden_5.jpg/960px-Guyi_Garden_5.jpg" alt="Guyi Garden real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Guyi Garden <span class="sh-cn">古猗园</span></h4>
+              <p>Nanxiang · 南翔, ~1h out. A real photo of the Ming-dynasty garden — quieter and more local than Yu Garden, famous for bamboo 竹 and the 明代 戏台. Combine with 南翔小笼 in the town.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E5%8F%A4%E7%8C%97%E5%9B%AD+%E9%97%A8%E7%A5%A8" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Guyi+Garden+Shanghai+nanxiang" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E5%8F%A4%E7%8C%97%E5%9B%AD" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥12</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('guyi')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-guyi"><textarea oninput="saveCardNote('guyi', this.value)" placeholder="Your notes for 古猗园…"></textarea></div>
+            </div>
+          </article>
+        </div>
+        <p class="sh-area-tip">💡 Tip 贴士: Pair the Yu Garden morning with 南翔馒头店 xiaolongbao for the full Old Town experience. Guyi Garden is a half-day trip if you have time.</p>
+      </div>
+
+      <!-- ── 6 · SHANGHAI-ONLY (PURE CHINESE) ── -->
+      <div class="sh-area" id="wish-only">
+        <div class="sh-area-head">
+          <h3>🎭 6 · Shanghai-Only · 魔都限定 · 华夏</h3>
+          <p>Shanghai-only, pure-Chinese experiences: an iconic Chinese pavilion, ancient temples, and the world's fastest train. Real photos of the actual places — no colonial-era sights here.</p>
+        </div>
+        <div class="sh-cards">
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/China_Art_Museum%2C_Shanghai.jpg/960px-China_Art_Museum%2C_Shanghai.jpg" alt="China Art Museum Shanghai Pavilion real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>China Art Museum <span class="sh-cn">中华艺术宫 · 世博会中国馆</span></h4>
+              <p>A real photo of the iconic red 中国馆 from the 2010 World Expo — Shanghai's own symbol of modern China. Inside: huge galleries of Chinese art. Walk the 清明上河图 digital scroll — a pure 华夏 culture highlight.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%AD%E5%8D%8E%E8%89%BA%E6%9C%AF%E5%AE%AB+%E9%A2%84%E7%BA%A6" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=China+Art+Museum+Shanghai+Pavilion+Qingming" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%96%E5%8D%9A%E4%BC%9A%E4%B8%AD%E5%9B%BD%E9%A6%86" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥30–60</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('chinamuseum')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-chinamuseum"><textarea oninput="saveCardNote('chinamuseum', this.value)" placeholder="Your notes for 中华艺术宫…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Shanghai_-_Longhua_Tempel_-_0014.jpg/960px-Shanghai_-_Longhua_Tempel_-_0014.jpg" alt="Longhua Temple real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Longhua Temple <span class="sh-cn">龙华寺</span></h4>
+              <p>A real photo of Shanghai's oldest and most sacred temple 龙华寺 — Buddhist halls, incense, monks and the ancient 龙华塔. A quiet, deeply Chinese escape in the city. Free to visit.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E9%BE%99%E5%8D%8E%E5%AF%BA+%E4%B8%8A%E6%B5%B7" target="_blank" rel="noopener">🎟️ Guide</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Longhua+Temple+Shanghai+walk" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E9%BE%99%E5%8D%8E%E5%AF%BA+%E9%BE%99%E5%8D%8E%E5%A1%94" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 Free (temple) · 素斋 ¥30</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('longhua')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-longhua"><textarea oninput="saveCardNote('longhua', this.value)" placeholder="Your notes for 龙华寺…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Jing%27an_Temple_Shanghai_3.jpg/960px-Jing%27an_Temple_Shanghai_3.jpg" alt="Jing'an Temple real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Jing'an Temple <span class="sh-cn">静安寺</span></h4>
+              <p>A real photo of 静安寺 — the dazzling golden Buddhist temple in the heart of the city. Bronze Buddhas, golden roofs, and a striking contrast with the skyscrapers around it. Ancient Chinese faith meets modern Shanghai.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E9%9D%99%E5%AE%89%E5%AF%BA+%E9%97%A8%E7%A5%A8" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Jing'an+Temple+Shanghai" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E9%9D%99%E5%AE%89%E5%AF%BA" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥50</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('jingan')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-jingan"><textarea oninput="saveCardNote('jingan', this.value)" placeholder="Your notes for 静安寺…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/China-Shanghai_%282024%29_Maglev_train_-_img_01.jpg/960px-China-Shanghai_%282024%29_Maglev_train_-_img_01.jpg" alt="Shanghai Maglev train real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shanghai Maglev <span class="sh-cn">上海磁悬浮</span></h4>
+              <p>A real photo of the world's fastest commercial train — 431 km/h in ~8 minutes between Pudong Airport 浦东机场 and Longyang Rd 龙阳路. A must-ride if you fly in/out of Pudong; also a fun day trip.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.google.com/search?q=%E4%B8%8A%E6%B5%B7%E7%A3%81%E6%82%AC%E6%B5%AE+%E7%AD%BE%E5%8D%95" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Maglev+431+kmh" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E7%A3%81%E6%82%AC%E6%B5%AE" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥50 one-way</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('maglev')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-maglev"><textarea oninput="saveCardNote('maglev', this.value)" placeholder="Your notes for 上海磁悬浮…"></textarea></div>
+            </div>
+          </article>
+        </div>
+        <p class="sh-area-tip">💡 Tip 贴士: 静安寺 + 中华艺术宫 can share a day. The Maglev is a perfect way to start or end your Shanghai stay. 龙华寺 is quietest on weekday mornings.</p>
+      </div>
+
+      <!-- ── 7 · DISNEY ── -->
+      <div class="sh-area" id="wish-disney">
+        <div class="sh-area-head">
+          <h3>🏰 7 · Shanghai Disneyland · 上海迪士尼</h3>
+          <p>The crown jewel — the world's biggest Disney castle and 8 themed lands. Early January is a great window: after the New Year rush, before Chinese New Year crowds.</p>
+        </div>
+        <div class="sh-cards">
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Enchanted_Storybook_Castle_of_Shanghai_Disneyland.jpg/960px-Enchanted_Storybook_Castle_of_Shanghai_Disneyland.jpg" alt="Shanghai Disneyland Enchanted Storybook Castle real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Shanghai Disney Resort <span class="sh-cn">上海迪士尼度假区</span></h4>
+              <p>A real photo of the Enchanted Storybook Castle 奇幻童话城堡 — the world's biggest Disney castle. 8 themed lands · 8大主题园区, with the "Magic Together" 点亮奇梦 night show &amp; Mickey's Storybook Express parade. Early January is a great, quiet window.</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.shanghaidisneyresort.com/en/" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Disneyland+Magic+Together+fireworks" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E4%B8%8A%E6%B5%B7%E8%BF%AA%E5%A3%AB%E5%B0%BC+%E5%9F%8E%E5%A0%A1" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 ¥475+ · Early Bird ¥425</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('disney')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-disney"><textarea oninput="saveCardNote('disney', this.value)" placeholder="Your notes for 上海迪士尼…"></textarea></div>
+            </div>
+          </article>
+
+          <article class="sh-card">
+            <img class="sh-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Firework_in_Shanghai_Disneyland_Park.jpg/960px-Firework_in_Shanghai_Disneyland_Park.jpg" alt="Shanghai Disneyland fireworks real photo" loading="lazy" />
+            <div class="sh-body">
+              <h4>Disney Town &amp; Wishing Star Park <span class="sh-cn">迪士尼小镇 · 星愿公园</span></h4>
+              <p>A real photo of the Disneyland fireworks over the park. Disney Town 迪士尼小镇 and Wishing Star Park 星愿公园 are free — shops, dining and a lakeside walk to warm up before/after the main park (and a place to watch the night show).</p>
+              <div class="sh-actions">
+                <a class="sh-chip sh-book" href="https://www.shanghaidisneyresort.com/en/" target="_blank" rel="noopener">🎟️ Book</a>
+                <a class="sh-chip sh-video" href="https://www.youtube.com/results?search_query=Shanghai+Disney+Town+walk" target="_blank" rel="noopener">🎬 Video</a>
+                <a class="sh-chip sh-preview" href="https://www.bing.com/images/search?q=%E8%BF%AA%E5%A3%AB%E5%B0%BC%E5%B0%8F%E9%95%87" target="_blank" rel="noopener">👁️ Preview</a>
+                <span class="sh-chip sh-price">💰 Free · 免费</span>
+                <button class="sh-chip sh-note" onclick="toggleCardNote('disneytown')">📝 Note</button>
+              </div>
+              <div class="sh-card-note" id="note-disneytown"><textarea oninput="saveCardNote('disneytown', this.value)" placeholder="Your notes for 迪士尼小镇…"></textarea></div>
+            </div>
+          </article>
+        </div>
+        <p class="sh-area-tip">💡 Tip 贴士: Metro Line 11 → Disneyland Resort 迪士尼站; use the official app and plan a full day (Jan 9 or 10).</p>
+      </div>
+
+      <!-- Global notes -->
+      <div class="sh-notes-global">
+        <h3>📝 My Shanghai Notes · 我的上海笔记</h3>
+        <textarea id="sh-notes-global-ta" oninput="saveGlobalNote(this)" placeholder="Anything to remember — times, bookings, addresses…"></textarea>
+      </div>
+
+      <p class="shanghai-note">Sources 来源: Klook 客路 (宫宴), Ctrip 携程 (Yu Garden, Disney), Xiaohongshu 小红书 (login-gated), Wikipedia, official venue sites &amp; public booking pages. This page focuses on pure Chinese culture 华夏文明 — imperial banquets, song &amp; dance, gardens, temples and crafts (no colonial-era sights). Prices are indicative and change — always check before booking. CNY 2027 is Feb 6, after our stay.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>China Explorer &middot; A Journey Through China &middot; CC &amp; Joseph</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../../js/data.js"></script>
+  <script src="../../js/nav.js"></script>
+  <script>
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+
+    // ── Per-item notes ──
+    function toggleCardNote(id) {
+      const el = document.getElementById('note-' + id);
+      if (!el) return;
+      const isHidden = getComputedStyle(el).display === 'none';
+      el.style.display = isHidden ? 'block' : 'none';
+    }
+    function saveCardNote(id, value) {
+      localStorage.setItem('sh_notes_' + id, value);
+    }
+    function saveGlobalNote(el) {
+      localStorage.setItem('sh_notes_global', el.value);
+    }
+
+    // ── Collections: My Saved List ⭐ (TREK-inspired) ──
+    function toggleSave(id) {
+      const key = 'sh_saved_' + id;
+      if (localStorage.getItem(key)) localStorage.removeItem(key);
+      else localStorage.setItem(key, '1');
+      // update chip state
+      document.querySelectorAll('.sh-card').forEach(card => {
+        if (card.dataset.shId === id) {
+          const chip = card.querySelector('.sh-chip.sh-save');
+          if (chip) {
+            const saved = localStorage.getItem(key);
+            chip.textContent = saved ? '★ Saved' : '☆ Save';
+            chip.classList.toggle('saved', !!saved);
+          }
+        }
+      });
+      renderSavedPanel();
+    }
+
+    function renderSavedPanel() {
+      const panel = document.getElementById('sh-saved');
+      const list = document.getElementById('sh-saved-list');
+      const countEl = document.getElementById('sh-saved-count');
+      if (!panel || !list) return;
+      const saved = [];
+      document.querySelectorAll('.sh-card').forEach(card => {
+        const id = card.dataset.shId;
+        if (id && localStorage.getItem('sh_saved_' + id)) {
+          saved.push({ id, title: card.dataset.shTitle || id });
+        }
+      });
+      if (countEl) countEl.textContent = saved.length;
+      panel.style.display = saved.length ? 'block' : 'none';
+      list.innerHTML = saved.map(s => `
+        <li>
+          <span>⭐</span>
+          <a href="#card-${s.id}" onclick="event.preventDefault();document.getElementById('card-${s.id}').scrollIntoView({behavior:'smooth'})">${s.title}</a>
+          <button title="Remove" onclick="toggleSave('${s.id}')">✕</button>
+        </li>`).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Inject a save chip into every card + collect titles
+      document.querySelectorAll('.sh-card').forEach(card => {
+        const noteEl = card.querySelector('.sh-card-note');
+        const id = noteEl ? noteEl.id.replace('note-', '') : '';
+        if (!id) return;
+        const h4 = card.querySelector('h4');
+        card.dataset.shId = id;
+        card.dataset.shTitle = h4 ? h4.textContent.trim() : id;
+        card.id = 'card-' + id;
+        const actions = card.querySelector('.sh-actions');
+        if (!actions) return;
+        const btn = document.createElement('button');
+        btn.className = 'sh-chip sh-save';
+        btn.setAttribute('onclick', "toggleSave('" + id + "')");
+        const saved = !!localStorage.getItem('sh_saved_' + id);
+        btn.textContent = saved ? '★ Saved' : '☆ Save';
+        if (saved) btn.classList.add('saved');
+        actions.appendChild(btn);
+      });
+      renderSavedPanel();
+
+      // Restore per-item notes
+      document.querySelectorAll('.sh-card-note').forEach(el => {
+        const id = el.id.replace('note-', '');
+        const saved = localStorage.getItem('sh_notes_' + id);
+        if (saved) {
+          const ta = el.querySelector('textarea');
+          if (ta) ta.value = saved;
+          el.style.display = 'block';
+        }
+      });
+      // Restore global notes
+      const g = document.getElementById('sh-notes-global-ta');
+      if (g) g.value = localStorage.getItem('sh_notes_global') || '';
+    });
+  </script>
+</body>
+</html>
