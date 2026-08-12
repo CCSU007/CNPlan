@@ -6,6 +6,14 @@ TREK/
 # Local scratch (results, temp)
 result/
 
+# Unrelated local files (data-analysis project, editor settings, agent skills)
+# — kept on disk locally, but NOT part of the public CNPlan site repo.
+.github/
+.vscode/
+data/
+reports/
+Skills/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
