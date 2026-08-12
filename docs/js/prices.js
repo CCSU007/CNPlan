@@ -119,7 +119,7 @@ function renderPrices(data, container, live) {
   });
 
   const modeNote = live === false
-    ? ' · <span style="color:#94a3b8">static snapshot</span>'
+    ? ' · <span style="color:#94a3b8">static — auto-updates daily via GitHub Actions</span>'
     : '';
   let html = `
     <div class="prices-refresh">

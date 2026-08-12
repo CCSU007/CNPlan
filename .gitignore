@@ -8,11 +8,15 @@ result/
 
 # Unrelated local files (data-analysis project, editor settings, agent skills)
 # — kept on disk locally, but NOT part of the public CNPlan site repo.
-.github/
+.github/*
+!.github/workflows/
 .vscode/
 data/
 reports/
 Skills/
+
+# Project hub (pushed to its own repo CCSU007.github.io)
+hub/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
