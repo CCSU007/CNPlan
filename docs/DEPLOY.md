@@ -63,3 +63,13 @@ Good for a quick demo; the free-plan URL changes each restart.
 - The PWA service worker (`sw.js`) activates over **https** only — fine on all
   hosts above.
 - All assets use relative paths, so the site works from any subpath/folder.
+
+---
+
+## Multi-project hub
+
+This site is **one project** in a portfolio. The index is the `CCSU007.github.io`
+repo (→ `https://CCSU007.github.io/`), and each project gets its own repo + Pages
+site — this one → `https://CCSU007.github.io/CNPlan/`. To add more projects:
+create a repo, put the site in its `/docs`, enable Pages (main → `/docs`), and
+add a card in the hub's `index.html` (see the hub repo's `README.md`).
