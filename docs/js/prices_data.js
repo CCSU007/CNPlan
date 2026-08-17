@@ -12,7 +12,7 @@ window.PRICES_DATA = [
     "depart_time": "08:30",
     "arrive_time": "10:30",
     "url": "https://www.trip.com",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -28,7 +28,7 @@ window.PRICES_DATA = [
     "depart_time": "07:30",
     "arrive_time": "11:30",
     "url": "https://www.12306.cn",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -44,7 +44,7 @@ window.PRICES_DATA = [
     "depart_time": "09:00",
     "arrive_time": "12:00",
     "url": "https://www.trip.com",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -60,7 +60,7 @@ window.PRICES_DATA = [
     "depart_time": "10:00",
     "arrive_time": "15:00",
     "url": "https://www.12306.cn",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -76,7 +76,7 @@ window.PRICES_DATA = [
     "depart_time": "08:00",
     "arrive_time": "09:30",
     "url": "https://www.12306.cn",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -92,7 +92,7 @@ window.PRICES_DATA = [
     "depart_time": "07:30",
     "arrive_time": "08:40",
     "url": "https://www.trip.com",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -108,7 +108,7 @@ window.PRICES_DATA = [
     "depart_time": "07:00",
     "arrive_time": "12:00",
     "url": "https://www.trip.com",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -124,7 +124,7 @@ window.PRICES_DATA = [
     "depart_time": "06:30",
     "arrive_time": "16:30",
     "url": "https://www.12306.cn",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -140,7 +140,7 @@ window.PRICES_DATA = [
     "depart_time": "10:00",
     "arrive_time": "11:30",
     "url": "https://www.trip.com",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -156,7 +156,7 @@ window.PRICES_DATA = [
     "depart_time": "07:00",
     "arrive_time": "12:00",
     "url": "https://www.12306.cn",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -172,7 +172,7 @@ window.PRICES_DATA = [
     "depart_time": "09:00",
     "arrive_time": "12:30",
     "url": "https://www.12306.cn",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -188,7 +188,7 @@ window.PRICES_DATA = [
     "depart_time": "08:00",
     "arrive_time": "09:40",
     "url": "https://www.trip.com",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -204,7 +204,7 @@ window.PRICES_DATA = [
     "depart_time": "10:00",
     "arrive_time": "11:00",
     "url": "https://www.12306.cn",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   },
   {
@@ -220,7 +220,7 @@ window.PRICES_DATA = [
     "depart_time": "09:00",
     "arrive_time": "10:00",
     "url": "https://www.trip.com",
-    "timestamp": "2026-08-16T07:24:18",
+    "timestamp": "2026-08-17T07:44:29",
     "currency": "CNY"
   }
 ];
