@@ -481,7 +481,7 @@ body.dark .planner-header:hover{background:#222b42}
 .planner-header .chevron{transition:transform .3s;font-size:.75rem;color:#94a3b8}
 .planner-header.open .chevron{transform:rotate(180deg)}
 .planner-body{max-height:0;overflow:hidden;transition:max-height .4s ease,opacity .3s;opacity:0}
-.planner-body.open{max-height:800px;opacity:1}
+.planner-body.open{max-height:6000px;opacity:1}
 .planner-inner{padding:0 1.3rem 1.1rem;border-top:1px solid #e2e8f0}
 body.dark .planner-inner{border-top-color:#2a3450}
 .planner-inner p{font-size:.88rem;color:#475569;margin:.6rem 0}
@@ -498,6 +498,91 @@ body.dark .planner-inner{border-top-color:#2a3450}
   transition:border-color .2s
 }
 .planner-notes textarea:focus{outline:none;border-color:#6366f1}
+
+/* ── Day-by-day plan (planner + city pages) ── */
+.plan-leg-meta{
+  display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.76rem;color:#94a3b8;
+  margin:.7rem 0 .2rem
+}
+.plan-day,.city-plan-day{
+  border:1px solid #e8edf5;border-radius:12px;padding:.7rem .85rem;margin:.6rem 0;
+  background:#fbfcfe;min-width:0;text-align:left;overflow-wrap:anywhere;word-break:normal
+}
+body.dark .plan-day,body.dark .city-plan-day{background:#131a2b;border-color:#2a3450}
+.plan-day-head{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.45rem;
+  margin-bottom:.45rem;min-width:0
+}
+.plan-date{font-weight:700;font-size:.86rem;color:#1e293b;white-space:nowrap}
+body.dark .plan-date{color:#e2e8f0}
+.plan-tag{
+  font-size:.64rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  padding:.12rem .45rem;border-radius:6px;background:#eef2ff;color:#4f46e5;white-space:nowrap
+}
+.plan-tag-travel{background:#ecfeff;color:#0e7490}
+.plan-tag-rest{background:#f1f5f9;color:#475569}
+.plan-tag-full-day{background:#fff7ed;color:#c2410c}
+.plan-tag-family{background:#fdf2f8;color:#be185d}
+.plan-hotel{
+  margin-left:auto;font-size:.74rem;color:#94a3b8;min-width:0;overflow-wrap:anywhere
+}
+.plan-note-line{
+  font-size:.78rem;color:#64748b;margin:.1rem 0 .4rem;font-style:italic;line-height:1.45
+}
+.plan-slot{display:grid;grid-template-columns:92px minmax(0,1fr);gap:.4rem;padding:.18rem 0}
+.plan-slot-label{font-size:.74rem;font-weight:600;color:#64748b;white-space:nowrap}
+.plan-slot ul{list-style:none;margin:0;padding:0;min-width:0}
+.plan-slot li{
+  font-size:.83rem;color:#475569;padding:.1rem 0;line-height:1.5;
+  overflow-wrap:break-word;white-space:normal;text-align:left
+}
+body.dark .plan-slot li{color:#cbd5e1}
+body.dark .plan-note-line{color:#94a3b8}
+.plan-free{font-size:.8rem;color:#94a3b8;margin:.2rem 0}
+.plan-day-note{
+  width:100%;min-height:34px;border:1px solid #e2e8f0;border-radius:9px;
+  padding:.4rem .55rem;font-family:'Inter',sans-serif;font-size:.8rem;
+  resize:vertical;margin-top:.5rem;background:#fff;transition:border-color .2s;
+  text-align:left;overflow-wrap:break-word;word-break:normal
+}
+.plan-day-note:focus{outline:none;border-color:#6366f1}
+body.dark .plan-day-note{background:#0a0f1a;border-color:#334155;color:#e2e8f0}
+.plan-actions{margin-top:.8rem}
+
+.city-plan{margin-top:1.6rem}
+.city-notes .tags{display:flex;flex-wrap:wrap;gap:.4rem;margin:.45rem 0 .65rem}
+.city-notes .tag{
+  display:inline-block;font-size:.72rem;font-weight:600;padding:.2rem .55rem;
+  border-radius:999px;background:#eef2ff;color:#4338ca;
+  white-space:normal;overflow-wrap:break-word
+}
+.city-notes .tag.green{background:#ecfdf5;color:#059669}
+.city-notes .tag.amber{background:#fffbeb;color:#d97706}
+body.dark .city-notes .tag{background:#1e293b;color:#a5b4fc}
+body.dark .city-notes .tag.green{background:#064e3b;color:#6ee7b7}
+body.dark .city-notes .tag.amber{background:#78350f;color:#fcd34d}
+.city-legs{margin:.5rem 0}
+.city-leg{
+  display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.8rem;color:#64748b;
+  padding:.2rem 0;min-width:0
+}
+.city-leg-hotel{color:#94a3b8;overflow-wrap:anywhere}
+.city-activity-list{
+  list-style:none;padding:0;margin:.3rem 0 0;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.25rem .9rem
+}
+.city-activity-list li{
+  position:relative;padding:.25rem 0 .25rem 1.2rem;font-size:.85rem;color:#475569;
+  min-width:0;overflow-wrap:break-word
+}
+.city-activity-list li::before{content:'✓';position:absolute;left:0;color:#6366f1;font-weight:700}
+body.dark .city-activity-list li{color:#cbd5e1}
+
+@media(max-width:640px){
+  .plan-slot{grid-template-columns:1fr;gap:.05rem}
+  .plan-slot-label{margin-top:.2rem}
+  .plan-hotel{margin-left:0;width:100%}
+}
 
 /* ===== PACKING ===== */
 .packing-category{margin-bottom:1.3rem}

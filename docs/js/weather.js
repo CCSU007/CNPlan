@@ -41,7 +41,7 @@ async function fetchForecast(lat, lon) {
 
 function cityLookup() {
   const map = {};
-  const cities = (typeof TRIP !== 'undefined' && TRIP.cities) || [];
+  const cities = (typeof TRIP !== 'undefined' && TRIP.destinations) || [];
   cities.forEach(c => {
     const nm = c.name.split('·')[0].trim();
     map[nm] = c.coords;

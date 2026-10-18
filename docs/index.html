@@ -23,12 +23,12 @@
               <a href="html/cities.html" class="nav-link">Cities ▾</a>
               <div class="dropdown-menu">
                 <a href="html/cities/shenzhen.html">🏙️ Shenzhen</a>
-                <a href="html/cities/wangxian.html">🏞️ Wangxian Valley</a>
                 <a href="html/cities/chongqing.html">⛰️ Chongqing</a>
                 <a href="html/cities/chengdu.html">🐼 Chengdu</a>
-                <a href="html/cities/dalian.html">🌊 Dalian</a>
                 <a href="html/cities/beijing.html">🏛️ Beijing</a>
-                <a href="html/cities/nanjing-suzhou.html">🌿 Nanjing/Suzhou</a>
+                <a href="html/cities/thailand.html">🇹🇭 Thailand</a>
+                <a href="html/cities/dalian.html">🌊 Dalian</a>
+                <a href="html/cities/suzhou.html">🌿 Suzhou / Changshu</a>
                 <a href="html/cities/shanghai.html">🌃 Shanghai</a>
               </div>
             </div>
@@ -45,7 +45,7 @@
         <div>
           <p class="eyebrow">China Explorer</p>
           <h1>A Journey Through <span>China</span></h1>
-          <p>Join CC &amp; Joseph on a 37-day winter adventure across China — from Shenzhen's warmth to Beijing's snowy wonders and Shanghai's neon finale.</p>
+          <p>Join CC &amp; Joseph on a 38-day winter adventure — Shenzhen to Chongqing, Chengdu and Beijing, a Christmas break that splits between Thailand and Dalian, then Suzhou, Shanghai's Disney days and a final Shenzhen stop.</p>
           <div class="hero-btns">
             <a href="html/planner.html" class="btn btn-primary">View Itinerary →</a>
             <a href="html/map.html" class="btn btn-ghost">Explore Map</a>
@@ -95,20 +95,21 @@
       const cities = TRIP.cities || [];
       if (cities.length) {
         const fmt = d => new Date(d + 'T00:00:00');
-        const first = cities[0], last = cities[cities.length - 1];
-        const totalDays = Math.round((fmt(last.endDate) - fmt(first.startDate)) / 86400000) + 1;
-        const totalNights = cities.reduce((a, c) => a + (c.nights || 0), 0);
+        const totalDays = totalTripDays();
+        const totalNights = totalChinaNights();
         const today = new Date();
-        const dep = fmt(first.startDate);
+        const dep = fmt(TRIP.arrival);
         const daysToDep = Math.max(0, Math.ceil((dep - today) / 86400000));
-        let next = cities[0];
-        for (const c of cities) { if (fmt(c.startDate) >= today) { next = c; break; } }
-        const totalMs = fmt(last.endDate) - fmt(first.startDate);
-        const elapsed = Math.min(Math.max(today - fmt(first.startDate), 0), totalMs);
+        const upcoming = (TRIP.days || []).find(d => fmt(d.date) >= today) || TRIP.days[0];
+        const next = upcoming
+          ? { emoji: (getDestination(cities.find(c => c.id === upcoming.legId)?.destId) || {}).emoji || '📍', name: upcoming.city }
+          : cities[0];
+        const totalMs = fmt(TRIP.departure) - dep;
+        const elapsed = Math.min(Math.max(today - dep, 0), totalMs);
         const pct = Math.round((elapsed / totalMs) * 100);
         const stats = [
-          ['📅 Dates', first.startDate + ' – ' + last.endDate + ' · ' + totalDays + ' days'],
-          ['🏙️ Cities', cities.length + ' cities · ' + totalNights + ' nights'],
+          ['📅 Dates', TRIP.arrival + ' – ' + TRIP.departure + ' · ' + totalDays + ' days'],
+          ['🏙️ Places', TRIP.destinations.length + ' places · ' + totalNights + ' nights'],
           ['👥 Travelers', 'CC & Joseph'],
           ['📍 Next stop', next.emoji + ' ' + next.name],
         ];
@@ -142,10 +143,10 @@
               <div class="jr-body-inner">
                 <div class="jr-header">
                   <span class="jr-city">${city.name}</span>
-                  <span class="jr-nights">${city.nights} nights</span>
+                  <span class="jr-nights">${city.nights ? city.nights + ' night' + (city.nights === 1 ? '' : 's') : 'fly home'}</span>
                 </div>
                 <div class="jr-meta">
-                  <span class="jr-dates">${city.startDate} – ${city.endDate}</span>
+                  <span class="jr-dates">${planDateRange(city.startDate, city.endDate)}</span>
                   ${city.transport.duration ? `<span class="jr-transport">${city.transport.mode} ${city.transport.duration} from ${city.transport.from}</span>` : ''}
                 </div>
                 <div class="jr-note">${city.notes}</div>

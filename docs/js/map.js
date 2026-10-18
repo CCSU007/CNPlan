@@ -1,11 +1,12 @@
 /**
  * Interactive Map — Leaflet-powered route visualization
- * Shows all cities as markers with toggleable route layers.
+ * China route + Thailand family leg, with a world “Atlas” view.
  */
 let mapInstance = null;
-let togetherLayer, dalianLayer;
+let chinaLayer, thailandLayer;
 let atlasLayer = null;
 let allMarkers = [];
+let markerById = {};
 let chinaBounds = null;
 
 function initMap() {
@@ -24,107 +25,121 @@ function initMap() {
     maxZoom: 18,
   }).addTo(mapInstance);
 
-  const coords = id => TRIP.cities.find(c => c.id === id).coords;
-  const cityIds = ['shenzhen','wangxian','chongqing','chengdu','dalian','beijing','nanjing-suzhou','shanghai'];
+  const coords = id => {
+    const d = getDestination(id);
+    return d ? d.coords : null;
+  };
 
-  // ── Route Layer Groups ──
-  togetherLayer = L.layerGroup().addTo(mapInstance);
-  dalianLayer = L.layerGroup().addTo(mapInstance);
+  // ── Route layer groups ──
+  chinaLayer = L.layerGroup().addTo(mapInstance);
+  thailandLayer = L.layerGroup();
 
-  // Together (Purple): shenzhen → wangxian → chongqing → chengdu
-  L.polyline(['shenzhen','wangxian','chongqing','chengdu'].map(id => coords(id)), {
+  // China route, in travel order (Shenzhen → … → Shenzhen again)
+  const chinaRoute = ['shenzhen', 'chongqing', 'chengdu', 'beijing', 'shanghai', 'suzhou', 'shanghai', 'shenzhen']
+    .map(coords).filter(Boolean);
+  L.polyline(chinaRoute, {
     color: '#6366f1', weight: 3, opacity: 0.7, dashArray: '10, 8',
-  }).addTo(togetherLayer);
+  }).addTo(chinaLayer);
 
-  // Together (Purple): beijing → nanjing-suzhou → shanghai
-  L.polyline(['beijing','nanjing-suzhou','shanghai'].map(id => coords(id)), {
-    color: '#6366f1', weight: 3, opacity: 0.7, dashArray: '10, 8',
-  }).addTo(togetherLayer);
+  // Christmas split: Beijing → Thailand / Dalian → Shanghai
+  const thaiRoute = ['beijing', 'thailand', 'shanghai'].map(coords).filter(Boolean);
+  L.polyline(thaiRoute, {
+    color: '#ec4899', weight: 3, opacity: 0.75, dashArray: '10, 8',
+  }).addTo(thailandLayer);
 
-  // CC · Dalian (Pink): split after Chengdu, reunite in Beijing
-  L.polyline([coords('chengdu'), coords('dalian'), coords('beijing')], {
-    color: '#ec4899', weight: 3, opacity: 0.7, dashArray: '10, 8',
-  }).addTo(dalianLayer);
+  const dalianRoute = ['beijing', 'dalian', 'shanghai'].map(coords).filter(Boolean);
+  L.polyline(dalianRoute, {
+    color: '#f97316', weight: 3, opacity: 0.75, dashArray: '10, 8',
+  }).addTo(thailandLayer);
 
-  // ── City Markers (always visible) ──
+  // ── Destination markers (always visible) ──
   const allCoords = [];
 
-  cityIds.forEach(id => {
-    const city = TRIP.cities.find(c => c.id === id);
-    if (!city) return;
-    allCoords.push(city.coords);
+  TRIP.destinations.forEach(dest => {
+    const legs = legsForDestination(dest.id);
+    const dates = legs.length ? legs.map(l => planDateRange(l.startDate, l.endDate)).join(' · ') : (dest.stay || '');
+    const nights = legs.reduce((n, l) => n + (l.nights || 0), 0) || dest.nights || 0;
 
-    const markerColor = id === 'shenzhen' ? '#10b981' : id === 'shanghai' ? '#ef4444' : '#6366f1';
-    const marker = L.circleMarker(city.coords, {
+    allCoords.push(dest.coords);
+
+    const markerColor = dest.id === 'shenzhen' ? '#10b981'
+      : dest.id === 'shanghai' ? '#ef4444'
+      : dest.id === 'thailand' ? '#ec4899'
+      : '#6366f1';
+
+    const marker = L.circleMarker(dest.coords, {
       radius: 10, fillColor: markerColor, color: '#fff',
       weight: 2.5, opacity: 1, fillOpacity: 0.9,
     }).addTo(mapInstance);
 
     marker.bindPopup(`
-      <div style="min-width:180px">
-        <div style="font-size:1.5rem;margin-bottom:.2rem">${city.emoji}</div>
-        <h3 style="margin:0 0 .2rem;font-size:1.05rem">${city.name}</h3>
-        <div style="font-size:.8rem;color:#64748b">${city.startDate} – ${city.endDate} · ${city.nights} nights</div>
+      <div style="min-width:190px">
+        <div style="font-size:1.5rem;margin-bottom:.2rem">${dest.emoji}</div>
+        <h3 style="margin:0 0 .2rem;font-size:1.05rem">${dest.name}</h3>
+        <div style="font-size:.8rem;color:#64748b">${dates} · ${nights} night${nights === 1 ? '' : 's'}</div>
         <hr style="margin:.4rem 0;border:none;border-top:1px solid #e2e8f0" />
-        <div style="font-size:.82rem;color:#475569">${city.activities.slice(0, 3).join('<br/>')}</div>
+        <div style="font-size:.82rem;color:#475569">${dest.activities.slice(0, 3).join('<br/>')}</div>
       </div>
     `);
     allMarkers.push(marker);
+    markerById[dest.id] = marker;
   });
 
-  // Fit bounds
   chinaBounds = L.latLngBounds(allCoords);
   mapInstance.fitBounds(chinaBounds, { padding: [50, 50] });
 
-  // Jump to city (called from Planner "Show on Map" via ?city=)
+  // Jump to city (called from Planner / city pages via ?city=)
   window.flyToCity = function (cityId) {
-    const city = TRIP.cities.find(c => c.id === cityId);
-    if (city && mapInstance) {
-      mapInstance.setView(city.coords, 10);
-      const idx = TRIP.cities.indexOf(city);
-      if (allMarkers[idx]) allMarkers[idx].openPopup();
-    }
+    const dest = getDestination(cityId);
+    if (!dest || !mapInstance) return;
+    if (atlasLayer) { mapInstance.removeLayer(atlasLayer); atlasLayer = null; }
+    mapInstance.addLayer(chinaLayer);
+    setCityMarkers(true);
+    mapInstance.setView(dest.coords, 10);
+    const marker = markerById[cityId];
+    if (marker) marker.openPopup();
   };
 
-  // Planner "Show on Map" → map.html?city=<id>
   const params = new URLSearchParams(window.location.search);
   const focusId = params.get('city');
-  if (focusId && typeof window.flyToCity === 'function') {
-    setTimeout(() => window.flyToCity(focusId), 450);
-  }
+  if (focusId) setTimeout(() => window.flyToCity(focusId), 450);
 }
 
 /**
  * Toggle route layers on the map.
- * @param {'together'|'dalian'} route - Route to show
- * @param {HTMLElement} btn - The clicked button
+ * @param {'china'|'thailand'} route
+ * @param {HTMLElement} btn
  */
 function toggleRoute(route, btn) {
   document.querySelectorAll('.map-filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
   const show = (layer, on) => {
+    if (!layer) return;
     if (on) mapInstance.addLayer(layer);
     else mapInstance.removeLayer(layer);
   };
 
-  switch (route) {
-    // Together = the complete journey (both legs visible)
-    case 'together':
-      show(togetherLayer, true); show(dalianLayer, true); break;
-    case 'dalian':
-      show(togetherLayer, true); show(dalianLayer, true); break;
+  if (route === 'thailand') {
+    show(chinaLayer, true);
+    show(thailandLayer, true);
+    if (chinaBounds) mapInstance.fitBounds(L.latLngBounds([
+      getDestination('beijing').coords,
+      getDestination('thailand').coords,
+      getDestination('dalian').coords,
+      getDestination('shanghai').coords,
+    ]), { padding: [60, 60] });
+  } else {
+    show(thailandLayer, false);
+    show(chinaLayer, true);
+    if (chinaBounds) mapInstance.fitBounds(chinaBounds, { padding: [50, 50] });
   }
 
-  // Leaving Atlas view → restore the China route
-  if (atlasLayer) mapInstance.removeLayer(atlasLayer);
+  if (atlasLayer) { mapInstance.removeLayer(atlasLayer); atlasLayer = null; }
   setCityMarkers(true);
-  if (chinaBounds && route === 'together') {
-    mapInstance.fitBounds(chinaBounds, { padding: [50, 50] });
-  }
 }
 
-/** Show/hide the China city markers on the map. */
+/** Show/hide the destination markers. */
 function setCityMarkers(visible) {
   allMarkers.forEach(m => {
     if (visible) mapInstance.addLayer(m);
@@ -132,51 +147,52 @@ function setCityMarkers(visible) {
   });
 }
 
-/**
- * Atlas — world footprint view (TREK-inspired).
- * Shows the whole trip on a world map: New Zealand → Hong Kong → China → back.
- * Uses the same Leaflet map, just a different view + layer.
- */
+/** World footprint view: New Zealand → Hong Kong → China → Thailand → home. */
 function buildAtlas() {
   if (atlasLayer) return atlasLayer;
   atlasLayer = L.layerGroup();
 
-  const coords = id => TRIP.cities.find(c => c.id === id).coords;
+  const coords = id => getDestination(id).coords;
   const auckland = [-36.85, 174.76];
   const hongkong = [22.32, 114.17];
-  const chinaIds = ['shenzhen','wangxian','chongqing','chengdu','dalian','beijing','nanjing-suzhou','shanghai'];
 
-  // Journey polyline on a world scale: NZ → HK → China cities → back to NZ
-  const journey = [auckland, hongkong, ...chinaIds.map(id => coords(id)), auckland];
+  const journey = [
+    auckland, hongkong,
+    coords('shenzhen'), coords('chongqing'), coords('chengdu'),
+    coords('beijing'), coords('thailand'), coords('dalian'), coords('shanghai'), coords('suzhou'),
+    coords('shanghai'), coords('shenzhen'),
+    hongkong, auckland,
+  ];
+
   L.polyline(journey, {
     color: '#6366f1', weight: 3, opacity: 0.7, dashArray: '8, 8',
   }).addTo(atlasLayer);
 
-  // Country markers with labels
   const countryMarker = (pos, emoji, title, sub, color) => {
     L.circleMarker(pos, { radius: 11, fillColor: color, color: '#fff', weight: 2.5, fillOpacity: 0.9 })
       .addTo(atlasLayer)
       .bindPopup(`<div style="min-width:180px"><div style="font-size:1.4rem">${emoji}</div><h3 style="margin:.1rem 0">${title}</h3><div style="font-size:.82rem;color:#64748b">${sub}</div></div>`);
-    L.marker(pos, { icon: L.divIcon({ className: 'atlas-label', html: title, iconSize: [96, 22], iconAnchor: [48, 30] }), interactive: false })
+    L.marker(pos, { icon: L.divIcon({ className: 'atlas-label', html: title, iconSize: [120, 22], iconAnchor: [60, 30] }), interactive: false })
       .addTo(atlasLayer);
   };
 
-  countryMarker(auckland, '🇳🇿', 'New Zealand · Home', 'Depart & return flights', '#10b981');
-  countryMarker(hongkong, '🇭🇰', 'Hong Kong · Transit', 'Stopover to China', '#06b6d4');
-  countryMarker([31.23, 121.47], '🇨🇳', 'China · 8 cities', 'Dec 6 – Jan 11 · the journey', '#ef4444');
+  countryMarker(auckland, '🇳🇿', 'New Zealand · Home', 'Depart 5 Dec & return 11 Jan', '#10b981');
+  countryMarker(hongkong, '🇭🇰', 'Hong Kong · Transit', 'In and out of China', '#06b6d4');
+  countryMarker([31.23, 121.47], '🇨🇳', 'China · the journey', '5 Dec – 10 Jan', '#ef4444');
+  countryMarker(coords('thailand'), '🇹🇭', 'Thailand · Family', '25 – 30 Dec · one of us', '#ec4899');
+  countryMarker(coords('dalian'), '🌊', 'Dalian · Solo', '25 – 30 Dec · the other', '#f97316');
 
   return atlasLayer;
 }
 
-/** Switch to the Atlas world view (called by the 🌍 Atlas button). */
+/** Switch to the Atlas world view. */
 function toggleAtlas(btn) {
   document.querySelectorAll('.map-filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
-  // Hide the China route + city markers
-  [togetherLayer, dalianLayer].forEach(l => { if (l) mapInstance.removeLayer(l); });
+  [chinaLayer, thailandLayer].forEach(l => { if (l) mapInstance.removeLayer(l); });
   setCityMarkers(false);
 
   mapInstance.addLayer(buildAtlas());
-  mapInstance.setView([20, 100], 2);
+  mapInstance.setView([12, 105], 3);
 }

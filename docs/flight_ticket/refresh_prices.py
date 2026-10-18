@@ -24,33 +24,35 @@ from datetime import datetime
 LEGS = [
     # ── Domestic only (within China) — international legs excluded per user preference ──
 
-    # ── Shenzhen → Wangxian Valley ──
-    ("tripcom", "Shenzhen", "Wangxian Valley", "2026-12-13", "Shenzhen Airlines", "ZH1234", 680, 0, 120, "08:30", "10:30", "https://www.trip.com"),
-    ("chinarail", "Shenzhen", "Wangxian Valley", "2026-12-13", "G", "G1604", 460, 0, 240, "07:30", "11:30", "https://www.12306.cn"),
+    # ── Shenzhen → Chongqing (8 Dec) ──
+    ("tripcom", "Shenzhen", "Chongqing", "2026-12-08", "Shenzhen Airlines", "ZH9531", 780, 0, 130, "08:20", "10:30", "https://www.trip.com"),
+    ("chinarail", "Shenzhen", "Chongqing", "2026-12-08", "G", "G2924", 720, 0, 430, "07:12", "14:22", "https://www.12306.cn"),
 
-    # ── Wangxian Valley → Chongqing ──
-    ("tripcom", "Wangxian Valley", "Chongqing", "2026-12-15", "Sichuan Airlines", "3U5678", 450, 0, 180, "09:00", "12:00", "https://www.trip.com"),
-    ("chinarail", "Wangxian Valley", "Chongqing", "2026-12-15", "G", "G1756", 520, 0, 300, "10:00", "15:00", "https://www.12306.cn"),
+    # ── Chongqing → Chengdu (13 Dec, classic G-train leg) ──
+    ("chinarail", "Chongqing", "Chengdu", "2026-12-13", "G", "G8504", 154, 0, 90, "08:00", "09:30", "https://www.12306.cn"),
+    ("tripcom", "Chongqing", "Chengdu", "2026-12-13", "Sichuan Airlines", "3U8631", 380, 0, 70, "07:30", "08:40", "https://www.trip.com"),
 
-    # ── Chongqing → Chengdu (classic G-train leg) ──
-    ("chinarail", "Chongqing", "Chengdu", "2026-12-19", "G", "G8504", 150, 0, 90, "08:00", "09:30", "https://www.12306.cn"),
-    ("tripcom", "Chongqing", "Chengdu", "2026-12-19", "Sichuan Airlines", "3U8631", 380, 0, 70, "07:30", "08:40", "https://www.trip.com"),
+    # ── Beijing → Dalian (25 Dec, Christmas split) ──
+    ("tripcom", "Beijing", "Dalian", "2026-12-25", "Air China", "CA1608", 620, 0, 90, "10:00", "11:30", "https://www.trip.com"),
+    ("chinarail", "Beijing", "Dalian", "2026-12-25", "G", "G3528", 350, 0, 300, "07:00", "12:00", "https://www.12306.cn"),
 
-    # ── Chengdu → Dalian ──
-    ("tripcom", "Chengdu", "Dalian", "2026-12-24", "Air China", "CA8901", 980, 1, 300, "07:00", "12:00", "https://www.trip.com"),
-    ("chinarail", "Chengdu", "Dalian", "2026-12-24", "G", "G1286", 620, 0, 600, "06:30", "16:30", "https://www.12306.cn"),
+    # ── Dalian → Shanghai (30 Dec, meet in Shanghai) ──
+    ("tripcom", "Dalian", "Shanghai", "2026-12-30", "China Eastern", "MU5628", 740, 0, 120, "13:10", "15:10", "https://www.trip.com"),
+    ("chinarail", "Dalian", "Shanghai", "2026-12-30", "G", "G1254", 690, 0, 600, "07:05", "17:05", "https://www.12306.cn"),
 
-    # ── Dalian → Beijing ──
-    ("tripcom", "Dalian", "Beijing", "2026-12-30", "Air China", "CA1608", 620, 0, 90, "10:00", "11:30", "https://www.trip.com"),
-    ("chinarail", "Dalian", "Beijing", "2026-12-30", "G", "G3528", 350, 0, 300, "07:00", "12:00", "https://www.12306.cn"),
+    # ── Chengdu → Beijing (19 Dec) ──
+    ("tripcom", "Chengdu", "Beijing", "2026-12-19", "Air China", "CA4101", 1150, 0, 180, "08:00", "11:00", "https://www.trip.com"),
+    ("chinarail", "Chengdu", "Beijing", "2026-12-19", "G", "G88", 860, 0, 450, "06:55", "14:25", "https://www.12306.cn"),
 
-    # ── Beijing → Nanjing ──
-    ("chinarail", "Beijing", "Nanjing", "2027-01-04", "G", "G139", 440, 0, 210, "09:00", "12:30", "https://www.12306.cn"),
-    ("tripcom", "Beijing", "Nanjing", "2027-01-04", "Air China", "CA1841", 520, 0, 100, "08:00", "09:40", "https://www.trip.com"),
+    # ── Shanghai → Shenzhen (6 Jan) ──
+    ("tripcom", "Shanghai", "Shenzhen", "2027-01-06", "China Eastern", "MU5331", 720, 0, 150, "08:10", "10:40", "https://www.trip.com"),
+    ("chinarail", "Shanghai", "Shenzhen", "2027-01-06", "G", "G1139", 860, 0, 430, "07:20", "14:30", "https://www.12306.cn"),
 
-    # ── Nanjing → Shanghai ──
-    ("chinarail", "Nanjing", "Shanghai", "2027-01-08", "G", "G7011", 135, 0, 60, "10:00", "11:00", "https://www.12306.cn"),
-    ("tripcom", "Nanjing", "Shanghai", "2027-01-08", "China Eastern", "MU2881", 280, 0, 60, "09:00", "10:00", "https://www.trip.com"),
+    # ── Suzhou → Shanghai (2 Jan) ──
+    ("chinarail", "Suzhou", "Shanghai", "2027-01-02", "G", "G7091", 40, 0, 25, "09:40", "10:05", "https://www.12306.cn"),
+
+    # ── Shenzhen → Hong Kong (10 Jan) ──
+    ("chinarail", "Shenzhen", "Hong Kong", "2027-01-10", "G", "G5601", 75, 0, 20, "14:12", "14:32", "https://www.12306.cn"),
 ]
 
 

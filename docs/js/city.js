@@ -1,22 +1,28 @@
 /**
  * City detail page renderer.
- * Reads the global CITY_ID (set on each city sub-page) and renders the
- * hero, facts, and placeholder guide from the TRIP data source.
+ * Reads the global CITY_ID (set on each city sub-page), then renders the
+ * hero, facts, the planned days for that destination, and top activities.
  */
 (function () {
   'use strict';
 
   function render() {
     if (typeof CITY_ID === 'undefined' || typeof TRIP === 'undefined') return;
-    const city = TRIP.cities.find(c => c.id === CITY_ID);
+    const city = (TRIP.destinations || []).find(d => d.id === CITY_ID);
     if (!city) return;
+
+    const legs = legsForDestination(city.id);
+    const days = daysForDestination(city.id);
+    const nights = legs.reduce((n, l) => n + (l.nights || 0), 0) || city.nights || 0;
 
     const eyebrow = document.getElementById('city-eyebrow');
     const title = document.getElementById('city-title');
     const sub = document.getElementById('city-sub');
     const detail = document.getElementById('city-detail');
 
-    if (eyebrow) eyebrow.textContent = `${city.emoji} ${city.startDate} – ${city.endDate} · ${city.nights} nights`;
+    const ranges = legs.length ? legs.map(l => planDateRange(l.startDate, l.endDate)).join(' · ') : (city.stay || '');
+
+    if (eyebrow) eyebrow.textContent = `📍 ${ranges} · ${nights} night${nights === 1 ? '' : 's'}`;
     if (title) title.textContent = city.name;
     if (sub) sub.textContent = `${city.weather.icon} ${city.weather.temp} · ${city.weather.season}`;
     if (!detail) return;
@@ -31,23 +37,43 @@
 
     const activitiesHtml = city.activities.map(a => `<li>${a}</li>`).join('');
 
-    detail.innerHTML = `
-      <div class="city-placeholder">
-        <div class="ph-emoji">🚧</div>
-        <h3>Full guide coming soon</h3>
-        <p>The detailed ${shortName} guide — local food, must-see spots, and a day-by-day plan — will be built here next.</p>
+    const legsHtml = legs.filter(l => l.nights > 0).map(l => `
+      <div class="city-leg">
+        <span class="city-leg-dates">${planDateRange(l.startDate, l.endDate)}</span>
+        <span class="city-leg-hotel">🏨 ${l.hotel}</span>
       </div>
+    `).join('');
 
+    const planHtml = days.length ? `
+      <div class="city-plan">
+        <h3>Planned days · ${shortName}</h3>
+        ${days.map(day => `
+          <div class="city-plan-day">
+            <div class="plan-day-head">
+              <span class="plan-date">${planShortDate(day.date)}</span>
+              ${day.tag ? `<span class="plan-tag plan-tag-${day.tag.toLowerCase().replace(/\s+/g, '-')}">${day.tag}</span>` : ''}
+              <span class="plan-hotel">🏨 ${day.hotel}</span>
+            </div>
+            ${day.note ? `<p class="plan-note-line">${day.note}</p>` : ''}
+            ${planSlot('Morning', '☀️', day.morning)}
+            ${planSlot('Afternoon', '🌤️', day.afternoon)}
+            ${planSlot('Evening', '🌙', day.evening)}
+          </div>
+        `).join('')}
+      </div>
+    ` : '';
+
+    detail.innerHTML = `
       <div class="city-facts">
         <div class="city-fact-card">
           <span class="cf-icon">🗓️</span>
           <div class="cf-label">Dates</div>
-          <div class="cf-value">${city.startDate} – ${city.endDate}</div>
+          <div class="cf-value">${ranges}</div>
         </div>
         <div class="city-fact-card">
           <span class="cf-icon">🌙</span>
           <div class="cf-label">Nights</div>
-          <div class="cf-value">${city.nights}</div>
+          <div class="cf-value">${nights}</div>
         </div>
         <div class="city-fact-card">
           <span class="cf-icon">${city.weather.icon}</span>
@@ -57,7 +83,7 @@
         <div class="city-fact-card">
           <span class="cf-icon">🚄</span>
           <div class="cf-label">Getting here</div>
-          <div class="cf-value">${city.transport.mode} ${city.transport.duration || ''} from ${city.transport.from}</div>
+          <div class="cf-value">${legs.length ? `${legs[0].transport.mode} ${legs[0].transport.duration || ''} from ${legs[0].transport.from}` : (city.stay ? 'Christmas split — see Planner' : '—')}</div>
         </div>
       </div>
 
@@ -65,9 +91,15 @@
         <h3>At a glance · ${shortName}</h3>
         <div class="tags">${tagsHtml}</div>
         <p>${city.notes}</p>
-        <h4>Top things to do</h4>
-        <ul>${activitiesHtml}</ul>
+        ${legsHtml ? `<div class="city-legs">${legsHtml}</div>` : ''}
       </div>
+
+      <div class="city-notes">
+        <h3>Top things to do</h3>
+        <ul class="city-activity-list">${activitiesHtml}</ul>
+      </div>
+
+      ${planHtml}
     `;
   }
 
