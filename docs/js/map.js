@@ -6,6 +6,7 @@ let mapInstance = null;
 let chinaLayer, thailandLayer;
 let atlasLayer = null;
 let allMarkers = [];
+let hotelMarkers = [];
 let markerById = {};
 let chinaBounds = null;
 
@@ -83,6 +84,36 @@ function initMap() {
   chinaBounds = L.latLngBounds(allCoords);
   mapInstance.fitBounds(chinaBounds, { padding: [50, 50] });
 
+  // ── Hotel markers (gold dots, grouped by hotel name) ──
+  const hotelGroups = {};
+  (TRIP.hotels || []).forEach(h => {
+    const g = hotelGroups[h.name] || (hotelGroups[h.name] = { h, stays: [] });
+    g.stays.push(h);
+  });
+
+  Object.values(hotelGroups).forEach(({ h, stays }) => {
+    const staysHtml = stays.map(s =>
+      `${planDateRange(s.checkIn, s.checkOut)} · ${s.nights} night${s.nights === 1 ? '' : 's'} · ${s.paid}`
+    ).join('<br/>');
+
+    const marker = L.circleMarker(h.coords, {
+      radius: 7, fillColor: '#f59e0b', color: '#fff',
+      weight: 2, opacity: 1, fillOpacity: 0.95,
+    }).addTo(mapInstance);
+
+    marker.bindPopup(`
+      <div style="min-width:210px">
+        <div style="font-size:1.2rem">🏨</div>
+        <h3 style="margin:0 0 .2rem;font-size:.95rem;line-height:1.35">${h.name}</h3>
+        <div style="font-size:.76rem;color:#64748b;line-height:1.5">${h.area} · ${h.metro}</div>
+        <hr style="margin:.35rem 0;border:none;border-top:1px solid #e2e8f0" />
+        <div style="font-size:.76rem;color:#475569;line-height:1.55">${staysHtml}</div>
+        ${h.note ? `<div style="font-size:.74rem;color:#94a3b8;margin-top:.3rem;line-height:1.5">${h.note}</div>` : ''}
+      </div>
+    `);
+    hotelMarkers.push(marker);
+  });
+
   // Jump to city (called from Planner / city pages via ?city=)
   window.flyToCity = function (cityId) {
     const dest = getDestination(cityId);
@@ -136,6 +167,10 @@ function toggleRoute(route, btn) {
 /** Show/hide the destination markers. */
 function setCityMarkers(visible) {
   allMarkers.forEach(m => {
+    if (visible) mapInstance.addLayer(m);
+    else mapInstance.removeLayer(m);
+  });
+  hotelMarkers.forEach(m => {
     if (visible) mapInstance.addLayer(m);
     else mapInstance.removeLayer(m);
   });

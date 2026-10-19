@@ -14,6 +14,242 @@ const TRIP = {
   departure: '2027-01-11',
 
   // ────────────────────────────────────────────────────────────
+  // Hotel bookings (source: 全部订单.xlsx, exported Oct 2026)
+  // coords are the nearest metro / neighbourhood centre — exact pins
+  // for the hotels are not in OpenStreetMap.
+  // ────────────────────────────────────────────────────────────
+  hotels: [
+    {
+      id: 'luyue-sz',
+      legIds: ['shenzhen'],
+      destId: 'shenzhen',
+      name: '鹭月酒店（深圳华强北科学馆地铁站店）',
+      short: '鹭月酒店 · 华强北',
+      area: '福田 · 华强北',
+      metro: '科学馆站 1 号线',
+      coords: [22.5406, 114.0993],
+      checkIn: '2026-12-05',
+      checkOut: '2026-12-08',
+      nights: 3,
+      paid: '到店付 ¥1,242',
+      note: '科学馆地铁站旁，走到华强北电子街 10 分钟；从福田高铁站打车约 10 分钟。',
+    },
+    {
+      id: 'vista-cq',
+      legIds: ['chongqing'],
+      destId: 'chongqing',
+      name: 'Vista 高空江景酒店（解放碑洪崖洞店）',
+      short: 'Vista 高空江景 · 解放碑',
+      area: '渝中 · 解放碑',
+      metro: '临江门站 2 号线',
+      coords: [29.5629, 106.5785],
+      checkIn: '2026-12-08',
+      checkOut: '2026-12-13',
+      nights: 5,
+      paid: '延期付款 ¥4,907',
+      note: '解放碑/洪崖洞核心区，江景房；去李子坝、长江索道都在 20 分钟车程内。',
+    },
+    {
+      id: 'funlist-cd',
+      legIds: ['chengdu'],
+      destId: 'chengdu',
+      name: '凡里 FUN LIST 酒店（成都春熙路太古里店）',
+      short: '凡里 FUN LIST · 春熙路',
+      area: '锦江 · 春熙路',
+      metro: '春熙路站 2/3 号线',
+      coords: [30.6520, 104.0810],
+      checkIn: '2026-12-13',
+      checkOut: '2026-12-19',
+      nights: 6,
+      paid: '延期付款 ¥1,760',
+      note: '春熙路/太古里步行圈，成都东站坐 2 号线直达春熙路约 20 分钟。',
+    },
+    {
+      id: 'qiuguo-bj',
+      legIds: ['beijing'],
+      destId: 'beijing',
+      name: '北京前门秋果 S1918 庭院式酒店',
+      short: '秋果 S1918 · 前门',
+      area: '东城 · 前门',
+      metro: '前门站 2/8 号线',
+      coords: [39.8994, 116.3975],
+      checkIn: '2026-12-19',
+      checkOut: '2026-12-25',
+      nights: 6,
+      paid: '延期付款 ¥2,694',
+      note: '前门大街胡同里，天安门步行可达；去北京站坐 2 号线仅 2 站，去慕田峪建议包车/直通车。',
+    },
+    {
+      id: 'atour-sh-1',
+      legIds: ['shanghai'],
+      destId: 'shanghai',
+      name: '上海陆家嘴民生路地铁站亚朵酒店',
+      short: '亚朵 · 陆家嘴民生路',
+      area: '浦东 · 陆家嘴',
+      metro: '民生路站 18 号线',
+      coords: [31.2428, 121.5336],
+      checkIn: '2027-01-02',
+      checkOut: '2027-01-03',
+      nights: 1,
+      paid: '延期付款 ¥394',
+      note: '1/2 一晚。离陆家嘴三件套和中华艺术宫都近，2 号线过江到南京东路两站。',
+    },
+    {
+      id: 'lunas-sh',
+      legIds: ['shanghai'],
+      destId: 'shanghai',
+      name: '上海隐墅°Lunas Villa 庭院花园度假酒店（上海国际旅游度假区店）',
+      short: 'Lunas Villa · 迪士尼',
+      area: '浦东 · 国际旅游度假区',
+      metro: '迪士尼站 11 号线',
+      coords: [31.1443, 121.6575],
+      checkIn: '2027-01-03',
+      checkOut: '2027-01-05',
+      nights: 2,
+      paid: '延期付款 ¥516',
+      note: '1/3–1/4 两晚，迪士尼度假区旁，去乐园有接驳。',
+    },
+    {
+      id: 'atour-sh-2',
+      legIds: ['shanghai'],
+      destId: 'shanghai',
+      name: '上海陆家嘴民生路地铁站亚朵酒店',
+      short: '亚朵 · 陆家嘴民生路',
+      area: '浦东 · 陆家嘴',
+      metro: '民生路站 18 号线',
+      coords: [31.2428, 121.5336],
+      checkIn: '2027-01-05',
+      checkOut: '2027-01-06',
+      nights: 1,
+      paid: '延期付款 ¥438',
+      note: '1/5 一晚，回市区收拾行李，第二天去虹桥/浦东机场都方便。',
+    },
+    {
+      id: 'ruijing-sz',
+      legIds: ['shenzhen-return'],
+      destId: 'shenzhen',
+      name: '深圳南山睿景酒店（深圳湾口岸四海地铁站店）',
+      short: '南山睿景 · 四海站',
+      area: '南山 · 深圳湾口岸',
+      metro: '四海站 12 号线',
+      coords: [22.4985, 113.9186],
+      checkIn: '2027-01-06',
+      checkOut: '2027-01-10',
+      nights: 4,
+      paid: '到店付 ¥2,236 + 离店后付 ¥1,224（两笔订单）',
+      note: '两笔订单都在 1/6：¥2,236（1 间）与 ¥1,224（徐美华 + 苏晨辰，可能为第二间房）——建议核对。',
+    },
+  ],
+
+  // Nights with no booking yet
+  pendingStays: {
+    '2026-12-25': 'Dalian · 未预订',
+    '2026-12-26': 'Dalian · 未预订',
+    '2026-12-27': 'Dalian · 未预订',
+    '2026-12-28': 'Dalian · 未预订',
+    '2026-12-29': 'Dalian · 未预订',
+    '2026-12-30': 'Shanghai · 未预订',
+    '2026-12-31': 'Suzhou / Changshu · 未预订',
+    '2027-01-01': 'Suzhou / Changshu · 未预订',
+  },
+
+  // ────────────────────────────────────────────────────────────
+  // Best way between stops (researched Oct 2026)
+  // ────────────────────────────────────────────────────────────
+  connections: [
+    {
+      legId: 'shenzhen',
+      date: '2026-12-05',
+      from: 'Auckland',
+      to: 'Shenzhen',
+      best: '✈️ AKL → HKG 10:10–16:20 · 🚄 West Kowloon → Futian 18 min (¥68)',
+      alt: 'MTR East Rail to Lo Wu / Futian checkpoint (~50 min), or airport bus to Shenzhen Bay',
+      why: 'Landing 16:20, the HSR from West Kowloon has you in Futian by ~17:45 — hotel ETA 18:00 works.',
+    },
+    {
+      legId: 'chongqing',
+      date: '2026-12-08',
+      from: 'Shenzhen',
+      to: 'Chongqing',
+      best: '✈️ SZX → CKG ~2 h 10 (¥780)',
+      alt: '🚄 Shenzhen North → Chongqing West ~7 h (¥720)',
+      why: 'The train saves ~¥60 but costs five extra hours; fly and keep 12/8 free for Raffles City.',
+    },
+    {
+      legId: 'chengdu',
+      date: '2026-12-13',
+      from: 'Chongqing',
+      to: 'Chengdu',
+      best: '🚄 Chongqing North / West → Chengdu East 1 h – 1 h 30 (¥154, every ~10–20 min)',
+      alt: '✈️ flight ~1 h 10 but airport transfers kill the advantage',
+      why: 'Train wins outright — depart after breakfast, in Chunxi Road by lunch.',
+    },
+    {
+      legId: 'beijing',
+      date: '2026-12-19',
+      from: 'Chengdu',
+      to: 'Beijing',
+      best: '✈️ CTU / TFU → PEK / PKX ~3 h (¥1,150)',
+      alt: '🚄 Chengdu East → Beijing West 7 h 30 – 10 h (¥808)',
+      why: 'A 7.5 h train eats the whole day; fly in the morning and still see the Summer Palace.',
+    },
+    {
+      legId: 'thailand-dalian',
+      date: '2026-12-25',
+      from: 'Beijing',
+      to: 'Dalian',
+      best: '🚄 Beijing Station → Dalian North 3 h 36 – 5 h (¥415–451)',
+      alt: '✈️ PEK / PKX → DLC ~1 h 30, but both airports are an hour out of town',
+      why: 'G159 leaves Beijing Station at 08:10 (2 metro stops from the hotel) and arrives 11:52 — door to door it beats flying.',
+    },
+    {
+      legId: 'shanghai-bund',
+      date: '2026-12-30',
+      from: 'Dalian / Thailand',
+      to: 'Shanghai',
+      best: '✈️ DLC → PVG / SHA ~2 h (not booked) · the Thailand side departure is still TBC',
+      alt: '🚄 one direct Dalian train a day, 10 h 22 (¥918) — not worth it',
+      why: 'Flight only. Book once the departure airport is confirmed.',
+    },
+    {
+      legId: 'suzhou',
+      date: '2026-12-31',
+      from: 'Shanghai',
+      to: 'Suzhou',
+      best: '🚄 Shanghai Station → Suzhou 20–40 min (¥21–52, ~450 departures a day)',
+      alt: 'Hongqiao also works if you are on the Pudong side',
+      why: 'Use Shanghai Station (Line 1/3/4) from the Bund hotel; Suzhou Station is in the old town.',
+    },
+    {
+      legId: 'shanghai',
+      date: '2027-01-02',
+      from: 'Suzhou',
+      to: 'Shanghai',
+      best: '🚄 Suzhou → Shanghai Station 20–40 min (¥21–52)',
+      alt: 'Hongqiao arrival + Line 2 straight to 民生路 if that train suits better',
+      why: 'Both ends are downtown; book a mid-morning train and drop bags at the Atour by lunch.',
+    },
+    {
+      legId: 'shenzhen-return',
+      date: '2027-01-06',
+      from: 'Shanghai',
+      to: 'Shenzhen',
+      best: '✈️ SHA / PVG → SZX ~2 h 30 (¥720)',
+      alt: '🚄 Shanghai → Shenzhen North 6 h 35 – 11 h (¥694–993)',
+      why: 'Flight. Shanghai Hongqiao is 40 min from 民生路 on Line 2; Shenzhen Bao’an to 四海 is a 25 min taxi.',
+    },
+    {
+      legId: 'home',
+      date: '2027-01-10',
+      from: 'Shenzhen',
+      to: 'Hong Kong',
+      best: '🚄 Futian → West Kowloon 14–18 min (¥68) · Airport Express onwards',
+      alt: 'MTR East Rail to Lo Wu, or a cross-border coach',
+      why: 'Leave the hotel ~13:00 for the 17:50 flight — HSR + Airport Express is the fastest border crossing.',
+    },
+  ],
+
+  // ────────────────────────────────────────────────────────────
   // Unique destinations
   // ────────────────────────────────────────────────────────────
   destinations: [
@@ -751,6 +987,27 @@ function daysForLeg(legId) {
 function daysForDestination(id) {
   const legIds = legsForDestination(id).map(l => l.id);
   return TRIP.days.filter(d => legIds.includes(d.legId));
+}
+
+// Hotel helpers — bookings come from the 全部订单 export
+function hotelsForLeg(legId) {
+  return (TRIP.hotels || []).filter(h => (h.legIds || []).includes(legId));
+}
+
+function hotelForDate(date) {
+  return (TRIP.hotels || []).find(h => date >= h.checkIn && date < h.checkOut) || null;
+}
+
+// Compact label for a night: hotel short name, or the pending-stay text
+function hotelLabelForDate(date) {
+  const h = hotelForDate(date);
+  if (h) return h.short;
+  return (TRIP.pendingStays || {})[date] || '未预订';
+}
+
+// Transport recommendation for a leg
+function connectionForLeg(legId) {
+  return (TRIP.connections || []).find(c => c.legId === legId) || null;
 }
 
 // Total nights away

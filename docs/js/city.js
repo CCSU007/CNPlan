@@ -37,12 +37,47 @@
 
     const activitiesHtml = city.activities.map(a => `<li>${a}</li>`).join('');
 
-    const legsHtml = legs.filter(l => l.nights > 0).map(l => `
-      <div class="city-leg">
-        <span class="city-leg-dates">${planDateRange(l.startDate, l.endDate)}</span>
-        <span class="city-leg-hotel">🏨 ${l.hotel}</span>
+    const legsHtml = legs.filter(l => l.nights > 0).map(l => {
+      const hs = hotelsForLeg(l.id);
+      const hotelText = hs.length
+        ? hs.map(h => h.short).join(' → ')
+        : hotelLabelForDate(l.startDate);
+      return `
+        <div class="city-leg">
+          <span class="city-leg-dates">${planDateRange(l.startDate, l.endDate)}</span>
+          <span class="city-leg-hotel">🏨 ${hotelText}</span>
+        </div>
+      `;
+    }).join('');
+
+    const hotels = legs.flatMap(l => hotelsForLeg(l.id));
+    const hotelsHtml = hotels.length ? `
+      <div class="city-notes">
+        <h3>Where you stay</h3>
+        <div class="leg-hotels">
+          ${hotels.map(h => `
+            <div class="leg-hotel">
+              <div class="leg-hotel-name">🏨 ${h.name}</div>
+              <div class="leg-hotel-meta">${h.area} · ${h.metro} · ${planDateRange(h.checkIn, h.checkOut)} · ${h.nights} 晚</div>
+              <div class="leg-hotel-paid">${h.paid}</div>
+              ${h.note ? `<p class="leg-hotel-note">${h.note}</p>` : ''}
+            </div>
+          `).join('')}
+        </div>
       </div>
-    `).join('');
+    ` : (legs.length ? `
+      <div class="city-notes">
+        <h3>Where you stay</h3>
+        <div class="leg-hotels">
+          <div class="leg-hotel">
+            <div class="leg-hotel-name">🏨 未预订</div>
+            <div class="leg-hotel-meta">${hotelLabelForDate(legs[0].startDate)} — 还没订到酒店</div>
+          </div>
+        </div>
+      </div>
+    ` : '');
+
+    const conn = legs.map(l => connectionForLeg(l.id)).find(Boolean);
 
     const planHtml = days.length ? `
       <div class="city-plan">
@@ -52,7 +87,7 @@
             <div class="plan-day-head">
               <span class="plan-date">${planShortDate(day.date)}</span>
               ${day.tag ? `<span class="plan-tag plan-tag-${day.tag.toLowerCase().replace(/\s+/g, '-')}">${day.tag}</span>` : ''}
-              <span class="plan-hotel">🏨 ${day.hotel}</span>
+              <span class="plan-hotel">🏨 ${hotelLabelForDate(day.date)}</span>
             </div>
             ${day.note ? `<p class="plan-note-line">${day.note}</p>` : ''}
             ${planSlot('Morning', '☀️', day.morning)}
@@ -83,9 +118,18 @@
         <div class="city-fact-card">
           <span class="cf-icon">🚄</span>
           <div class="cf-label">Getting here</div>
-          <div class="cf-value">${legs.length ? `${legs[0].transport.mode} ${legs[0].transport.duration || ''} from ${legs[0].transport.from}` : (city.stay ? 'Christmas split — see Planner' : '—')}</div>
+          <div class="cf-value">${conn ? conn.best : (legs.length ? `${legs[0].transport.mode} ${legs[0].transport.duration || ''} from ${legs[0].transport.from}` : 'Christmas split — see Planner')}</div>
         </div>
       </div>
+
+      ${conn ? `
+        <div class="connection-card">
+          <div class="connection-head">🚏 Best way · ${conn.from} → ${conn.to}</div>
+          <div class="connection-best">${conn.best}</div>
+          <div class="connection-alt"><span>Also possible:</span> ${conn.alt}</div>
+          <div class="connection-why">${conn.why}</div>
+        </div>
+      ` : ''}
 
       <div class="city-notes">
         <h3>At a glance · ${shortName}</h3>
@@ -98,6 +142,8 @@
         <h3>Top things to do</h3>
         <ul class="city-activity-list">${activitiesHtml}</ul>
       </div>
+
+      ${hotelsHtml}
 
       ${planHtml}
     `;

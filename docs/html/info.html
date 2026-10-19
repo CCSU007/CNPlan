@@ -158,12 +158,13 @@
       // Transport info grid
       const infoGrid = document.getElementById('info-grid');
       if (infoGrid) {
-        infoGrid.innerHTML = TRIP.transport.map(t => `
-          <div class="info-card">
-            <h3>${t.mode} ${t.from} → ${t.to}</h3>
+        infoGrid.innerHTML = TRIP.connections.map(t => `
+          <div class="info-card connection-card">
+            <h3>${t.from} → ${t.to}</h3>
             <ul>
-              <li><strong>Duration:</strong> ${t.duration || '—'}</li>
-              <li><strong>Route:</strong> ${t.from} → ${t.to}</li>
+              <li><strong>${planShortDate(t.date)} · Best:</strong> ${t.best}</li>
+              <li><strong>Also possible:</strong> ${t.alt}</li>
+              <li><strong>Why:</strong> ${t.why}</li>
             </ul>
           </div>
         `).join('');

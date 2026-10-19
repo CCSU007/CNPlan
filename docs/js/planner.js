@@ -18,7 +18,7 @@ function planDayHtml(day) {
       <div class="plan-day-head">
         <span class="plan-date">${planShortDate(day.date)}</span>
         ${tag}
-        <span class="plan-hotel">🏨 ${day.hotel}</span>
+        <span class="plan-hotel">🏨 ${hotelLabelForDate(day.date)}</span>
       </div>
       ${day.note ? `<p class="plan-note-line">${day.note}</p>` : ''}
       ${slots || `<p class="plan-free">Free day — nothing locked in.</p>`}
@@ -38,6 +38,34 @@ function initPlanner() {
     const mapBtn = leg.destId
       ? `<button class="btn btn-ghost btn-sm" onclick="location.href='map.html?city=${leg.destId}'">📍 Show on Map</button>`
       : '';
+    const hotels = hotelsForLeg(leg.id);
+    const conn = connectionForLeg(leg.id);
+
+    const hotelSummary = hotels.length
+      ? hotels.map(h => h.short).join(' → ')
+      : (days.length ? hotelLabelForDate(days[0].date) : '未预订');
+
+    const hotelsHtml = hotels.length ? `
+      <div class="leg-hotels">
+        ${hotels.map(h => `
+          <div class="leg-hotel">
+            <div class="leg-hotel-name">🏨 ${h.name}</div>
+            <div class="leg-hotel-meta">${h.area} · ${h.metro} · ${planDateRange(h.checkIn, h.checkOut)} · ${h.nights} 晚</div>
+            <div class="leg-hotel-paid">${h.paid}</div>
+            ${h.note ? `<p class="leg-hotel-note">${h.note}</p>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    ` : '';
+
+    const connHtml = conn ? `
+      <div class="connection-card">
+        <div class="connection-head">🚏 Best way · ${conn.from} → ${conn.to}</div>
+        <div class="connection-best">${conn.best}</div>
+        <div class="connection-alt"><span>Also possible:</span> ${conn.alt}</div>
+        <div class="connection-why">${conn.why}</div>
+      </div>
+    ` : '';
 
     return `
       <div class="planner-card" data-city="${leg.id}">
@@ -46,7 +74,7 @@ function initPlanner() {
             <span class="emoji">${leg.emoji}</span>
             <div>
               <h3>${leg.name} · ${leg.nights ? leg.nights + ' night' + (leg.nights === 1 ? '' : 's') : 'fly home'}</h3>
-              <div class="sub">${planDateRange(leg.startDate, leg.endDate)} · 🏨 ${leg.hotel}</div>
+              <div class="sub">${planDateRange(leg.startDate, leg.endDate)} · 🏨 ${hotelSummary}</div>
             </div>
           </div>
           <span class="chevron">▼</span>
@@ -57,7 +85,9 @@ function initPlanner() {
               <span>${leg.transport.mode} from ${leg.transport.from}${leg.transport.duration ? ' · ' + leg.transport.duration : ''}</span>
               <span>${days.length} day${days.length === 1 ? '' : 's'}</span>
             </div>
+            ${connHtml}
             <p>${leg.notes}</p>
+            ${hotelsHtml}
             ${days.map(planDayHtml).join('')}
             <div class="plan-actions">${mapBtn}</div>
           </div>

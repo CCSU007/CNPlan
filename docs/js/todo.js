@@ -38,6 +38,9 @@ const SEED = [
   { text: 'Reserve Harry Potter 禁忌森林 slot (Longhua, 6 Jan)', cat: 'booking', prio: 2, due: '2026-12-10' },
   { text: 'Book Shanghai → Suzhou HSR (31 Dec) + Zhouzhuang tickets', cat: 'booking', prio: 2, due: '2026-12-01' },
   { text: 'Confirm all hotel bookings (incl. Disney + New Year nights)', cat: 'booking', prio: 2, due: '2026-11-20' },
+  { text: 'Book Shanghai hotel for 30 Dec (1 night, Bund area)', cat: 'booking', prio: 2, due: '2026-11-30' },
+  { text: 'Book Suzhou / Changshu hotel for 31 Dec – 1 Jan (2 nights)', cat: 'booking', prio: 2, due: '2026-11-30' },
+  { text: 'Book Dalian hotel for 25–29 Dec (the Christmas break leg)', cat: 'booking', prio: 2, due: '2026-11-30' },
   { text: 'Pack winter layers for Beijing (-8°C) + swimwear for Thailand', cat: 'pack', prio: 2, due: '2026-12-01' },
   { text: 'Download apps: Metro 大都会 / 高德 / DiDi / 12306', cat: 'tech', prio: 2, due: '2026-11-25' },
 ];
