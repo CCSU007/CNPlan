@@ -97,24 +97,6 @@ const TRIP = {
       notes: 'Six nights in Wangfujing — the Great Wall, Universal Studios and the classic imperial sights in winter quiet.',
     },
     {
-      id: 'thailand',
-      name: 'Thailand · 泰国',
-      emoji: '🇹🇭',
-      coords: [13.7563, 100.5018],
-      stay: '25 – 29 Dec 2026',
-      nights: 5,
-      tags: [{ label: 'Family Trip', cls: 'green' }, 'Warm', 'Break'],
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Wat_Arun_from_Chao_Phraya.jpg/960px-Wat_Arun_from_Chao_Phraya.jpg',
-      weather: { temp: '22–32°C', season: 'Dry Season · Dec', icon: '☀️' },
-      activities: [
-        'Family time — no fixed plan',
-        'Temples & night markets',
-        'Thai food & street eats',
-        'Pool / beach days',
-      ],
-      notes: 'One half of the Christmas split — five nights with family while the other flies to Dalian.',
-    },
-    {
       id: 'dalian',
       name: 'Dalian · 大连',
       emoji: '🌊',
@@ -492,10 +474,10 @@ const TRIP = {
     // ── Shanghai (1 night) ──
     {
       date: '2026-12-30', legId: 'shanghai-bund', city: 'Shanghai', hotel: 'Shanghai · Bund area', tag: 'Travel',
-      morning: ['✈️ Thailand → Shanghai', '✈️ Dalian → Shanghai'],
+      morning: ['✈️ Flight to Shanghai — from Thailand / Dalian', 'Departure airport not booked yet'],
       afternoon: ['Hotel check-in'],
       evening: ['外滩 City Walk'],
-      note: 'Meet in Shanghai — the two of us are back together.',
+      note: 'Meet in Shanghai — flights not booked yet, origin airport TBC.',
     },
 
     // ── Suzhou / Changshu ──
@@ -524,16 +506,16 @@ const TRIP = {
     },
     {
       date: '2027-01-03', legId: 'shanghai', city: 'Shanghai', hotel: 'Shanghai Central', tag: '',
-      morning: ['Free day · Shanghai Central'],
-      afternoon: ['静安寺', '龙华寺'],
-      evening: [],
+      morning: ['静安寺', '龙华寺'],
+      afternoon: ['中华艺术宫 (Pudong)'],
+      evening: ['陆家嘴 “三件套” · night view'],
       note: 'Pure Chinese-culture day; no colonial-era stops.',
     },
     {
       date: '2027-01-04', legId: 'shanghai', city: 'Shanghai', hotel: 'Shanghai Disney', tag: 'Full day',
       morning: ['上海迪士尼乐园 — full day'],
       afternoon: [],
-      evening: ['中华艺术宫 (Pudong) [optional]', '陆家嘴 “三件套” [optional]'],
+      evening: [],
       note: '',
     },
     {
@@ -599,8 +581,7 @@ const TRIP = {
     { from: 'Chengdu', to: 'Beijing', mode: '✈️', duration: '~3 h' },
     { from: 'Beijing', to: 'Thailand', mode: '✈️', duration: '~4 h' },
     { from: 'Beijing', to: 'Dalian', mode: '✈️', duration: '~1.5 h' },
-    { from: 'Thailand', to: 'Shanghai', mode: '✈️', duration: '~4.5 h' },
-    { from: 'Dalian', to: 'Shanghai', mode: '✈️', duration: '~2 h' },
+    { from: 'Thailand / Dalian', to: 'Shanghai', mode: '✈️', duration: 'flight TBC' },
     { from: 'Shanghai', to: 'Suzhou', mode: '🚄', duration: '25 min' },
     { from: 'Suzhou', to: 'Shanghai', mode: '🚄', duration: '~30 min' },
     { from: 'Shanghai', to: 'Shenzhen', mode: '✈️', duration: '~2.5 h' },

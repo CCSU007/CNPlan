@@ -41,15 +41,10 @@ function initMap() {
     color: '#6366f1', weight: 3, opacity: 0.7, dashArray: '10, 8',
   }).addTo(chinaLayer);
 
-  // Christmas split: Beijing → Thailand / Dalian → Shanghai
-  const thaiRoute = ['beijing', 'thailand', 'shanghai'].map(coords).filter(Boolean);
-  L.polyline(thaiRoute, {
-    color: '#ec4899', weight: 3, opacity: 0.75, dashArray: '10, 8',
-  }).addTo(thailandLayer);
-
+  // Christmas break: Beijing → Dalian → Shanghai (flight to Shanghai not booked yet)
   const dalianRoute = ['beijing', 'dalian', 'shanghai'].map(coords).filter(Boolean);
   L.polyline(dalianRoute, {
-    color: '#f97316', weight: 3, opacity: 0.75, dashArray: '10, 8',
+    color: '#ec4899', weight: 3, opacity: 0.75, dashArray: '10, 8',
   }).addTo(thailandLayer);
 
   // ── Destination markers (always visible) ──
@@ -64,7 +59,7 @@ function initMap() {
 
     const markerColor = dest.id === 'shenzhen' ? '#10b981'
       : dest.id === 'shanghai' ? '#ef4444'
-      : dest.id === 'thailand' ? '#ec4899'
+      : dest.id === 'dalian' ? '#ec4899'
       : '#6366f1';
 
     const marker = L.circleMarker(dest.coords, {
@@ -125,7 +120,6 @@ function toggleRoute(route, btn) {
     show(thailandLayer, true);
     if (chinaBounds) mapInstance.fitBounds(L.latLngBounds([
       getDestination('beijing').coords,
-      getDestination('thailand').coords,
       getDestination('dalian').coords,
       getDestination('shanghai').coords,
     ]), { padding: [60, 60] });
@@ -159,7 +153,7 @@ function buildAtlas() {
   const journey = [
     auckland, hongkong,
     coords('shenzhen'), coords('chongqing'), coords('chengdu'),
-    coords('beijing'), coords('thailand'), coords('dalian'), coords('shanghai'), coords('suzhou'),
+    coords('beijing'), coords('dalian'), coords('shanghai'), coords('suzhou'),
     coords('shanghai'), coords('shenzhen'),
     hongkong, auckland,
   ];
@@ -179,8 +173,7 @@ function buildAtlas() {
   countryMarker(auckland, '🇳🇿', 'New Zealand · Home', 'Depart 5 Dec & return 11 Jan', '#10b981');
   countryMarker(hongkong, '🇭🇰', 'Hong Kong · Transit', 'In and out of China', '#06b6d4');
   countryMarker([31.23, 121.47], '🇨🇳', 'China · the journey', '5 Dec – 10 Jan', '#ef4444');
-  countryMarker(coords('thailand'), '🇹🇭', 'Thailand · Family', '25 – 30 Dec · one of us', '#ec4899');
-  countryMarker(coords('dalian'), '🌊', 'Dalian · Solo', '25 – 30 Dec · the other', '#f97316');
+  countryMarker(coords('dalian'), '🌊', 'Dalian · Break', '25 – 30 Dec', '#ec4899');
 
   return atlasLayer;
 }
