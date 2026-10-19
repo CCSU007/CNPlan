@@ -56,10 +56,10 @@
         <h3>Where you stay</h3>
         <div class="leg-hotels">
           ${hotels.map(h => `
-            <div class="leg-hotel">
+            <div class="leg-hotel${h.placeholder ? ' is-placeholder' : ''}">
               <div class="leg-hotel-name">🏨 ${h.name}</div>
               <div class="leg-hotel-meta">${h.area} · ${h.metro} · ${planDateRange(h.checkIn, h.checkOut)} · ${h.nights} 晚</div>
-              <div class="leg-hotel-paid">${h.paid}</div>
+              ${h.paid && h.paid !== '—' ? `<div class="leg-hotel-paid">${h.paid}</div>` : ''}
               ${h.note ? `<p class="leg-hotel-note">${h.note}</p>` : ''}
             </div>
           `).join('')}

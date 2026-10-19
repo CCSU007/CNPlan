@@ -41,6 +41,7 @@ const SEED = [
   { text: 'Book Shanghai hotel for 30 Dec (1 night, Bund area)', cat: 'booking', prio: 2, due: '2026-11-30' },
   { text: 'Book Suzhou / Changshu hotel for 31 Dec – 1 Jan (2 nights)', cat: 'booking', prio: 2, due: '2026-11-30' },
   { text: 'Book Dalian hotel for 25–29 Dec (the Christmas break leg)', cat: 'booking', prio: 2, due: '2026-11-30' },
+  { text: 'Check Shenzhen 睿景 two-room orders (6–10 Jan, mum joining)', cat: 'booking', prio: 2, due: '2026-12-15' },
   { text: 'Pack winter layers for Beijing (-8°C) + swimwear for Thailand', cat: 'pack', prio: 2, due: '2026-12-01' },
   { text: 'Download apps: Metro 大都会 / 高德 / DiDi / 12306', cat: 'tech', prio: 2, due: '2026-11-25' },
 ];

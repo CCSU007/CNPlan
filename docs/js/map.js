@@ -86,7 +86,7 @@ function initMap() {
 
   // ── Hotel markers (gold dots, grouped by hotel name) ──
   const hotelGroups = {};
-  (TRIP.hotels || []).forEach(h => {
+  (TRIP.hotels || []).filter(h => h.coords && !h.placeholder).forEach(h => {
     const g = hotelGroups[h.name] || (hotelGroups[h.name] = { h, stays: [] });
     g.stays.push(h);
   });

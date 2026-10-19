@@ -1,7 +1,7 @@
 /* China Explorer — service worker (PWA)
  * Cache-first for same-origin GET requests; the site works offline after first visit.
  * Note: service workers only run over http(s), not file://. */
-const CACHE = 'china-explorer-v3';
+const CACHE = 'china-explorer-v4';
 const CORE = [
   './',
   './index.html',
