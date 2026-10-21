@@ -1,15 +1,15 @@
 source,origin,dest,depart_date,airline,flight_number,price_cny,stops,duration_min,depart_time,arrive_time,url,timestamp,currency
-tripcom,Shenzhen,Chongqing,2026-12-08,Shenzhen Airlines,ZH9531,780,0,130,08:20,10:30,https://www.trip.com,2026-10-20T12:26:33,CNY
-chinarail,Shenzhen,Chongqing,2026-12-08,G,G2924,720,0,430,07:12,14:22,https://www.12306.cn,2026-10-20T12:26:33,CNY
-chinarail,Chongqing,Chengdu,2026-12-13,G,G8504,154,0,90,08:00,09:30,https://www.12306.cn,2026-10-20T12:26:33,CNY
-tripcom,Chongqing,Chengdu,2026-12-13,Sichuan Airlines,3U8631,380,0,70,07:30,08:40,https://www.trip.com,2026-10-20T12:26:33,CNY
-tripcom,Beijing,Dalian,2026-12-25,Air China,CA1608,620,0,90,10:00,11:30,https://www.trip.com,2026-10-20T12:26:33,CNY
-chinarail,Beijing,Dalian,2026-12-25,G,G3528,350,0,300,07:00,12:00,https://www.12306.cn,2026-10-20T12:26:33,CNY
-tripcom,Dalian,Shanghai,2026-12-30,China Eastern,MU5628,740,0,120,13:10,15:10,https://www.trip.com,2026-10-20T12:26:33,CNY
-chinarail,Dalian,Shanghai,2026-12-30,G,G1254,690,0,600,07:05,17:05,https://www.12306.cn,2026-10-20T12:26:33,CNY
-tripcom,Chengdu,Beijing,2026-12-19,Air China,CA4101,1150,0,180,08:00,11:00,https://www.trip.com,2026-10-20T12:26:33,CNY
-chinarail,Chengdu,Beijing,2026-12-19,G,G88,860,0,450,06:55,14:25,https://www.12306.cn,2026-10-20T12:26:33,CNY
-tripcom,Shanghai,Shenzhen,2027-01-06,China Eastern,MU5331,720,0,150,08:10,10:40,https://www.trip.com,2026-10-20T12:26:33,CNY
-chinarail,Shanghai,Shenzhen,2027-01-06,G,G1139,860,0,430,07:20,14:30,https://www.12306.cn,2026-10-20T12:26:33,CNY
-chinarail,Suzhou,Shanghai,2027-01-02,G,G7091,40,0,25,09:40,10:05,https://www.12306.cn,2026-10-20T12:26:33,CNY
-chinarail,Shenzhen,Hong Kong,2027-01-10,G,G5601,75,0,20,14:12,14:32,https://www.12306.cn,2026-10-20T12:26:33,CNY
+tripcom,Shenzhen,Chongqing,2026-12-08,Shenzhen Airlines,ZH9531,780,0,130,08:20,10:30,https://www.trip.com,2026-10-21T12:36:27,CNY
+chinarail,Shenzhen,Chongqing,2026-12-08,G,G2924,720,0,430,07:12,14:22,https://www.12306.cn,2026-10-21T12:36:27,CNY
+chinarail,Chongqing,Chengdu,2026-12-13,G,G8504,154,0,90,08:00,09:30,https://www.12306.cn,2026-10-21T12:36:27,CNY
+tripcom,Chongqing,Chengdu,2026-12-13,Sichuan Airlines,3U8631,380,0,70,07:30,08:40,https://www.trip.com,2026-10-21T12:36:27,CNY
+tripcom,Beijing,Dalian,2026-12-25,Air China,CA1608,620,0,90,10:00,11:30,https://www.trip.com,2026-10-21T12:36:27,CNY
+chinarail,Beijing,Dalian,2026-12-25,G,G3528,350,0,300,07:00,12:00,https://www.12306.cn,2026-10-21T12:36:27,CNY
+tripcom,Dalian,Shanghai,2026-12-30,China Eastern,MU5628,740,0,120,13:10,15:10,https://www.trip.com,2026-10-21T12:36:27,CNY
+chinarail,Dalian,Shanghai,2026-12-30,G,G1254,690,0,600,07:05,17:05,https://www.12306.cn,2026-10-21T12:36:27,CNY
+tripcom,Chengdu,Beijing,2026-12-19,Air China,CA4101,1150,0,180,08:00,11:00,https://www.trip.com,2026-10-21T12:36:27,CNY
+chinarail,Chengdu,Beijing,2026-12-19,G,G88,860,0,450,06:55,14:25,https://www.12306.cn,2026-10-21T12:36:27,CNY
+tripcom,Shanghai,Shenzhen,2027-01-06,China Eastern,MU5331,720,0,150,08:10,10:40,https://www.trip.com,2026-10-21T12:36:27,CNY
+chinarail,Shanghai,Shenzhen,2027-01-06,G,G1139,860,0,430,07:20,14:30,https://www.12306.cn,2026-10-21T12:36:27,CNY
+chinarail,Suzhou,Shanghai,2027-01-02,G,G7091,40,0,25,09:40,10:05,https://www.12306.cn,2026-10-21T12:36:27,CNY
+chinarail,Shenzhen,Hong Kong,2027-01-10,G,G5601,75,0,20,14:12,14:32,https://www.12306.cn,2026-10-21T12:36:27,CNY
